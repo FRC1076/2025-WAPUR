@@ -3,7 +3,8 @@ package frc.robot.subsystems.elevator;
 import org.littletonrobotics.junction.AutoLog;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
-public interface ElevatorIO {
+public interface ElevatorIO 
+{
     public static record ElevatorControlConstants (
         Double kP,
         Double kI,
@@ -16,7 +17,8 @@ public interface ElevatorIO {
     ) {}
 
     @AutoLog
-    public static class ElevatorIOInputs {
+    public static class ElevatorIOInputs 
+    {
 
         public double appliedVolts = 0;
         public double appliedOutput = 0;
