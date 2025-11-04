@@ -1,6 +1,7 @@
-package frc.robot.subsystems.wrist;
+package frc.robot.subsystems.yoinker;
 
-import frc.robot.Constants.WristConstants;
+import frc.robot.Constants.YoinkerConstants;
+import frc.robot.subsystems.yoinker.YoinkerIO;
 import lib.control.DynamicArmFeedforward;
 import lib.control.DynamicProfiledPIDController;
 
@@ -16,17 +17,16 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static edu.wpi.first.units.Units.Volts;
 
 import org.littletonrobotics.junction.Logger;
-
-public class WristSubsystem extends SubsystemBase 
+public class YoinkerSubsystem extends SubsystemBase
 {
-    private final WristIO io;
+    private final YoinkerIO io;
     private final ProfiledPIDController m_profiledPIDController;
     private final DynamicArmFeedforward m_feedforwardController;
-    private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
+    private final YoinkerIOInputsAutoLogged inputs = new YoinkerIOInputsAutoLogged();
     private final SysIdRoutine sysid;
     
 
-    public WristSubsystem(WristIO io, DoubleSupplier periodSupplier) 
+    public YoinkerSubsystem(YoinkerIO io, DoubleSupplier periodSupplier) 
     {
         this.io = io;
 
@@ -49,7 +49,7 @@ public class WristSubsystem extends SubsystemBase
         sysid = new SysIdRoutine(
             new SysIdRoutine.Config(
                 null, Volts.of(1), null,
-                (state) -> Logger.recordOutput("Wrist/SysIDState", state.toString())
+                (state) -> Logger.recordOutput("Yoinker/SysIDState", state.toString())
             ), 
             new SysIdRoutine.Mechanism(
                 (voltage) -> io.setVoltage(voltage.in(Volts)),
@@ -63,10 +63,10 @@ public class WristSubsystem extends SubsystemBase
     public void setVoltage(double volts) 
     {
         
-        if (this.getAngleRadians() > WristConstants.kMaxWristAngleRadians && volts > 0) 
+        if (this.getAngleRadians() > YoinkerConstants.kMaxYoinkerAngleRadians && volts > 0) 
         {
             volts = 0;
-        } else if (this.getAngleRadians() < WristConstants.kMinWristAngleRadians && volts < 0) 
+        } else if (this.getAngleRadians() < YoinkerConstants.kMinYoinkerAngleRadians && volts < 0) 
         {
             volts = 0;
         }
@@ -77,7 +77,7 @@ public class WristSubsystem extends SubsystemBase
     public void setAngle(Rotation2d position) 
     {
         io.setVoltage(
-            m_profiledPIDController.calculate(inputs.angleRadians, MathUtil.clamp(position.getRadians(), WristConstants.kMinWristAngleRadians, WristConstants.kMaxWristAngleRadians))
+            m_profiledPIDController.calculate(inputs.angleRadians, MathUtil.clamp(position.getRadians(), YoinkerConstants.kMinYoinkerAngleRadians, YoinkerConstants.kMaxYoinkerAngleRadians))
             + m_feedforwardController.calculate(inputs.angleRadians, m_profiledPIDController.getSetpoint().velocity)
         );
     }
@@ -107,7 +107,7 @@ public class WristSubsystem extends SubsystemBase
             () -> {m_profiledPIDController.reset(getAngleRadians(),inputs.velocityRadiansPerSecond);},
             () -> setAngle(angle), 
             (interrupted) -> {},
-            () -> Math.abs(angle.minus(getAngle()).getRadians()) < WristConstants.wristAngleToleranceRadians,
+            () -> Math.abs(angle.minus(getAngle()).getRadians()) < YoinkerConstants.yoinkerAngleToleranceRadians,
             this
         );
     }
@@ -134,16 +134,16 @@ public class WristSubsystem extends SubsystemBase
 
     public Command applyManualControl(DoubleSupplier controlSupplier) 
     {
-        return run(() -> setVoltage(controlSupplier.getAsDouble() * WristConstants.maxOperatorControlVolts));
+        return run(() -> setVoltage(controlSupplier.getAsDouble() * YoinkerConstants.maxOperatorControlVolts));
     }
 
     @Override
     public void periodic() 
     {
         io.updateInputs(inputs);
-        Logger.recordOutput("Wrist/Setpoint", m_profiledPIDController.getSetpoint().position);
-        Logger.recordOutput("Wrist/VelocitySetpoint", m_profiledPIDController.getSetpoint().velocity);
-        Logger.processInputs("Wrist", inputs);
+        Logger.recordOutput("Yoinker/Setpoint", m_profiledPIDController.getSetpoint().position);
+        Logger.recordOutput("Yoinker/VelocitySetpoint", m_profiledPIDController.getSetpoint().velocity);
+        Logger.processInputs("Yoinker", inputs);
     }
 
     @Override
@@ -152,12 +152,12 @@ public class WristSubsystem extends SubsystemBase
         io.simulationPeriodic();
     }
 
-    public Command wristSysIdQuasistatic(SysIdRoutine.Direction direction) 
+    public Command yoinkerSysIdQuasistatic(SysIdRoutine.Direction direction) 
     {
         return sysid.quasistatic(direction);
     }
 
-    public Command wristSysIdDynamic(SysIdRoutine.Direction direction) 
+    public Command yoinkerSysIdDynamic(SysIdRoutine.Direction direction) 
     {
         return sysid.dynamic(direction);
     }
