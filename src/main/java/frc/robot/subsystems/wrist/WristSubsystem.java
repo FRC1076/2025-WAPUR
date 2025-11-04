@@ -1,13 +1,12 @@
 package frc.robot.subsystems.wrist;
 
 import frc.robot.Constants.WristConstants;
-import lib.control.DynamicArmFeedforward;
-import lib.control.DynamicProfiledPIDController;
 
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -17,17 +16,15 @@ import static edu.wpi.first.units.Units.Volts;
 
 import org.littletonrobotics.junction.Logger;
 
-public class WristSubsystem extends SubsystemBase 
-{
+public class WristSubsystem extends SubsystemBase {
     private final WristIO io;
     private final ProfiledPIDController m_profiledPIDController;
-    private final DynamicArmFeedforward m_feedforwardController;
+    private final ArmFeedforward m_feedforwardController;
     private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
     private final SysIdRoutine sysid;
     
 
-    public WristSubsystem(WristIO io, DoubleSupplier periodSupplier) 
-    {
+    public WristSubsystem(WristIO io, DoubleSupplier periodSupplier) {
         this.io = io;
 
         var controlConstants = io.getControlConstants();
@@ -39,7 +36,7 @@ public class WristSubsystem extends SubsystemBase
             controlConstants.kProfileConstraints()
         );
 
-        m_feedforwardController = new DynamicArmFeedforward(
+        m_feedforwardController = new ArmFeedforward(
             controlConstants.kS(),
             controlConstants.kG(),
             controlConstants.kV(),
@@ -60,45 +57,36 @@ public class WristSubsystem extends SubsystemBase
 
     }
     
-    public void setVoltage(double volts) 
-    {
-        
-        if (this.getAngleRadians() > WristConstants.kMaxWristAngleRadians && volts > 0) 
-        {
+    public void setVoltage(double volts) {        
+        if (this.getAngleRadians() > WristConstants.kMaxWristAngleRadians && volts > 0) {
             volts = 0;
-        } else if (this.getAngleRadians() < WristConstants.kMinWristAngleRadians && volts < 0) 
-        {
+        } else if (this.getAngleRadians() < WristConstants.kMinWristAngleRadians && volts < 0) {
             volts = 0;
         }
 
         io.setVoltage(volts + m_feedforwardController.calculate(inputs.angleRadians, 0));
     }
 
-    public void setAngle(Rotation2d position) 
-    {
+    public void setAngle(Rotation2d position) {
         io.setVoltage(
             m_profiledPIDController.calculate(inputs.angleRadians, MathUtil.clamp(position.getRadians(), WristConstants.kMinWristAngleRadians, WristConstants.kMaxWristAngleRadians))
             + m_feedforwardController.calculate(inputs.angleRadians, m_profiledPIDController.getSetpoint().velocity)
         );
     }
 
-    public double getAngleRadians() 
-    {
+    public double getAngleRadians() {
         return inputs.angleRadians;
     }
 
-    public Rotation2d getAngle() 
-    {
+    public Rotation2d getAngle() {
         return Rotation2d.fromRadians(inputs.angleRadians);
     }
 
-    public void stop() 
-    {
+    public void stop() {
         setVoltage(0);
     }
 
-    public void setKg(double kg) 
-    {
+    public void setKg(double kg) {
         m_feedforwardController.setKg(kg);
     }
 
@@ -127,19 +115,16 @@ public class WristSubsystem extends SubsystemBase
         );
     }
 
-    public Command holdAngle(Rotation2d angle)
-    {
+    public Command holdAngle(Rotation2d angle) {
         return run(() -> setAngle(angle));
     }
 
-    public Command applyManualControl(DoubleSupplier controlSupplier) 
-    {
+    public Command applyManualControl(DoubleSupplier controlSupplier) {
         return run(() -> setVoltage(controlSupplier.getAsDouble() * WristConstants.maxOperatorControlVolts));
     }
 
     @Override
-    public void periodic() 
-    {
+    public void periodic() {
         io.updateInputs(inputs);
         Logger.recordOutput("Wrist/Setpoint", m_profiledPIDController.getSetpoint().position);
         Logger.recordOutput("Wrist/VelocitySetpoint", m_profiledPIDController.getSetpoint().velocity);
@@ -147,18 +132,15 @@ public class WristSubsystem extends SubsystemBase
     }
 
     @Override
-    public void simulationPeriodic() 
-    {
+    public void simulationPeriodic() {
         io.simulationPeriodic();
     }
 
-    public Command wristSysIdQuasistatic(SysIdRoutine.Direction direction) 
-    {
+    public Command wristSysIdQuasistatic(SysIdRoutine.Direction direction) {
         return sysid.quasistatic(direction);
     }
 
-    public Command wristSysIdDynamic(SysIdRoutine.Direction direction) 
-    {
+    public Command wristSysIdDynamic(SysIdRoutine.Direction direction) {
         return sysid.dynamic(direction);
     }
 }
