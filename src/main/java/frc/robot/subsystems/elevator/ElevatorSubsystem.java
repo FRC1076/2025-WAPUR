@@ -1,13 +1,12 @@
 package frc.robot.subsystems.elevator;
 
 import frc.robot.Constants.ElevatorConstants;
-import lib.control.DynamicElevatorFeedforward;
-import lib.control.DynamicProfiledPIDController;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -29,7 +28,7 @@ public class ElevatorSubsystem extends SubsystemBase
     private final ElevatorIO io;
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
     private final ProfiledPIDController m_profiledPIDController;
-    private final DynamicElevatorFeedforward m_feedforwardController;
+    private final ElevatorFeedforward m_feedforwardController;
     
     private boolean homed = false;
     private Debouncer homingDebouncer;
@@ -48,7 +47,7 @@ public class ElevatorSubsystem extends SubsystemBase
             controlConstants.kProfileConstraints()
         );
 
-        m_feedforwardController = new DynamicElevatorFeedforward(
+        m_feedforwardController = new ElevatorFeedforward(
             controlConstants.kS(),
             controlConstants.kG(),
             controlConstants.kV(),
@@ -85,16 +84,6 @@ public class ElevatorSubsystem extends SubsystemBase
         io.simulationPeriodic();
     }
     
-    public void setPosition(double positionMeters) 
-    {
-        io.setVoltage (
-            m_profiledPIDController.calculate(getPositionMeters(), MathUtil.clamp(
-                positionMeters, 
-                ElevatorConstants.kMinElevatorHeightMeters, 
-                ElevatorConstants.kMaxElevatorHeightMeters))
-            + m_feedforwardController.calculate(m_profiledPIDController.getSetpoint().velocity)
-        );
-    }
 
     public void setVoltage(double volts) 
     {
@@ -131,34 +120,6 @@ public class ElevatorSubsystem extends SubsystemBase
     public boolean withinTolerance(double tolerance)
     {
         return Math.abs(m_profiledPIDController.getGoal().position - getPositionMeters()) < tolerance;
-    }
-
-    public Command applyPosition(double positionMeters) 
-    {
-        return new FunctionalCommand(
-            () -> {m_profiledPIDController.reset(getPositionMeters(), inputs.velocityMetersPerSecond);},
-            () -> setPosition(positionMeters),
-            (interrupted) -> {},
-            () -> Math.abs(positionMeters - getPositionMeters()) < ElevatorConstants.elevatorPositionToleranceMeters,
-            this
-        );
-    }
-
-    public Command holdPosition(double positionMeters) 
-    {
-        return run(() -> setPosition(positionMeters));
-    }
-
-    public Command applyPositionPersistent(double positionMeters)
-    {
-        return new FunctionalCommand(
-            () -> {m_profiledPIDController.reset(getPositionMeters(), inputs.velocityMetersPerSecond);
-                    m_profiledPIDController.setGoal(positionMeters);},
-            () -> setPosition(positionMeters),
-            (interrupted) -> {},
-            () -> false,
-            this
-        );
     }
     
     public Command applyManualControl(DoubleSupplier controlSupplier, BooleanSupplier higherMaxSpeedSupplier) 

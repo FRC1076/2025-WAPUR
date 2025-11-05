@@ -132,6 +132,11 @@ public final class Constants {
         public static final boolean kRightMotorInverted = false;
     }
 
+    public static class ShooterConstants {
+        public static final int kMotorPort = 0;
+        public static final int kServoPort = 0;
+    }
+
     public static class WristConstants {
         public static final int kLeadMotorPort = 61;
 

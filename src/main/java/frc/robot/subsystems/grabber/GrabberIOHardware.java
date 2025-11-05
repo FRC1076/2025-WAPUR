@@ -4,14 +4,12 @@ import frc.robot.Constants.GrabberConstants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkRelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-public class GrabberIOHardware implements GrabberIO
-{
+public class GrabberIOHardware implements GrabberIO {
     private final SparkMax m_leftMotor;
     private final SparkMax m_rightMotor;
 
@@ -20,8 +18,7 @@ public class GrabberIOHardware implements GrabberIO
     private final SparkMaxConfig m_leftMotorConfig;
     private final SparkMaxConfig m_rightMotorConfig;
 
-    public GrabberIOHardware() 
-    {
+    public GrabberIOHardware() {
         m_leftMotor = new SparkMax(GrabberConstants.kLeftMotorPort, MotorType.kBrushless);
         m_rightMotor = new SparkMax(GrabberConstants.kRightMotorPort, MotorType.kBrushless);
 
@@ -45,22 +42,19 @@ public class GrabberIOHardware implements GrabberIO
     }
 
     @Override
-    public void runVolts(double volts) 
-    {
+    public void runVolts(double volts) {
         m_leftMotor.setVoltage(volts);
         m_rightMotor.setVoltage(volts);
     }
 
     @Override
-    public void runVoltsDifferential(double leftMotorVolts, double rightMotorVolts) 
-    {
+    public void runVoltsDifferential(double leftMotorVolts, double rightMotorVolts) {
         m_leftMotor.setVoltage(leftMotorVolts);
         m_rightMotor.setVoltage(rightMotorVolts);
     }
 
     @Override
-    public double getOutputCurrent() 
-    {
+    public double getOutputCurrent() {
         return (m_leftMotor.getOutputCurrent() + m_rightMotor.getOutputCurrent()) / 2;
     }
 
