@@ -163,6 +163,37 @@ public final class Constants {
         }
     }
 
+    public static class YoinkerConstants {
+        public static final int kLeadMotorPort = 61;
+
+        public static final double wristAngleToleranceRadians = Units.degreesToRadians(2);
+        public static final double kMinYoinkerAngleRadians = Units.degreesToRadians(-90);
+        public static final double kMaxYoinkerAngleRadians = Units.degreesToRadians(90);
+
+        public static final double maxOperatorControlVolts = 1;
+        public static final double kSmartCurrentLimit = 20.0;
+
+        public static final boolean kLeadMotorInverted = true;
+
+        public static final int kCountsPerRevolution = 8192;
+        public static final double kPositionConversionFactor = 2 * Math.PI;
+        public static final double kVelocityConversionFactor = 2 * Math.PI / 60;
+        public static final double kZeroOffsetRadians = -1.7236260000051038;
+
+        public static final class Control {
+            public static final double kP = 18;
+            public static final double kI = 0.0;
+            public static final double kD = 0;
+
+            public static final double kS = 0.16629;
+            public static final double kG = 0.13459;
+            public static final double kV = 1.8105;
+            public static final double kA = 0.0;
+
+            public static final Constraints kProfileConstraints = new Constraints(4 * Math.PI, 3.5 * Math.PI);
+        }
+    }
+
     public static class WristSimConstants {
         public static final double kWristGearingReductions = 125.0;
         public static final double kWristLength = Units.feetToMeters(1);

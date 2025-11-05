@@ -1,17 +1,12 @@
 package frc.robot.subsystems.yoinker;
 
 import frc.robot.Constants.YoinkerConstants;
-import frc.robot.subsystems.yoinker.YoinkerIO;
-import lib.control.DynamicArmFeedforward;
-import lib.control.DynamicProfiledPIDController;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static edu.wpi.first.units.Units.Volts;
@@ -21,7 +16,7 @@ public class YoinkerSubsystem extends SubsystemBase
 {
     private final YoinkerIO io;
     private final ProfiledPIDController m_profiledPIDController;
-    private final DynamicArmFeedforward m_feedforwardController;
+    private final ArmFeedforward m_feedforwardController;
     private final YoinkerIOInputsAutoLogged inputs = new YoinkerIOInputsAutoLogged();
     private final SysIdRoutine sysid;
     
@@ -39,7 +34,7 @@ public class YoinkerSubsystem extends SubsystemBase
             controlConstants.kProfileConstraints()
         );
 
-        m_feedforwardController = new DynamicArmFeedforward(
+        m_feedforwardController = new ArmFeedforward(
             controlConstants.kS(),
             controlConstants.kG(),
             controlConstants.kV(),
@@ -74,72 +69,20 @@ public class YoinkerSubsystem extends SubsystemBase
         io.setVoltage(volts + m_feedforwardController.calculate(inputs.angleRadians, 0));
     }
 
-    public void setAngle(Rotation2d position) 
-    {
-        io.setVoltage(
-            m_profiledPIDController.calculate(inputs.angleRadians, MathUtil.clamp(position.getRadians(), YoinkerConstants.kMinYoinkerAngleRadians, YoinkerConstants.kMaxYoinkerAngleRadians))
-            + m_feedforwardController.calculate(inputs.angleRadians, m_profiledPIDController.getSetpoint().velocity)
-        );
-    }
-
-    public double getAngleRadians() 
-    {
+    public double getAngleRadians() {
         return inputs.angleRadians;
     }
 
-    public Rotation2d getAngle() 
-    {
-        return Rotation2d.fromRadians(inputs.angleRadians);
-    }
-
-    public void stop() 
-    {
+    public void stop() {
         setVoltage(0);
     }
 
-    public void setKg(double kg) 
-    {
-        m_feedforwardController.setKg(kg);
-    }
-
-    public Command applyAngle(Rotation2d angle) {
-        return new FunctionalCommand(
-            () -> {m_profiledPIDController.reset(getAngleRadians(),inputs.velocityRadiansPerSecond);},
-            () -> setAngle(angle), 
-            (interrupted) -> {},
-            () -> Math.abs(angle.minus(getAngle()).getRadians()) < YoinkerConstants.yoinkerAngleToleranceRadians,
-            this
-        );
-    }
-    public boolean withinTolerance(double tolerance){
+    public boolean withinTolerance(double tolerance) {
         return Math.abs(m_profiledPIDController.getGoal().position - getAngleRadians()) < tolerance;
     }
 
-    
-    public Command applyAnglePersistent(Rotation2d angle) {
-        return new FunctionalCommand(
-            () -> {m_profiledPIDController.reset(getAngleRadians(),inputs.velocityRadiansPerSecond);
-                    m_profiledPIDController.setGoal(angle.getRadians());},
-            () -> setAngle(angle), 
-            (interrupted) -> {},
-            () -> false,
-            this
-        );
-    }
-
-    public Command holdAngle(Rotation2d angle)
-    {
-        return run(() -> setAngle(angle));
-    }
-
-    public Command applyManualControl(DoubleSupplier controlSupplier) 
-    {
-        return run(() -> setVoltage(controlSupplier.getAsDouble() * YoinkerConstants.maxOperatorControlVolts));
-    }
-
     @Override
-    public void periodic() 
-    {
+    public void periodic() {
         io.updateInputs(inputs);
         Logger.recordOutput("Yoinker/Setpoint", m_profiledPIDController.getSetpoint().position);
         Logger.recordOutput("Yoinker/VelocitySetpoint", m_profiledPIDController.getSetpoint().velocity);
@@ -147,18 +90,15 @@ public class YoinkerSubsystem extends SubsystemBase
     }
 
     @Override
-    public void simulationPeriodic() 
-    {
+    public void simulationPeriodic() {
         io.simulationPeriodic();
     }
 
-    public Command yoinkerSysIdQuasistatic(SysIdRoutine.Direction direction) 
-    {
+    public Command yoinkerSysIdQuasistatic(SysIdRoutine.Direction direction) {
         return sysid.quasistatic(direction);
     }
 
-    public Command yoinkerSysIdDynamic(SysIdRoutine.Direction direction) 
-    {
+    public Command yoinkerSysIdDynamic(SysIdRoutine.Direction direction) {
         return sysid.dynamic(direction);
     }
 }

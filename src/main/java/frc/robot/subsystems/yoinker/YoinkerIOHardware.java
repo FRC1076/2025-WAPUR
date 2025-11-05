@@ -1,23 +1,13 @@
 package frc.robot.subsystems.yoinker;
 
 import frc.robot.Constants.YoinkerConstants;
-import frc.robot.Constants.YoinkerConstants;
-import frc.robot.subsystems.yoinker.YoinkerIO.YoinkerControlConstants;
-import frc.robot.subsystems.yoinker.YoinkerIO.YoinkerIOInputs;
 
 import static frc.robot.Constants.YoinkerConstants.Control.*;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkMaxAlternateEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.AlternateEncoderConfig;
-import com.revrobotics.spark.config.AbsoluteEncoderConfig;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
