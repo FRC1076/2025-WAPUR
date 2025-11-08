@@ -7,6 +7,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static edu.wpi.first.units.Units.Volts;
@@ -21,7 +22,6 @@ public class YoinkerSubsystem extends SubsystemBase
     private final YoinkerIOInputsAutoLogged inputs = new YoinkerIOInputsAutoLogged();
     private final SysIdRoutine sysid;
     private boolean PIDEnabled = false;
-    private double PIDTargetRadians = 0;
 
     public YoinkerSubsystem(YoinkerIO io, DoubleSupplier periodSupplier) 
     {
@@ -88,7 +88,7 @@ public class YoinkerSubsystem extends SubsystemBase
         io.updateInputs(inputs);
 
         if (PIDEnabled) {
-            m_profiledPIDController.calculate(PIDTargetRadians, inputs.angleRadians);
+            setVoltage(m_profiledPIDController.calculate(inputs.angleRadians));
         }
         
         Logger.recordOutput("Yoinker/Setpoint", m_profiledPIDController.getSetpoint().position);
@@ -100,6 +100,25 @@ public class YoinkerSubsystem extends SubsystemBase
     @Override
     public void simulationPeriodic() {
         io.simulationPeriodic();
+    }
+
+    public void setPIDEnabled(boolean enabled) {
+        this.PIDEnabled = enabled;
+    }
+
+    public void setPIDTargetRadians(double targetRadians) {
+        m_profiledPIDController.setGoal(targetRadians);
+    }
+
+    public Command runPID(double targetRadians) {
+        return Commands.sequence(
+            Commands.runOnce(() -> setPIDTargetRadians(targetRadians)),
+            Commands.runOnce(() -> setPIDEnabled(true))
+        );
+    }
+
+    public Command disablePID() {
+        return Commands.runOnce(() -> setPIDEnabled(false));
     }
 
     public Command yoinkerSysIdQuasistatic(SysIdRoutine.Direction direction) {

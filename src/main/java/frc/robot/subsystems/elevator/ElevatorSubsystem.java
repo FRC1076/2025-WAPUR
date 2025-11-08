@@ -9,6 +9,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -34,6 +35,8 @@ public class ElevatorSubsystem extends SubsystemBase
     private Debouncer homingDebouncer;
 
     private final SysIdRoutine m_elevatorSysIdRoutine;
+
+    private boolean PIDEnabled;
 
     public ElevatorSubsystem(ElevatorIO io, DoubleSupplier periodSupplier)
     {
@@ -73,6 +76,9 @@ public class ElevatorSubsystem extends SubsystemBase
     public void periodic()
     {
         io.updateInputs(inputs);
+        if(PIDEnabled) {
+            setVoltage(m_profiledPIDController.calculate(inputs.elevatorHeightMeters));
+        }
         Logger.recordOutput("Elevator/Setpoint", m_profiledPIDController.getSetpoint().position);
         Logger.recordOutput("Elevator/VelocitySetpoint", m_profiledPIDController.getSetpoint().velocity);
         Logger.processInputs("Elevator", inputs);
@@ -120,6 +126,22 @@ public class ElevatorSubsystem extends SubsystemBase
     public boolean withinTolerance(double tolerance)
     {
         return Math.abs(m_profiledPIDController.getGoal().position - getPositionMeters()) < tolerance;
+    }
+
+    public void setPIDEnabled(boolean enabled) 
+    {
+        this.PIDEnabled = enabled;
+    }
+
+    public Command diablePID(){
+        return Commands.runOnce(() -> setPIDEnabled(false));
+    }
+
+    public Command setPIDTarget(double targetMeters) {
+        return Commands.sequence(
+            Commands.runOnce(() -> m_profiledPIDController.setGoal(targetMeters)),
+            Commands.runOnce(() -> setPIDEnabled(true))
+        );
     }
     
     public Command applyManualControl(DoubleSupplier controlSupplier, BooleanSupplier higherMaxSpeedSupplier) 

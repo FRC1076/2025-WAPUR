@@ -9,6 +9,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -22,6 +23,7 @@ public class WristSubsystem extends SubsystemBase {
     private final ArmFeedforward m_feedforwardController;
     private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
     private final SysIdRoutine sysid;
+    private boolean PIDEnabled = false;
     
 
     public WristSubsystem(WristIO io, DoubleSupplier periodSupplier) {
@@ -126,6 +128,9 @@ public class WristSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
+        if(PIDEnabled){
+            setVoltage(m_profiledPIDController.calculate(inputs.angleRadians));
+        }
         Logger.recordOutput("Wrist/Setpoint", m_profiledPIDController.getSetpoint().position);
         Logger.recordOutput("Wrist/VelocitySetpoint", m_profiledPIDController.getSetpoint().velocity);
         Logger.processInputs("Wrist", inputs);
@@ -134,6 +139,21 @@ public class WristSubsystem extends SubsystemBase {
     @Override
     public void simulationPeriodic() {
         io.simulationPeriodic();
+    }
+
+    public void setPIDEnabled(boolean enabled) {
+        this.PIDEnabled = enabled;
+    }
+
+    public Command runPID(double targetRadians) {
+        return Commands.sequence(
+            Commands.runOnce(() -> m_profiledPIDController.setGoal(targetRadians)),
+            Commands.runOnce(() -> setPIDEnabled(true))
+        ); 
+    }
+
+    public Command disablePID() {
+        return Commands.runOnce(() -> setPIDEnabled(false));
     }
 
     public Command wristSysIdQuasistatic(SysIdRoutine.Direction direction) {
