@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static edu.wpi.first.units.Units.Volts;
 
 import org.littletonrobotics.junction.Logger;
+
 public class YoinkerSubsystem extends SubsystemBase
 {
     private final YoinkerIO io;
@@ -19,7 +20,8 @@ public class YoinkerSubsystem extends SubsystemBase
     private final ArmFeedforward m_feedforwardController;
     private final YoinkerIOInputsAutoLogged inputs = new YoinkerIOInputsAutoLogged();
     private final SysIdRoutine sysid;
-    
+    private boolean PIDEnabled = false;
+    private double PIDTargetRadians = 0;
 
     public YoinkerSubsystem(YoinkerIO io, DoubleSupplier periodSupplier) 
     {
@@ -84,9 +86,15 @@ public class YoinkerSubsystem extends SubsystemBase
     @Override
     public void periodic() {
         io.updateInputs(inputs);
+
+        if (PIDEnabled) {
+            m_profiledPIDController.calculate(PIDTargetRadians, inputs.angleRadians);
+        }
+        
         Logger.recordOutput("Yoinker/Setpoint", m_profiledPIDController.getSetpoint().position);
         Logger.recordOutput("Yoinker/VelocitySetpoint", m_profiledPIDController.getSetpoint().velocity);
         Logger.processInputs("Yoinker", inputs);
+
     }
 
     @Override
