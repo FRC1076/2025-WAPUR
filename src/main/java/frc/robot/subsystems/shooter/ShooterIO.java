@@ -2,11 +2,9 @@ package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface ShooterIO 
-{
+public interface ShooterIO {
     @AutoLog
-    public static class ShooterIOInputs 
-    {
+    public static class ShooterIOInputs {
         public double motorAppliedVoltage = 0;
         public double motorCurrent = 0;
         public double servoAppliedVoltage = 0;

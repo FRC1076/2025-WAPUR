@@ -11,8 +11,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-public class YoinkerIOHardware implements YoinkerIO
-{
+
+public class YoinkerIOHardware implements YoinkerIO{
     private static final YoinkerControlConstants realControlConstants = new YoinkerControlConstants(
         kP, kI, kD, kProfileConstraints,
         kS, kG, kV, kA
@@ -23,8 +23,7 @@ public class YoinkerIOHardware implements YoinkerIO
     private final SparkMaxConfig m_leadMotorConfig;
     private final SparkAbsoluteEncoder m_absoluteEncoder;
 
-    public YoinkerIOHardware() 
-    {
+    public YoinkerIOHardware() {
         m_leadMotor = new SparkMax(YoinkerConstants.kLeadMotorPort, MotorType.kBrushless);
 
         m_leadMotorConfig = new SparkMaxConfig();
@@ -52,20 +51,17 @@ public class YoinkerIOHardware implements YoinkerIO
     }
 
     @Override
-    public void setVoltage(double volts) 
-    {
+    public void setVoltage(double volts) {
         m_leadMotor.setVoltage(volts);
     }
 
     @Override
-    public YoinkerControlConstants getControlConstants() 
-    {
+    public YoinkerControlConstants getControlConstants() {
         return realControlConstants;
     }
 
     @Override
-    public void updateInputs(YoinkerIOInputs inputs) 
-    {
+    public void updateInputs(YoinkerIOInputs inputs) {
         inputs.appliedVolts = m_leadMotor.getAppliedOutput() * m_leadMotor.getBusVoltage();
         inputs.leadCurrentAmps = m_leadMotor.getOutputCurrent();
         inputs.angleRadians = ((m_absoluteEncoder.getPosition()  - YoinkerConstants.kZeroOffsetRadians + Math.PI) % (2 * Math.PI) - Math.PI);

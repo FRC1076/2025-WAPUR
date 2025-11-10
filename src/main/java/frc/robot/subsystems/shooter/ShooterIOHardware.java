@@ -6,8 +6,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Servo;
 import frc.robot.Constants.ShooterConstants;
 
-public class ShooterIOHardware implements ShooterIO
-{
+public class ShooterIOHardware implements ShooterIO {
     private final SparkMax m_motor;
     private final Servo m_indexer;
 

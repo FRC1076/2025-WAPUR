@@ -5,22 +5,18 @@ import frc.robot.Constants.ElevatorConstants;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.math.filter.Debouncer;
-import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
-public class ElevatorSubsystem extends SubsystemBase 
-{
+public class ElevatorSubsystem extends SubsystemBase  {
 
     public static final double homingVolts = -0.1;
     public static final double homingDebounceTime = 0.25;
@@ -38,8 +34,7 @@ public class ElevatorSubsystem extends SubsystemBase
 
     private boolean PIDEnabled;
 
-    public ElevatorSubsystem(ElevatorIO io, DoubleSupplier periodSupplier)
-    {
+    public ElevatorSubsystem(ElevatorIO io, DoubleSupplier periodSupplier) {
         this.io = io;
         var controlConstants = io.getControlConstants();
 
@@ -73,8 +68,7 @@ public class ElevatorSubsystem extends SubsystemBase
     }
 
     @Override
-    public void periodic()
-    {
+    public void periodic() {
         io.updateInputs(inputs);
         if(PIDEnabled) {
             setVoltage(m_profiledPIDController.calculate(inputs.elevatorHeightMeters));
@@ -85,14 +79,12 @@ public class ElevatorSubsystem extends SubsystemBase
     }
 
     @Override
-    public void simulationPeriodic()
-    {
+    public void simulationPeriodic() {
         io.simulationPeriodic();
     }
     
 
-    public void setVoltage(double volts) 
-    {
+    public void setVoltage(double volts) {
         
         if (this.getPositionMeters() > ElevatorConstants.kMaxElevatorHeightMeters && volts > 0) {
             volts = 0;
@@ -103,37 +95,31 @@ public class ElevatorSubsystem extends SubsystemBase
         io.setVoltage(volts + m_feedforwardController.getKg());
     }
 
-    public void setVoltageUnrestricted(double volts) 
-    {
+    public void setVoltageUnrestricted(double volts) {
         io.setVoltage(volts + m_feedforwardController.getKg());
     }
 
-    public void setKg(double kg) 
-    {
+    public void setKg(double kg) {
         m_feedforwardController.setKg(kg);
     }
 
-    public double getPositionMeters()
-    {
+    public double getPositionMeters() {
         return inputs.elevatorHeightMeters;
     }
 
-    public boolean isZeroed() 
-    {
+    public boolean isZeroed() {
         return homed;
     }
 
-    public boolean withinTolerance(double tolerance)
-    {
+    public boolean withinTolerance(double tolerance) {
         return Math.abs(m_profiledPIDController.getGoal().position - getPositionMeters()) < tolerance;
     }
 
-    public void setPIDEnabled(boolean enabled) 
-    {
+    public void setPIDEnabled(boolean enabled) {
         this.PIDEnabled = enabled;
     }
 
-    public Command diablePID(){
+    public Command diablePID() {
         return Commands.runOnce(() -> setPIDEnabled(false));
     }
 
@@ -144,32 +130,27 @@ public class ElevatorSubsystem extends SubsystemBase
         );
     }
     
-    public Command applyManualControl(DoubleSupplier controlSupplier, BooleanSupplier higherMaxSpeedSupplier) 
-    {
+    public Command applyManualControl(DoubleSupplier controlSupplier, BooleanSupplier higherMaxSpeedSupplier) {
         return run(higherMaxSpeedSupplier.getAsBoolean()
             ? () -> setVoltageUnrestricted(controlSupplier.getAsDouble() * ElevatorConstants.fasterMaxOperatorControlVolts)
             : () -> setVoltageUnrestricted(controlSupplier.getAsDouble() * ElevatorConstants.defaultMaxOperatorControlVolts)
         );
     }
 
-    public Command zeroEncoderJoystickControl(DoubleSupplier controlSupplier) 
-    {
+    public Command zeroEncoderJoystickControl(DoubleSupplier controlSupplier) {
         return run(() -> io.setVoltage(controlSupplier.getAsDouble() * ElevatorConstants.defaultMaxOperatorControlVolts))
             .finallyDo(() -> io.resetPosition(0));
     }
 
-    public Command elevatorSysIdQuasistatic(SysIdRoutine.Direction direction) 
-    {
+    public Command elevatorSysIdQuasistatic(SysIdRoutine.Direction direction) {
         return m_elevatorSysIdRoutine.quasistatic(direction);
     }
 
-    public Command elevatorSysIdDynamic(SysIdRoutine.Direction direction) 
-    {
+    public Command elevatorSysIdDynamic(SysIdRoutine.Direction direction) {
         return m_elevatorSysIdRoutine.dynamic(direction);
     }
 
-    public Command autoHome() 
-    {
+    public Command autoHome() {
         return startRun(
             () -> {
                 homed = false;

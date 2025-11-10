@@ -4,8 +4,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface YoinkerIO 
-{
+public interface YoinkerIO {
     public static record YoinkerControlConstants (
         Double kP,
         Double kI,
@@ -18,8 +17,7 @@ public interface YoinkerIO
     ) {}
     
     @AutoLog
-    public static class YoinkerIOInputs 
-    {
+    public static class YoinkerIOInputs {
         public double appliedVolts = 0;
         public double leadCurrentAmps = 0;
         public double angleRadians = 0;

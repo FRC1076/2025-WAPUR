@@ -19,8 +19,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.Constants.ElevatorConstants;
 
-public class ElevatorIOHardware implements ElevatorIO 
-{
+public class ElevatorIOHardware implements ElevatorIO {
     private static final ElevatorControlConstants realControlConstants = new ElevatorControlConstants(
         kP, kI, kD, kProfileConstraints,
         kS, kG, kV, kA
@@ -34,10 +33,9 @@ public class ElevatorIOHardware implements ElevatorIO
     
     private final RelativeEncoder m_encoder;
 
-    public ElevatorIOHardware() /*need edit*/
-    {
-        m_leadMotor = new SparkMax(ElevatorConstants.kMotorPort0, SparkMax.MotorType.kBrushless);
-        m_followMotor = new SparkMax(ElevatorConstants.kMotorPort1, SparkMax.MotorType.kBrushless);
+    public ElevatorIOHardware() {
+        m_leadMotor = new SparkMax(ElevatorConstants.kMotorPort0, MotorType.kBrushless);
+        m_followMotor = new SparkMax(ElevatorConstants.kMotorPort1, MotorType.kBrushless);
 
         m_leadMotorConfig = new SparkMaxConfig();
         m_followMotorConfig = new SparkMaxConfig();
@@ -73,26 +71,22 @@ public class ElevatorIOHardware implements ElevatorIO
     }
 
     @Override
-    public void setVoltage(double volts)
-    {
+    public void setVoltage(double volts) {
         m_leadMotor.setVoltage(volts);
     }
 
     @Override
-    public ElevatorControlConstants getControlConstants()
-    {
+    public ElevatorControlConstants getControlConstants() {
         return realControlConstants;
     }
 
     @Override
-    public void resetPosition(double positionMeters)
-    {
+    public void resetPosition(double positionMeters) {
         m_encoder.setPosition(positionMeters);
     }
 
     @Override
-    public void updateInputs(ElevatorIOInputs inputs)
-    {
+    public void updateInputs(ElevatorIOInputs inputs) {
         inputs.appliedVolts = m_leadMotor.getAppliedOutput() * m_leadMotor.getBusVoltage();
         inputs.appliedOutput = m_leadMotor.getAppliedOutput();
         inputs.leadCurrentAmps = m_leadMotor.getOutputCurrent();

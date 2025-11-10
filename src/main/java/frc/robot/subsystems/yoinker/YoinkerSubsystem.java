@@ -14,8 +14,7 @@ import static edu.wpi.first.units.Units.Volts;
 
 import org.littletonrobotics.junction.Logger;
 
-public class YoinkerSubsystem extends SubsystemBase
-{
+public class YoinkerSubsystem extends SubsystemBase {
     private final YoinkerIO io;
     private final ProfiledPIDController m_profiledPIDController;
     private final ArmFeedforward m_feedforwardController;
@@ -23,8 +22,7 @@ public class YoinkerSubsystem extends SubsystemBase
     private final SysIdRoutine sysid;
     private boolean PIDEnabled = false;
 
-    public YoinkerSubsystem(YoinkerIO io, DoubleSupplier periodSupplier) 
-    {
+    public YoinkerSubsystem(YoinkerIO io, DoubleSupplier periodSupplier) {
         this.io = io;
 
         var controlConstants = io.getControlConstants();
@@ -57,14 +55,11 @@ public class YoinkerSubsystem extends SubsystemBase
 
     }
     
-    public void setVoltage(double volts) 
-    {
+    public void setVoltage(double volts) {
         
-        if (this.getAngleRadians() > YoinkerConstants.kMaxYoinkerAngleRadians && volts > 0) 
-        {
+        if (this.getAngleRadians() > YoinkerConstants.kMaxYoinkerAngleRadians && volts > 0) {
             volts = 0;
-        } else if (this.getAngleRadians() < YoinkerConstants.kMinYoinkerAngleRadians && volts < 0) 
-        {
+        } else if (this.getAngleRadians() < YoinkerConstants.kMinYoinkerAngleRadians && volts < 0) {
             volts = 0;
         }
 

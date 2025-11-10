@@ -2,11 +2,9 @@ package frc.robot.subsystems.grabber;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface GrabberIO 
-{
+public interface GrabberIO {
     @AutoLog
-    public static class GrabberIOInputs 
-    {
+    public static class GrabberIOInputs {
         public double leftMotorAppliedVoltage = 0;
         public double leftMotorCurrent = 0;
         public double leftMotorRPM = 0;
@@ -24,8 +22,7 @@ public interface GrabberIO
 
     public abstract void runVoltsDifferential(double leftMotorVolts, double rightMotorVolts);
 
-    public default double getOutputCurrent() 
-    {
+    public default double getOutputCurrent() {
         return -1;
     }
 }
