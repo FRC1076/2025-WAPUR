@@ -53,7 +53,7 @@ public class ShooterSubsystem extends SubsystemBase {
         io.updateInputs(inputs);
 
         if (pidRunning) {
-            runVolts(m_pidController.calculate(inputs.motorVelocityRadiansPerSecond));
+            runVolts(m_pidController.calculate(inputs.motorVelocityRadiansPerSecond) + m_ffController.calculate(m_pidController.getSetpoint()));
         }
 
         Logger.processInputs("Shooter", inputs);
