@@ -179,6 +179,10 @@ public final class Constants {
         }
     }
 
+    public static class IntakeConstants {
+        public static final int kMotorPort = 0;
+    }
+
     public static class YoinkerConstants {
         public static final int kLeadMotorPort = 61;
 
@@ -248,7 +252,7 @@ public final class Constants {
     }
 
     public static class SuperstructureConstants {
-        enum BallStates {
+        public static enum BallStates {
             HOME(Math.PI/2, 1.0, 0.0),
             INTAKE_DOWN(-Math.PI/4, 1.0, 0.0),
             INTAKING(-Math.PI/4, 1.0, 4.0),
@@ -267,7 +271,7 @@ public final class Constants {
             }
         }
 
-        enum CrateStates {
+        public static enum CrateStates {
             HOME(0.0,0.0),
             INTAKE_CRATES(0.0,-6.0),
             TRAVEL(0.2,0.0),
