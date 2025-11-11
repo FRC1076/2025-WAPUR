@@ -59,7 +59,7 @@ public class ShooterSubsystem extends SubsystemBase {
         Logger.processInputs("Shooter", inputs);
     }
 
-    public Command startPid(double targetRadPerSec) {
+    public Command startPID(double targetRadPerSec) {
         return Commands.sequence(
             Commands.runOnce(() -> setPidTarget(targetRadPerSec)),
             Commands.runOnce(() -> setPidRunning(true))

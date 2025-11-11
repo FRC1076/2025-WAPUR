@@ -145,7 +145,7 @@ public class WristSubsystem extends SubsystemBase {
         this.PIDEnabled = enabled;
     }
 
-    public Command runPID(double targetRadians) {
+    public Command startPID(double targetRadians) {
         return Commands.sequence(
             Commands.runOnce(() -> m_profiledPIDController.setGoal(targetRadians)),
             Commands.runOnce(() -> setPIDEnabled(true))

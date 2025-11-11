@@ -42,15 +42,9 @@ public class GrabberIOHardware implements GrabberIO {
     }
 
     @Override
-    public void runVolts(double volts) {
+    public void setVoltage(double volts) {
         m_leftMotor.setVoltage(volts);
         m_rightMotor.setVoltage(volts);
-    }
-
-    @Override
-    public void runVoltsDifferential(double leftMotorVolts, double rightMotorVolts) {
-        m_leftMotor.setVoltage(leftMotorVolts);
-        m_rightMotor.setVoltage(rightMotorVolts);
     }
 
     @Override

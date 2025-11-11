@@ -13,16 +13,12 @@ public class GrabberSubsystem extends SubsystemBase {
         this.io = io;
     }
 
-    public void runVolts(double volts) {
-        this.io.runVolts(volts);
-    }
-
-    public void runVoltsDifferential(double leftMotorVolts, double rightMotorVolts) {
-        this.io.runVoltsDifferential(leftMotorVolts, rightMotorVolts);
+    public void setVoltage(double volts) {
+        this.io.setVoltage(volts);
     }
 
     public void stop() {
-        runVolts(0);
+        setVoltage(0);
     }
 
     public double getPosition() {
@@ -36,11 +32,7 @@ public class GrabberSubsystem extends SubsystemBase {
     }
 
     public Command applyVoltage(double volts) {
-        return runOnce(() -> runVolts(volts));
-    }
-    
-    public Command applyDifferentialVolts(double leftMotorVolts, double rightMotorVolts) {
-        return runOnce(() -> runVoltsDifferential(leftMotorVolts, rightMotorVolts));
+        return runOnce(() -> setVoltage(volts));
     }
 
     public double getAppliedCurrent() {

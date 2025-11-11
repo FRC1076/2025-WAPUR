@@ -123,7 +123,7 @@ public class ElevatorSubsystem extends SubsystemBase  {
         return Commands.runOnce(() -> setPIDEnabled(false));
     }
 
-    public Command setPIDTarget(double targetMeters) {
+    public Command startPID(double targetMeters) {
         return Commands.sequence(
             Commands.runOnce(() -> m_profiledPIDController.setGoal(targetMeters)),
             Commands.runOnce(() -> setPIDEnabled(true))

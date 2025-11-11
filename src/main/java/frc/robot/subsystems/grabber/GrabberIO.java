@@ -18,9 +18,7 @@ public interface GrabberIO {
 
     public abstract void updateInputs(GrabberIOInputs inputs);
 
-    public abstract void runVolts(double volts);
-
-    public abstract void runVoltsDifferential(double leftMotorVolts, double rightMotorVolts);
+    public abstract void setVoltage(double volts);
 
     public default double getOutputCurrent() {
         return -1;
