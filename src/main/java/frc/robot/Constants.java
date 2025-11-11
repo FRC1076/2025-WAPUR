@@ -247,6 +247,52 @@ public final class Constants {
         public static final int transferBeamBreakPort = 0;
     }
 
+    public static class SuperstructureConstants {
+        enum BallStates {
+            HOME(Math.PI/2, 1.0, 0.0),
+            INTAKE_DOWN(-Math.PI/4, 1.0, 0.0),
+            INTAKING(-Math.PI/4, 1.0, 4.0),
+            SHOOT(-Math.PI/4, 200.0, 4.0),
+            SHOOT_WRIST_UP(Math.PI/2, 200.0, 4.0);
+
+            public final double wristAngleRadians;
+            public final double shooterRadPerSec;
+            public final double intakeSpeed;
+
+            private BallStates (double wristAngleRadians, double shooterRadPerSec, double intakeSpeed)
+            {
+                this.wristAngleRadians = wristAngleRadians;
+                this.shooterRadPerSec = shooterRadPerSec;
+                this.intakeSpeed = intakeSpeed;
+            }
+        }
+
+        enum CrateStates {
+            HOME(0.0,0.0),
+            INTAKE_CRATES(0.0,-6.0),
+            TRAVEL(0.2,0.0),
+            PRE_L1(0.2,0.0),
+            PRE_L2(0.6,0.0),
+            PRE_L3(1.0,0.0),
+            PRE_L4(1.4,0.0),
+            SHOOT_L1(0.2,6.0),
+            SHOOT_L2(0.6,6.0),
+            SHOOT_L3(1.0,6.0),
+            SHOOT_L4(1.4,6.0);
+
+            public final double elevatorHeight; 
+            public final double grabberVoltage;
+
+            private CrateStates (double elevatorHeight, double grabberVoltage)
+            {
+                this.elevatorHeight = elevatorHeight;
+                this.grabberVoltage = grabberVoltage;
+            }
+
+        }
+
+    }
+
     // TODO: check all the constants in this class
     public static class DriveConstants {
         public static final double maxTranslationSpeedMPS = Units.feetToMeters(5);
