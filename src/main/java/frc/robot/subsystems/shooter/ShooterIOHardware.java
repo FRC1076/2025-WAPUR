@@ -25,7 +25,7 @@ public class ShooterIOHardware implements ShooterIO {
     }
     
     @Override
-    public void runVolts(double Volts) {
+    public void setVoltage(double Volts) {
         m_motor.setVoltage(Volts);
     }
 

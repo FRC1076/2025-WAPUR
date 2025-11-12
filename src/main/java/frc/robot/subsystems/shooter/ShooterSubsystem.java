@@ -27,8 +27,8 @@ public class ShooterSubsystem extends SubsystemBase {
             controlConstants.kS(), controlConstants.kV(), controlConstants.kA());
     }
 
-    public void runVolts(double volts) {
-        this.io.runVolts(volts);
+    public void setVoltage(double volts) {
+        this.io.setVoltage(volts);
     }
 
     public void setServoAngleDeg(double degrees) {
@@ -37,7 +37,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void stop() {
-        runVolts(0);
+        setVoltage(0);
     }
 
     public void setPidRunning(boolean enabled) {
@@ -53,7 +53,7 @@ public class ShooterSubsystem extends SubsystemBase {
         io.updateInputs(inputs);
 
         if (pidRunning) {
-            runVolts(m_pidController.calculate(inputs.motorVelocityRadiansPerSecond) + m_ffController.calculate(m_pidController.getSetpoint()));
+            setVoltage(m_pidController.calculate(inputs.motorVelocityRadiansPerSecond) + m_ffController.calculate(m_pidController.getSetpoint()));
         }
 
         Logger.processInputs("Shooter", inputs);

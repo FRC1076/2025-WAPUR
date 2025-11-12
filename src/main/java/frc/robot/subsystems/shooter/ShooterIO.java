@@ -28,7 +28,7 @@ public interface ShooterIO {
 
     public abstract void updateInputs(ShooterIOInputs inputs);
 
-    public abstract void runVolts(double volts);
+    public abstract void setVoltage(double volts);
 
     public default void setServoAngleDeg(double degrees) {}
 }
