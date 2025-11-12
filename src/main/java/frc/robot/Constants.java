@@ -38,8 +38,17 @@ public final class Constants {
     public static class OIConstants {
         public static final int kDriverControllerPort = 0;
         public static final int kOperatorControllerPort = 0;
+
         public static final double kControllerDeadband = 0.15;
         public static final double kControllerTriggerThreshold = 0.7;
+
+        public static final OperatorControllerStates kOperatorControllerState = OperatorControllerStates.DRIVETRAIN_SYSID_TRANS;
+
+        public static enum OperatorControllerStates {
+            OPERATOR,
+            DRIVETRAIN_SYSID_TRANS,
+            DRIVETRAIN_SYSID_SPIN;
+        }
     }
 
     public static class SystemConstants {
@@ -50,6 +59,7 @@ public final class Constants {
 
         public static enum RobotMode {
             REAL,
+            REAL_NO_MECHANISMS,
             SIM,
             REPLAY;
         }

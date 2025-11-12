@@ -34,7 +34,7 @@ public class ElevatorSubsystem extends SubsystemBase  {
 
     private boolean PIDEnabled;
 
-    public ElevatorSubsystem(ElevatorIO io, DoubleSupplier periodSupplier) {
+    public ElevatorSubsystem(ElevatorIO io) {
         this.io = io;
         var controlConstants = io.getControlConstants();
 

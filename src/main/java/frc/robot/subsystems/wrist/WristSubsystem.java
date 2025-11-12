@@ -26,7 +26,7 @@ public class WristSubsystem extends SubsystemBase {
     private boolean PIDEnabled = false;
     
 
-    public WristSubsystem(WristIO io, DoubleSupplier periodSupplier) {
+    public WristSubsystem(WristIO io) {
         this.io = io;
 
         var controlConstants = io.getControlConstants();

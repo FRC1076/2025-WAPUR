@@ -2,8 +2,6 @@ package frc.robot.subsystems.yoinker;
 
 import frc.robot.Constants.YoinkerConstants;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,7 +20,7 @@ public class YoinkerSubsystem extends SubsystemBase {
     private final SysIdRoutine sysid;
     private boolean PIDEnabled = false;
 
-    public YoinkerSubsystem(YoinkerIO io, DoubleSupplier periodSupplier) {
+    public YoinkerSubsystem(YoinkerIO io) {
         this.io = io;
 
         var controlConstants = io.getControlConstants();

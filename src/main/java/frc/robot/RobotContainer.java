@@ -4,16 +4,40 @@
 
 package frc.robot;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.Constants.SystemConstants;
+import frc.robot.Constants.DriveConstants.ModuleConstants.ModuleConfig;
+import frc.robot.Constants.OIConstants.OperatorControllerStates;
+import frc.robot.Constants.SystemConstants.RobotMode;
+import frc.robot.commands.drive.TeleopDriveCommandV2;
+import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.GyroIOPigeon;
+import frc.robot.subsystems.drive.ModuleIOHardware;
+import frc.robot.subsystems.elevator.ElevatorIODisabled;
+import frc.robot.subsystems.elevator.ElevatorIOHardware;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.grabber.GrabberIODisabled;
+import frc.robot.subsystems.grabber.GrabberIOHardware;
+import frc.robot.subsystems.grabber.GrabberSubsystem;
+import frc.robot.subsystems.intake.IntakeIODisabled;
+import frc.robot.subsystems.intake.IntakeIOHardware;
+import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.shooter.ShooterIODisabled;
+import frc.robot.subsystems.shooter.ShooterIOHardware;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.wrist.WristIODisabled;
+import frc.robot.subsystems.wrist.WristIOHardware;
+import frc.robot.subsystems.wrist.WristSubsystem;
+import frc.robot.subsystems.yoinker.YoinkerIODisabled;
+import frc.robot.subsystems.yoinker.YoinkerIOHardware;
+import frc.robot.subsystems.yoinker.YoinkerSubsystem;
+import lib.hardware.hid.SamuraiXboxController;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,35 +47,128 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+    private final DriveSubsystem m_drive;
+    private final ElevatorSubsystem m_elevator;
+    private final GrabberSubsystem m_grabber;
+    private final IntakeSubsystem m_intake;
+    private final ShooterSubsystem m_shooter;
+    private final WristSubsystem m_wrist;
+    private final YoinkerSubsystem m_yoinker;
 
-    // Replace with CommandPS4Controller or CommandJoystick if needed
-    private final CommandXboxController m_driverController =
-        new CommandXboxController(OIConstants.kDriverControllerPort);
+    // Drive command
+    private final TeleopDriveCommandV2 driveCommand;
+
+    // Controllers
+    private final SamuraiXboxController m_driverController =
+        new SamuraiXboxController(OIConstants.kDriverControllerPort)
+            .withDeadband(OIConstants.kControllerDeadband)
+            .withTriggerThreshold(OIConstants.kControllerTriggerThreshold);
+    private final SamuraiXboxController m_operatorController = 
+        new SamuraiXboxController(OIConstants.kOperatorControllerPort)
+            .withDeadband(OIConstants.kControllerDeadband)
+            .withTriggerThreshold(OIConstants.kControllerTriggerThreshold);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        // Configure the trigger bindings
-        configureBindings();
+        if (SystemConstants.currentMode == RobotMode.REAL) {
+            m_drive = new DriveSubsystem(
+                new GyroIOPigeon(), 
+                new ModuleIOHardware(ModuleConfig.FrontLeft),
+                new ModuleIOHardware(ModuleConfig.FrontRight), 
+                new ModuleIOHardware(ModuleConfig.RearLeft),
+                new ModuleIOHardware(ModuleConfig.RearRight)
+            );
+            m_elevator = new ElevatorSubsystem(new ElevatorIOHardware());
+            m_grabber = new GrabberSubsystem(new GrabberIOHardware());
+            m_intake = new IntakeSubsystem(new IntakeIOHardware());
+            m_shooter = new ShooterSubsystem(new ShooterIOHardware());
+            m_wrist = new WristSubsystem(new WristIOHardware());
+            m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
+        } else /* if (SystemConstants.currentMode = RobotMode.REAL_NO_MECHANISMS) */ {
+            m_drive = new DriveSubsystem(
+                new GyroIOPigeon(), 
+                new ModuleIOHardware(ModuleConfig.FrontLeft),
+                new ModuleIOHardware(ModuleConfig.FrontRight), 
+                new ModuleIOHardware(ModuleConfig.RearLeft),
+                new ModuleIOHardware(ModuleConfig.RearRight)
+            );
+            m_elevator = new ElevatorSubsystem(new ElevatorIODisabled());
+            m_grabber = new GrabberSubsystem(new GrabberIODisabled());
+            m_intake = new IntakeSubsystem(new IntakeIODisabled());
+            m_shooter = new ShooterSubsystem(new ShooterIODisabled());
+            m_wrist = new WristSubsystem(new WristIODisabled());
+            m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
+        }
+
+        driveCommand = m_drive.CommandBuilder.driveTeleop(
+            () -> -m_driverController.getLeftY(), 
+            () -> -m_driverController.getLeftX(), 
+            () -> -m_driverController.getRightX(), 
+            1, 
+            1, 
+            DriveConstants.useSpeedScaling
+        );
+
+        // Configure controller bindings
+        configureDriverBindings();
+
+        configureOperatorBindings();
     }
 
-    /**
-     * Use this method to define your trigger->command mappings. Triggers can be created via the
-     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-     * predicate, or via the named factories in {@link
-     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-     * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-     * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-     * joysticks}.
-     */
-    private void configureBindings() {
-        // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-        new Trigger(m_exampleSubsystem::exampleCondition)
-            .onTrue(new ExampleCommand(m_exampleSubsystem));
+    /** Maps triggers on driver controller to commands */
+    private void configureDriverBindings() {
 
-        // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-        // cancelling on release.
-        m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+        // Apply single clutch
+        m_driverController.leftBumper()
+            .whileTrue(driveCommand.applySingleClutch());
+
+        // Apply double clutch
+        m_driverController.rightBumper()
+            .whileTrue(driveCommand.applyDoubleClutch());
+
+        // Re-zero gyro
+        m_driverController.start()
+            .onTrue(Commands.runOnce(() -> m_drive.rezeroGyro()));
+        
+    }
+
+    /** Maps triggers on the operator controller to commands */
+    private void configureOperatorBindings() {
+        if (OIConstants.kOperatorControllerState == OperatorControllerStates.OPERATOR) {
+            // Operate I guess
+        } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.DRIVETRAIN_SYSID_TRANS) {
+            m_operatorController.a()
+                .and(m_operatorController.x())
+                .whileTrue(m_drive.CommandBuilder.sysIdQuasistaticTranslation(Direction.kForward));
+
+            m_operatorController.a()
+                .and(m_operatorController.y())
+                .whileTrue(m_drive.CommandBuilder.sysIdQuasistaticTranslation(Direction.kReverse));
+
+            m_operatorController.b()
+                .and(m_operatorController.x())
+                .whileTrue(m_drive.CommandBuilder.sysIdDyanmicTranslation(Direction.kForward));
+
+            m_operatorController.b()
+                .and(m_operatorController.y())
+                .whileTrue(m_drive.CommandBuilder.sysIdDyanmicTranslation(Direction.kReverse));
+        } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.DRIVETRAIN_SYSID_SPIN) {
+            m_operatorController.a()
+                .and(m_operatorController.x())
+                .whileTrue(m_drive.CommandBuilder.sysIdQuasistaticSpin(Direction.kForward));
+
+            m_operatorController.a()
+                .and(m_operatorController.y())
+                .whileTrue(m_drive.CommandBuilder.sysIdQuasistaticSpin(Direction.kReverse));
+
+            m_operatorController.b()
+                .and(m_operatorController.x())
+                .whileTrue(m_drive.CommandBuilder.sysIdDyanmicSpin(Direction.kForward));
+
+            m_operatorController.b()
+                .and(m_operatorController.y())
+                .whileTrue(m_drive.CommandBuilder.sysIdDyanmicSpin(Direction.kReverse));
+        }
     }
 
     /**
@@ -61,9 +178,10 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An example command will be run in autonomous
-        return Autos.exampleAuto(m_exampleSubsystem);
+        return Commands.none();
     }
 
+    /** Raise thread priority to reduce loop times */
     public static Command threadCommand() {
         return Commands.sequence(
                 Commands.waitSeconds(20),
