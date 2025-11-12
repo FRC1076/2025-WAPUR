@@ -151,28 +151,28 @@ public final class Constants {
     public static class WristConstants {
         public static final int kLeadMotorPort = 61;
 
-        public static final double wristAngleToleranceRadians = Units.degreesToRadians(2);
-        public static final double kMinWristAngleRadians = Units.degreesToRadians(-90);
-        public static final double kMaxWristAngleRadians = Units.degreesToRadians(90);
+        public static final double wristAngleToleranceRadians = 0.1;
+        public static final double kMinWristAngleRadians = -Math.PI / 4;
+        public static final double kMaxWristAngleRadians = Math.PI / 2;
 
         public static final double maxOperatorControlVolts = 1;
-        public static final double kSmartCurrentLimit = 20.0;
+        public static final double kSmartCurrentLimit = 40.0;
 
         public static final boolean kLeadMotorInverted = true;
 
         public static final int kCountsPerRevolution = 8192;
         public static final double kPositionConversionFactor = 2 * Math.PI;
         public static final double kVelocityConversionFactor = 2 * Math.PI / 60;
-        public static final double kZeroOffsetRadians = -1.7236260000051038;
+        public static final double kZeroOffsetRadians = 0;
 
         public static final class Control {
-            public static final double kP = 18;
+            public static final double kP = 0.0;
             public static final double kI = 0.0;
-            public static final double kD = 0;
+            public static final double kD = 0.0;
 
-            public static final double kS = 0.16629;
-            public static final double kG = 0.13459;
-            public static final double kV = 1.8105;
+            public static final double kS = 0.0;
+            public static final double kG = 0.0;
+            public static final double kV = 0.0;
             public static final double kA = 0.0;
 
             public static final Constraints kProfileConstraints = new Constraints(4 * Math.PI, 3.5 * Math.PI);
@@ -186,28 +186,28 @@ public final class Constants {
     public static class YoinkerConstants {
         public static final int kLeadMotorPort = 61;
 
-        public static final double wristAngleToleranceRadians = Units.degreesToRadians(2);
-        public static final double kMinYoinkerAngleRadians = Units.degreesToRadians(-90);
-        public static final double kMaxYoinkerAngleRadians = Units.degreesToRadians(90);
+        public static final double kYoinkerAngleToleranceRadians = 0.1;
+        public static final double kMinYoinkerAngleRadians = 0;
+        public static final double kMaxYoinkerAngleRadians = Math.PI / 2;
 
-        public static final double maxOperatorControlVolts = 1;
-        public static final double kSmartCurrentLimit = 20.0;
+        public static final double maxOperatorControlVolts = 0;
+        public static final double kSmartCurrentLimit = 40.0;
 
         public static final boolean kLeadMotorInverted = true;
 
         public static final int kCountsPerRevolution = 8192;
         public static final double kPositionConversionFactor = 2 * Math.PI;
         public static final double kVelocityConversionFactor = 2 * Math.PI / 60;
-        public static final double kZeroOffsetRadians = -1.7236260000051038;
+        public static final double kZeroOffsetRadians = 0;
 
         public static final class Control {
-            public static final double kP = 18;
+            public static final double kP = 0.0;
             public static final double kI = 0.0;
-            public static final double kD = 0;
+            public static final double kD = 0.0;
 
-            public static final double kS = 0.16629;
-            public static final double kG = 0.13459;
-            public static final double kV = 1.8105;
+            public static final double kS = 0.0;
+            public static final double kG = 0.0;
+            public static final double kV = 0.0;
             public static final double kA = 0.0;
 
             public static final Constraints kProfileConstraints = new Constraints(4 * Math.PI, 3.5 * Math.PI);
@@ -215,20 +215,20 @@ public final class Constants {
     }
 
     public static class WristSimConstants {
-        public static final double kWristGearingReductions = 125.0;
-        public static final double kWristLength = Units.feetToMeters(1);
+        public static final double kWristGearingReductions = 0.0;
+        public static final double kWristLength = 0.2;
         public static final double kWristMass = 2.0;
         public static final double kMinAngleRads = -0.75 * Math.PI;
         public static final double kMaxAngleRads = 0.75 * Math.PI;
 
         public static class Control 
         {
-            public static final double kP = 18.0;
+            public static final double kP = 0.0;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
 
             public static final double kS = 0.0;
-            public static final double kG = 0.0553;
+            public static final double kG = 0.0;
             public static final double kV = 0.0;
             public static final double kA = 0.0;
 
@@ -236,19 +236,6 @@ public final class Constants {
         }
 
 
-    }
-
-    public static class IndexConstants {
-        public static final int kLeadMotorPort = 51;
-
-        public static final double kCurrentLimit = 20.0;
-
-        public static final boolean kLeadMotorInverted = false;
-        public static final boolean kFollowMotorInverted = true;
-    }
-
-    public static class BeamBreakConstants {
-        public static final int transferBeamBreakPort = 0;
     }
 
     public static class SuperstructureConstants {
