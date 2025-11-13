@@ -52,7 +52,7 @@ public final class Constants {
     }
 
     public static class SystemConstants {
-        public static final RobotMode currentMode = RobotMode.REAL;
+        public static final RobotMode currentMode = RobotMode.REAL_NO_MECHANISMS;
         
         public static final boolean signalLoggerEnabled = false;
         public static final boolean increaseThreadPriority = true;
@@ -364,10 +364,10 @@ public final class Constants {
                 }
             }
             public static enum ModuleConfig {
-                FrontLeft(1,11,21,0),
-                FrontRight(2,12,22,0),
-                RearRight(3,13,23,0),
-                RearLeft(4,14,24,0);
+                FrontLeft(1,11,21,0.47314453125),
+                FrontRight(2,12,22,-0.925048828125),
+                RearRight(3,13,23,-0.439208984375),
+                RearLeft(4,14,24,-0.41259765625);
     
                 public final int DrivePort;
                 public final int TurnPort;

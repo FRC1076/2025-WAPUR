@@ -109,6 +109,8 @@ public class RobotContainer {
             DriveConstants.useSpeedScaling
         );
 
+        m_drive.setDefaultCommand(driveCommand);
+
         // Configure controller bindings
         configureDriverBindings();
 
