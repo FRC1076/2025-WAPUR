@@ -46,6 +46,7 @@ public class Superstructure {
     private YoinkerSubsystem m_yoinker;
 
     private MutableSuperState m_superState;
+    private SuperstructureCommandFactory m_commandFactory;
 
     public Superstructure(
         ElevatorSubsystem elevatorSubsystem,
@@ -62,6 +63,11 @@ public class Superstructure {
             m_intake = intakeSubsystem;
             m_yoinker = yoinkerSubsystem;
             m_superState = new MutableSuperState();
+            m_commandFactory = new SuperstructureCommandFactory();
+    }
+
+    public SuperstructureCommandFactory getCommandFactory() {
+        return m_commandFactory;
     }
 
     public Command setCrateStateAllParallel (CrateStates crateState) {

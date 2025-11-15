@@ -11,6 +11,8 @@ import frc.robot.Constants.DriveConstants.ModuleConstants.ModuleConfig;
 import frc.robot.Constants.OIConstants.OperatorControllerStates;
 import frc.robot.Constants.SystemConstants.RobotMode;
 import frc.robot.commands.drive.TeleopDriveCommandV2;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureCommandFactory;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.GyroIOPigeon;
 import frc.robot.subsystems.drive.ModuleIOHardware;
@@ -54,6 +56,8 @@ public class RobotContainer {
     private final ShooterSubsystem m_shooter;
     private final WristSubsystem m_wrist;
     private final YoinkerSubsystem m_yoinker;
+
+    private final Superstructure m_superstructure;
 
     // Drive command
     private final TeleopDriveCommandV2 driveCommand;
@@ -100,6 +104,15 @@ public class RobotContainer {
             m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
         }
 
+        m_superstructure = new Superstructure(
+            m_elevator,
+            m_grabber,
+            m_shooter,
+            m_wrist,
+            m_intake,
+            m_yoinker
+        );
+
         driveCommand = m_drive.CommandBuilder.driveTeleop(
             () -> -m_driverController.getLeftY(), 
             () -> -m_driverController.getLeftX(), 
@@ -119,6 +132,7 @@ public class RobotContainer {
 
     /** Maps triggers on driver controller to commands */
     private void configureDriverBindings() {
+        final SuperstructureCommandFactory superstructureCommands = m_superstructure.getCommandFactory();
 
         // Apply single clutch
         m_driverController.leftBumper()
@@ -131,6 +145,31 @@ public class RobotContainer {
         // Re-zero gyro
         m_driverController.start()
             .onTrue(Commands.runOnce(() -> m_drive.rezeroGyro()));
+
+        m_driverController.leftTrigger()
+            .onTrue(superstructureCommands.intakeCrate());
+        
+        m_driverController.x()
+            .onTrue(superstructureCommands.preL1());
+        
+        m_driverController.a()
+            .onTrue(superstructureCommands.preL2());
+
+        m_driverController.b()
+            .onTrue(superstructureCommands.preL3());
+
+        m_driverController.y()
+            .onTrue(superstructureCommands.preL4());
+
+        m_driverController.rightTrigger()
+            .onTrue(superstructureCommands.shootCrate());
+
+        m_driverController.leftBumper()
+            .onTrue(superstructureCommands.intakeBalls());
+
+        m_driverController.rightBumper()
+            .onTrue(superstructureCommands.shootBalls());
+    
         
     }
 
