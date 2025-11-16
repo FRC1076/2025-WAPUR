@@ -71,7 +71,7 @@ public final class Constants {
         
         public static final double elevatorPositionToleranceMeters = Units.inchesToMeters(0.5);
         public static final double kMinElevatorHeightMeters = Units.inchesToMeters(0);
-        public static final double kMaxElevatorHeightMeters = Units.inchesToMeters(83.25);
+        public static final double kMaxElevatorHeightMeters = Units.inchesToMeters(69.95);
         
         public static final double defaultMaxOperatorControlVolts = 1.5;
         public static final double fasterMaxOperatorControlVolts = 4;
@@ -79,10 +79,24 @@ public final class Constants {
         public static final boolean leadMotorInverted = false;
         public static final boolean followMotorInverted = false;
 
-        public static final double kGearRatio = 10.909;
+        public static final double kGearRatio = 10.909; // TODO: Confirm is this is double the 60:11 ratio because of the two chains
         public static final double kElevatorStages = 3;
-        public static final double kVelocityConversionFactor = (24.0/22.0) * kElevatorStages * (1/kGearRatio) * 24 * 0.00635 / 60.0;
-        public static final double kPositionConversionFactor = (24.0/22.0) * kElevatorStages * (1/kGearRatio) * 24 * 0.00635;
+        public static final double kSprocketToothCount = 22;
+        public static final double kSprocketPitch = Units.inchesToMeters(1/4); // Pitch is the distance between two adjacent teeth
+        public static final double kPositionConversionFactor = ((kSprocketToothCount * kSprocketPitch) / kGearRatio) * kElevatorStages; // TODO: Confirm conversion factors
+        public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0; // 60 converts from minutes to seconds
+        
+        /* New factor math
+         * (sprocket pitch circumference / gear ratio) * stage count
+         * sprocket pitch circumference = pitch * tooth count
+         * 
+         * Original conversion factor math
+         * 0.00635 m = 1/4 inch, which is the pitch
+         * 24/22 = wrong; should be 22/24; meaning a 22t sprocket drives a 24t sprocket
+         * 24 = 24t drive sprocket; should cancel out with 22/24
+         * 
+         * (24.0/22.0) * kElevatorStages * (1/kGearRatio) * 24 * 0.00635
+         */
 
         public static class Electrical {
             public static final double kVoltageCompensation = 10.5; 
