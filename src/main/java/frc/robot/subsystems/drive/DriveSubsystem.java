@@ -125,6 +125,7 @@ public class DriveSubsystem extends SubsystemBase {
     /** Reset the current yaw heading of the gyro to zero */
     public void rezeroGyro() {
         gyroIO.reset();
+        rawGyroRotation = new Rotation2d();
     }
 
     @Override
@@ -167,11 +168,17 @@ public class DriveSubsystem extends SubsystemBase {
             } else {
                 // Use the angle delta from the kinematics and module deltas
                 Twist2d twist = kinematics.toTwist2d(moduleDeltas);
-                rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
+                rawGyroRotation = rawGyroRotation.plus(Rotation2d.fromRadians(twist.dtheta));
             }
             poseEstimator.updateWithTime(sampleTimestamps[i],rawGyroRotation,modulePositions);
         }
-        rawGyroRotation = gyroInputs.yawPosition;
+
+        if (gyroInputs.connected) {
+            // Only reset the gyro position if it is plugged in
+            // TODO: do we want to have the robot become chassis oriented (aka gyro is always equal to zero) if the gyro is unplugged
+            rawGyroRotation = gyroInputs.yawPosition;
+        }
+        
     }
 
     /** Returns the module positions (turn angles and drive positions) for all of the modules. */

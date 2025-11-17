@@ -35,7 +35,7 @@ public class Robot extends LoggedRobot {
     public Robot() {
         Logger.recordMetadata("ProjectName", "2025-WAPUR"); // Set a metadata value
 
-        if (SystemConstants.currentMode == RobotMode.REAL || SystemConstants.currentMode == RobotMode.REAL_NO_MECHANISMS) {
+        if (SystemConstants.currentMode.isReal) {
             // Real bot
             Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
             Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables

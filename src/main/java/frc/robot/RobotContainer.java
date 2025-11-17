@@ -14,8 +14,11 @@ import frc.robot.commands.drive.TeleopDriveCommandV2;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureCommandFactory;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.GyroIODisabled;
 import frc.robot.subsystems.drive.GyroIOPigeon;
+import frc.robot.subsystems.drive.ModuleIODisabled;
 import frc.robot.subsystems.drive.ModuleIOHardware;
+import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.elevator.ElevatorIODisabled;
 import frc.robot.subsystems.elevator.ElevatorIOHardware;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -88,13 +91,56 @@ public class RobotContainer {
             m_shooter = new ShooterSubsystem(new ShooterIOHardware());
             m_wrist = new WristSubsystem(new WristIOHardware());
             m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
-        } else /* if (SystemConstants.currentMode = RobotMode.REAL_NO_MECHANISMS) */ {
+        } else if (SystemConstants.currentMode == RobotMode.REAL_NO_MECHANISMS) {
             m_drive = new DriveSubsystem(
                 new GyroIOPigeon(), 
                 new ModuleIOHardware(ModuleConfig.FrontLeft),
                 new ModuleIOHardware(ModuleConfig.FrontRight), 
                 new ModuleIOHardware(ModuleConfig.RearLeft),
                 new ModuleIOHardware(ModuleConfig.RearRight)
+            );
+            m_elevator = new ElevatorSubsystem(new ElevatorIODisabled());
+            m_grabber = new GrabberSubsystem(new GrabberIODisabled());
+            m_intake = new IntakeSubsystem(new IntakeIODisabled());
+            m_shooter = new ShooterSubsystem(new ShooterIODisabled());
+            m_wrist = new WristSubsystem(new WristIODisabled());
+            m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
+        } else if (SystemConstants.currentMode == RobotMode.REAL_NO_DRIVETRAIN) {
+            m_drive = new DriveSubsystem(
+                new GyroIODisabled(), 
+                new ModuleIODisabled(),
+                new ModuleIODisabled(), 
+                new ModuleIODisabled(),
+                new ModuleIODisabled()
+            );
+            m_elevator = new ElevatorSubsystem(new ElevatorIOHardware());
+            m_grabber = new GrabberSubsystem(new GrabberIOHardware());
+            m_intake = new IntakeSubsystem(new IntakeIOHardware());
+            m_shooter = new ShooterSubsystem(new ShooterIOHardware());
+            m_wrist = new WristSubsystem(new WristIOHardware());
+            m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
+        } else if (SystemConstants.currentMode == RobotMode.SIM) {
+            m_drive = new DriveSubsystem(
+                new GyroIODisabled(), 
+                new ModuleIOSim(),
+                new ModuleIOSim(), 
+                new ModuleIOSim(),
+                new ModuleIOSim()
+            );
+            m_elevator = new ElevatorSubsystem(new ElevatorIODisabled());
+            m_grabber = new GrabberSubsystem(new GrabberIODisabled());
+            m_intake = new IntakeSubsystem(new IntakeIODisabled());
+            m_shooter = new ShooterSubsystem(new ShooterIODisabled());
+            m_wrist = new WristSubsystem(new WristIODisabled());
+            m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
+        } else {
+            // All disabled
+            m_drive = new DriveSubsystem(
+                new GyroIODisabled(), 
+                new ModuleIODisabled(),
+                new ModuleIODisabled(), 
+                new ModuleIODisabled(),
+                new ModuleIODisabled()
             );
             m_elevator = new ElevatorSubsystem(new ElevatorIODisabled());
             m_grabber = new GrabberSubsystem(new GrabberIODisabled());

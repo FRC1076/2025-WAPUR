@@ -52,16 +52,23 @@ public final class Constants {
     }
 
     public static class SystemConstants {
-        public static final RobotMode currentMode = RobotMode.REAL_NO_MECHANISMS;
+        public static final RobotMode currentMode = RobotMode.SIM;
         
         public static final boolean signalLoggerEnabled = false;
         public static final boolean increaseThreadPriority = true;
 
         public static enum RobotMode {
-            REAL,
-            REAL_NO_MECHANISMS,
-            SIM,
-            REPLAY;
+            REAL(true),
+            REAL_NO_MECHANISMS(true),
+            REAL_NO_DRIVETRAIN(true),
+            SIM(false),
+            REPLAY(false);
+
+            public final boolean isReal;
+
+            private RobotMode(boolean isReal) {
+                this.isReal = isReal;
+            }
         }
     }
 
@@ -395,6 +402,14 @@ public final class Constants {
                     this.EncoderOffsetRots = EncoderOffsetRots;
                 }
             }
+        }
+
+        public static class SimConstants {
+            public static double kDriveKP = 0.005;
+            public static double kDriveKD = 0;
+
+            public static double kTurnKP = 8;
+            public static double kTurnKD = 0;
         }
     }
 }
