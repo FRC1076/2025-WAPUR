@@ -273,16 +273,15 @@ public final class Constants {
         public static enum BallStates {
             HOME(Math.PI/2, 1.0, 0.0),
             INTAKE_DOWN(-Math.PI/4, 1.0, 0.0),
-            INTAKING(-Math.PI/4, 1.0, 4.0),
-            SHOOT(-Math.PI/4, 200.0, 4.0),
-            SHOOT_WRIST_UP(Math.PI/2, 200.0, 4.0);
+            INTAKING(-Math.PI/4, 1.0, 6.0),
+            SHOOT(-Math.PI/4, 200.0, 0.0),
+            SHOOT_WRIST_UP(Math.PI/2, 200.0, 0.0);
 
             public final double wristAngleRadians;
             public final double shooterRadPerSec;
             public final double intakeSpeed;
 
-            private BallStates (double wristAngleRadians, double shooterRadPerSec, double intakeSpeed)
-            {
+            private BallStates (double wristAngleRadians, double shooterRadPerSec, double intakeSpeed) {
                 this.wristAngleRadians = wristAngleRadians;
                 this.shooterRadPerSec = shooterRadPerSec;
                 this.intakeSpeed = intakeSpeed;

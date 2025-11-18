@@ -11,9 +11,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "Turn to Shoot Left"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Turn to Shoot Left"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Balls"
+                }
+              }
+            ]
           }
         }
       ]

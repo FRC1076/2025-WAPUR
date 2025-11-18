@@ -38,6 +38,10 @@ import frc.robot.subsystems.yoinker.YoinkerIODisabled;
 import frc.robot.subsystems.yoinker.YoinkerIOHardware;
 import frc.robot.subsystems.yoinker.YoinkerSubsystem;
 import lib.hardware.hid.SamuraiXboxController;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -258,6 +262,11 @@ public class RobotContainer {
         }
     }
 
+    public void configureNamedCommands() {
+        SuperstructureCommandFactory superstructureCommands = m_superstructure.getCommandFactory();
+        NamedCommands.registerCommand("Shoot Balls", superstructureCommands.shootBallsWristUp());
+    }
+
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
@@ -265,7 +274,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An example command will be run in autonomous
-        return Commands.none();
+        return AutoBuilder.buildAuto("Standard Auton Left");
     }
 
     /** Raise thread priority to reduce loop times */

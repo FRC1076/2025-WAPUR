@@ -11,9 +11,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "Point to Shoot Right"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Turn and Shoot Right"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Balls"
+                }
+              }
+            ]
           }
         }
       ]

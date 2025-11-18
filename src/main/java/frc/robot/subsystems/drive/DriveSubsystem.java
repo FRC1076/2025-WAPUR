@@ -15,6 +15,7 @@ import static frc.robot.Constants.DriveConstants.ModuleConstants.Common.Drive.Ma
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,13 +25,21 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.GameConstants;
+import frc.robot.Constants.GameConstants.TeamColors;
 import frc.robot.commands.drive.TeleopDriveCommandV2;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -68,6 +77,35 @@ public class DriveSubsystem extends SubsystemBase {
         OdometryThread.getInstance().start();
 
         CommandBuilder = new DriveCommandFactory(this);
+
+        RobotConfig config;
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.recordOutput("PathPlanner RobotConfig Error", e.getLocalizedMessage());
+            config = new RobotConfig(0, 0, null, null);
+        }
+
+        AutoBuilder.configure(
+            () -> this.getPose(),
+            (pose) -> resetPose(pose),
+            () -> getChassisSpeeds(),
+            (speeds, feedforwards) -> driveCLCO(speeds),
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            config,
+            () -> {
+                if (GameConstants.teamColor == Alliance.Red) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            this
+        );
     }
 
     public SwerveModuleState[] getModuleStates(){
