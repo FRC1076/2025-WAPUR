@@ -11,13 +11,13 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Turn to Shoot Left"
+                  "pathName": "Turn and Shoot Left"
                 }
               },
               {
