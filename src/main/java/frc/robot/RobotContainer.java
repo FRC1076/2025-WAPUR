@@ -37,9 +37,11 @@ import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.wrist.WristIODisabled;
 import frc.robot.subsystems.wrist.WristIOHardware;
+import frc.robot.subsystems.wrist.WristIOSim;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.subsystems.yoinker.YoinkerIODisabled;
 import frc.robot.subsystems.yoinker.YoinkerIOHardware;
+import frc.robot.subsystems.yoinker.YoinkerIOSim;
 import frc.robot.subsystems.yoinker.YoinkerSubsystem;
 import lib.hardware.hid.SamuraiXboxController;
 
@@ -139,8 +141,8 @@ public class RobotContainer {
             m_grabber = new GrabberSubsystem(new GrabberIOSim());
             m_intake = new IntakeSubsystem(new IntakeIOSim());
             m_shooter = new ShooterSubsystem(new ShooterIOSim());
-            m_wrist = new WristSubsystem(new WristIODisabled());
-            m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
+            m_wrist = new WristSubsystem(new WristIOSim());
+            m_yoinker = new YoinkerSubsystem(new YoinkerIOSim());
         } else {
             // All disabled
             m_drive = new DriveSubsystem(

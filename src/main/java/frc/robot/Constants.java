@@ -221,6 +221,30 @@ public final class Constants {
         }
     }
 
+    public static class WristSimConstants {
+        public static final double kWristGearingReductions = 0.0;
+        public static final double kWristLength = 0.2;
+        public static final double kWristMass = 2.0;
+        public static final double kMinAngleRads = -0.75 * Math.PI;
+        public static final double kMaxAngleRads = 0.75 * Math.PI;
+
+        public static class Control 
+        {
+            public static final double kP = 0.0;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+
+            public static final double kS = 0.0;
+            public static final double kG = 0.0;
+            public static final double kV = 0.0;
+            public static final double kA = 0.0;
+
+            public static final Constraints kProfileConstraints = new Constraints(2, 2);
+        }
+
+
+    }
+
     public static class IntakeConstants {
         public static final int kMotorPort = 0;
     }
@@ -256,10 +280,10 @@ public final class Constants {
         }
     }
 
-    public static class WristSimConstants {
-        public static final double kWristGearingReductions = 0.0;
-        public static final double kWristLength = 0.2;
-        public static final double kWristMass = 2.0;
+    public static class YoinkerSimConstants {
+        public static final double kYoinkerGearingReductions = 0.0;
+        public static final double kYoinkerLength = 0.2;
+        public static final double kYoinkerMass = 2.0;
         public static final double kMinAngleRads = -0.75 * Math.PI;
         public static final double kMaxAngleRads = 0.75 * Math.PI;
 
