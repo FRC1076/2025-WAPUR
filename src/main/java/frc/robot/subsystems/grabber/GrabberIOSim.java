@@ -1,15 +1,26 @@
+// Copyright (c) FRC 1076 PiHi Samurai
+// You may use, distribute, and modify this software under the terms of
+// the license found in the root directory of this project
+
 package frc.robot.subsystems.grabber;
 
-import frc.robot.Constants.GrabberConstants;
-
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
+import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-public class GrabberIOHardware implements GrabberIO {
+import edu.wpi.first.math.system.plant.DCMotor;
+import frc.robot.Constants.GrabberConstants;
+
+/** 
+ * A simple boilerplate class to enable full superstructure simulation
+ */
+public class GrabberIOSim implements GrabberIO {
+    private DCMotor m_grabberSim = DCMotor.getNEO(2);
+
     private final SparkMax m_leadMotor;
     private final SparkMax m_followMotor;
 
@@ -18,7 +29,10 @@ public class GrabberIOHardware implements GrabberIO {
     private final SparkMaxConfig m_leadMotorConfig;
     private final SparkMaxConfig m_followMotorConfig;
 
-    public GrabberIOHardware() {
+    private final SparkMaxSim m_leadMotorSim;
+    private final SparkMaxSim m_followMotorSim;
+
+    public GrabberIOSim() {
         m_leadMotor = new SparkMax(GrabberConstants.kLeftMotorPort, MotorType.kBrushless);
         m_followMotor = new SparkMax(GrabberConstants.kRightMotorPort, MotorType.kBrushless);
 
@@ -41,6 +55,9 @@ public class GrabberIOHardware implements GrabberIO {
 
         m_leadMotor.configure(m_leadMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_followMotor.configure(m_followMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
+        m_leadMotorSim = new SparkMaxSim(m_leadMotor, m_grabberSim);
+        m_followMotorSim = new SparkMaxSim(m_followMotor, m_grabberSim);
     }
 
     @Override
@@ -49,18 +66,17 @@ public class GrabberIOHardware implements GrabberIO {
     }
 
     @Override
-    public double getOutputCurrent() {
-        return (m_leadMotor.getOutputCurrent() + m_followMotor.getOutputCurrent()) / 2;
-    }
-
-    @Override
     public void updateInputs(GrabberIOInputs inputs) {
-        inputs.appliedVolts = m_leadMotor.getAppliedOutput() * m_leadMotor.getBusVoltage();
-        inputs.leadMotorCurrentAmps = m_leadMotor.getOutputCurrent();
+        inputs.appliedVolts = m_leadMotorSim.getAppliedOutput() * m_leadMotorSim.getBusVoltage();
+        inputs.leadMotorCurrentAmps = m_leadMotorSim.getMotorCurrent();
+        inputs.followMotorCurrentAmps = m_followMotorSim.getMotorCurrent();
         
-        inputs.followMotorCurrentAmps = m_followMotor.getOutputCurrent();
-
         inputs.motorPositionRadians = m_encoder.getPosition();
         inputs.velocityRadPerSec = m_encoder.getVelocity();
     }
+
+    @Override
+    public void simulationPeriodic() {
+        // nothing I geuess
+    }    
 }

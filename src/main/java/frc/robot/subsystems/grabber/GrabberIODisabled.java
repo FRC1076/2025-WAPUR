@@ -10,7 +10,6 @@ public class GrabberIODisabled implements GrabberIO {
 
     @Override
     public void updateInputs(GrabberIOInputs inputs) {
-        inputs.leftMotorAppliedVoltage = voltageTarget;
-        inputs.rightMotorAppliedVoltage = voltageTarget;
+        inputs.appliedVolts = voltageTarget;
     }
 }

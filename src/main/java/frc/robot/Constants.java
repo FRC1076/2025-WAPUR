@@ -156,9 +156,10 @@ public final class Constants {
         public static final int kLeftMotorPort = 41;
         public static final int kRightMotorPort = 42;
         
-        public static final double kCurrentLimit = 20; 
-        public static final double kGearRatio = 20;
+        public static final double kCurrentLimit = 40; 
+        public static final double kGearRatio = 12;
         public static final double kPositionConversionFactor = Math.PI * 2 * (1/kGearRatio);
+        public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
 
         public static final boolean kLeftMotorInverted = true;
         public static final boolean kRightMotorInverted = false;

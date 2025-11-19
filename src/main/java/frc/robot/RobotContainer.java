@@ -21,9 +21,11 @@ import frc.robot.subsystems.drive.ModuleIOHardware;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.elevator.ElevatorIODisabled;
 import frc.robot.subsystems.elevator.ElevatorIOHardware;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.grabber.GrabberIODisabled;
 import frc.robot.subsystems.grabber.GrabberIOHardware;
+import frc.robot.subsystems.grabber.GrabberIOSim;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.intake.IntakeIODisabled;
 import frc.robot.subsystems.intake.IntakeIOHardware;
@@ -131,8 +133,8 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim()
             );
-            m_elevator = new ElevatorSubsystem(new ElevatorIODisabled());
-            m_grabber = new GrabberSubsystem(new GrabberIODisabled());
+            m_elevator = new ElevatorSubsystem(new ElevatorIOSim());
+            m_grabber = new GrabberSubsystem(new GrabberIOSim());
             m_intake = new IntakeSubsystem(new IntakeIODisabled());
             m_shooter = new ShooterSubsystem(new ShooterIODisabled());
             m_wrist = new WristSubsystem(new WristIODisabled());

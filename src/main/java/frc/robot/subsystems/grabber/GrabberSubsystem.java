@@ -31,11 +31,16 @@ public class GrabberSubsystem extends SubsystemBase {
         Logger.processInputs("Grabber", inputs);
     }
 
+    @Override
+    public void simulationPeriodic() {
+        io.simulationPeriodic();
+    }
+
     public Command applyVoltage(double volts) {
         return runOnce(() -> setVoltage(volts));
     }
 
     public double getAppliedCurrent() {
-        return inputs.leftMotorCurrent;
+        return inputs.leadMotorCurrentAmps;
     }
 }
