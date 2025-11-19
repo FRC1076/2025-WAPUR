@@ -12,6 +12,7 @@ import frc.robot.Constants.OIConstants.OperatorControllerStates;
 import frc.robot.Constants.SystemConstants.RobotMode;
 import frc.robot.commands.drive.TeleopDriveCommandV2;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.SuperstructureVisualizer;
 import frc.robot.subsystems.Superstructure.SuperstructureCommandFactory;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.GyroIODisabled;
@@ -71,6 +72,7 @@ public class RobotContainer {
     private final YoinkerSubsystem m_yoinker;
 
     private final Superstructure m_superstructure;
+    private final SuperstructureVisualizer m_superVis;
 
     // Drive command
     private final TeleopDriveCommandV2 driveCommand;
@@ -168,6 +170,8 @@ public class RobotContainer {
             m_intake,
             m_yoinker
         );
+         
+        m_superVis = new SuperstructureVisualizer(m_superstructure);
 
         driveCommand = m_drive.CommandBuilder.driveTeleop(
             () -> -m_driverController.getLeftY(), 

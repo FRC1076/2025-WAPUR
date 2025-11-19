@@ -166,7 +166,7 @@ public final class Constants {
     }
 
     public static class ShooterConstants {
-        public static final int kMotorPort = 0;
+        public static final int kMotorPort = 51;
         public static final int kServoPort = 0;
 
         public static class Control {
@@ -222,7 +222,7 @@ public final class Constants {
     }
 
     public static class WristSimConstants {
-        public static final double kWristGearingReductions = 0.0;
+        public static final double kWristGearingReductions = 12;
         public static final double kWristLength = 0.2;
         public static final double kWristMass = 2.0;
         public static final double kMinAngleRads = -0.75 * Math.PI;
@@ -250,7 +250,7 @@ public final class Constants {
     }
 
     public static class YoinkerConstants {
-        public static final int kLeadMotorPort = 61;
+        public static final int kLeadMotorPort = 62;
 
         public static final double kYoinkerAngleToleranceRadians = 0.1;
         public static final double kMinYoinkerAngleRadians = 0;
@@ -281,7 +281,7 @@ public final class Constants {
     }
 
     public static class YoinkerSimConstants {
-        public static final double kYoinkerGearingReductions = 0.0;
+        public static final double kYoinkerGearingReductions = 64;
         public static final double kYoinkerLength = 0.2;
         public static final double kYoinkerMass = 2.0;
         public static final double kMinAngleRads = -0.75 * Math.PI;

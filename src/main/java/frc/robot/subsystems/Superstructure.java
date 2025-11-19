@@ -70,6 +70,14 @@ public class Superstructure {
         return m_commandFactory;
     }
 
+    public ElevatorSubsystem getElevator() {
+        return m_elevator;
+    }
+
+    public WristSubsystem getWrist() {
+        return m_wrist;
+    }
+
     public Command setCrateStateAllParallel (CrateStates crateState) {
         m_superState.setCrateState(crateState);
         return Commands.parallel(
