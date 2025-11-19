@@ -19,8 +19,6 @@ public interface ShooterIO {
         public double motorCurrent = 0;
         public double motorVelocityRadiansPerSecond = 0;
 
-        public double servoAppliedVoltage = 0;
-        public double servoCurrent = 0;
         public double servoAngle;
     }
 

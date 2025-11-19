@@ -1,0 +1,54 @@
+package frc.robot.subsystems.shooter;
+
+import com.revrobotics.sim.SparkMaxSim;
+import com.revrobotics.sim.SparkRelativeEncoderSim;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.math.system.plant.DCMotor;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.ShooterConstants.ControlSim;;
+
+public class ShooterIOSim implements ShooterIO {
+    private static final ShooterControlConstants simControlConstants = new ShooterControlConstants(
+        ControlSim.kP, ControlSim.kI, ControlSim.kD,
+        ControlSim.kS, ControlSim.kV, ControlSim.kA);
+
+    private final DCMotor m_gearbox = DCMotor.getNEO(1);
+
+    private final SparkMax m_motor;
+    private final SparkRelativeEncoderSim m_encoderSim;
+    private final SparkMaxSim m_motorSim;
+
+    private double indexPosition = 0;
+
+    public ShooterIOSim() {
+        m_motor = new SparkMax(ShooterConstants.kMotorPort, MotorType.kBrushless);
+        m_motorSim = new SparkMaxSim(m_motor, m_gearbox);
+        m_encoderSim = m_motorSim.getRelativeEncoderSim();
+    }
+    
+    @Override
+    public void setVoltage(double Volts) {
+        m_motor.setVoltage(Volts);
+    }
+
+    @Override
+    public void setServoAngleDeg(double radians) {
+        indexPosition = radians / 2*Math.PI;
+    }
+
+    @Override
+    public ShooterControlConstants getShooterControlConstants() {
+        return simControlConstants;
+    }
+
+    @Override
+    public void updateInputs(ShooterIOInputs inputs) {
+        inputs.motorAppliedVoltage = m_motorSim.getAppliedOutput() * m_motorSim.getBusVoltage();
+        inputs.motorCurrent = m_motorSim.getMotorCurrent();
+        inputs.motorVelocityRadiansPerSecond = m_encoderSim.getVelocity() * 0.1047; // Convert from RPM to rad/s
+
+        inputs.servoAngle = indexPosition;
+    }
+}

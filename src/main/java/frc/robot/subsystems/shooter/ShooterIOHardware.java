@@ -44,5 +44,7 @@ public class ShooterIOHardware implements ShooterIO {
         inputs.motorAppliedVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
         inputs.motorCurrent = m_motor.getOutputCurrent();
         inputs.motorVelocityRadiansPerSecond = m_encoder.getVelocity() * 0.1047; // Convert from RPM to rad/s
+
+        inputs.servoAngle = m_indexer.getPosition() * 2 * Math.PI;
     }
 }

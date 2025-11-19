@@ -29,9 +29,11 @@ import frc.robot.subsystems.grabber.GrabberIOSim;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.intake.IntakeIODisabled;
 import frc.robot.subsystems.intake.IntakeIOHardware;
+import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterIODisabled;
 import frc.robot.subsystems.shooter.ShooterIOHardware;
+import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.wrist.WristIODisabled;
 import frc.robot.subsystems.wrist.WristIOHardware;
@@ -135,8 +137,8 @@ public class RobotContainer {
             );
             m_elevator = new ElevatorSubsystem(new ElevatorIOSim());
             m_grabber = new GrabberSubsystem(new GrabberIOSim());
-            m_intake = new IntakeSubsystem(new IntakeIODisabled());
-            m_shooter = new ShooterSubsystem(new ShooterIODisabled());
+            m_intake = new IntakeSubsystem(new IntakeIOSim());
+            m_shooter = new ShooterSubsystem(new ShooterIOSim());
             m_wrist = new WristSubsystem(new WristIODisabled());
             m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
         } else {

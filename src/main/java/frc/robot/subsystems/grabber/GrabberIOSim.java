@@ -6,6 +6,7 @@ package frc.robot.subsystems.grabber;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.sim.SparkMaxSim;
+import com.revrobotics.sim.SparkRelativeEncoderSim;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -19,12 +20,10 @@ import frc.robot.Constants.GrabberConstants;
  * A simple boilerplate class to enable full superstructure simulation
  */
 public class GrabberIOSim implements GrabberIO {
-    private DCMotor m_grabberSim = DCMotor.getNEO(2);
+    private DCMotor m_gearbox = DCMotor.getNEO(2);
 
     private final SparkMax m_leadMotor;
     private final SparkMax m_followMotor;
-
-    private final RelativeEncoder m_encoder;
 
     private final SparkMaxConfig m_leadMotorConfig;
     private final SparkMaxConfig m_followMotorConfig;
@@ -32,11 +31,11 @@ public class GrabberIOSim implements GrabberIO {
     private final SparkMaxSim m_leadMotorSim;
     private final SparkMaxSim m_followMotorSim;
 
+    private final SparkRelativeEncoderSim m_encoderSim;
+
     public GrabberIOSim() {
         m_leadMotor = new SparkMax(GrabberConstants.kLeftMotorPort, MotorType.kBrushless);
         m_followMotor = new SparkMax(GrabberConstants.kRightMotorPort, MotorType.kBrushless);
-
-        m_encoder = m_leadMotor.getEncoder();
 
         m_leadMotorConfig = new SparkMaxConfig();
         m_followMotorConfig = new SparkMaxConfig();
@@ -56,8 +55,10 @@ public class GrabberIOSim implements GrabberIO {
         m_leadMotor.configure(m_leadMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_followMotor.configure(m_followMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        m_leadMotorSim = new SparkMaxSim(m_leadMotor, m_grabberSim);
-        m_followMotorSim = new SparkMaxSim(m_followMotor, m_grabberSim);
+        m_leadMotorSim = new SparkMaxSim(m_leadMotor, m_gearbox);
+        m_followMotorSim = new SparkMaxSim(m_followMotor, m_gearbox);
+
+        m_encoderSim = m_leadMotorSim.getRelativeEncoderSim();
     }
 
     @Override
@@ -71,8 +72,8 @@ public class GrabberIOSim implements GrabberIO {
         inputs.leadMotorCurrentAmps = m_leadMotorSim.getMotorCurrent();
         inputs.followMotorCurrentAmps = m_followMotorSim.getMotorCurrent();
         
-        inputs.motorPositionRadians = m_encoder.getPosition();
-        inputs.velocityRadPerSec = m_encoder.getVelocity();
+        inputs.motorPositionRadians = m_encoderSim.getPosition();
+        inputs.velocityRadPerSec = m_encoderSim.getVelocity();
     }
 
     @Override
