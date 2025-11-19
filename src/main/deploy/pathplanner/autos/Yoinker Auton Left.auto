@@ -25,7 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Turn to Shoot Left"
+            "pathName": "Point to Shoot Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Balls"
           }
         }
       ]
