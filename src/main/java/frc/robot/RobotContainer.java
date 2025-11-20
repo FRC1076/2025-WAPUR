@@ -5,8 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.GrabberConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SystemConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.Constants.DriveConstants.ModuleConstants.ModuleConfig;
 import frc.robot.Constants.OIConstants.OperatorControllerStates;
 import frc.robot.Constants.SystemConstants.RobotMode;
@@ -235,6 +238,38 @@ public class RobotContainer {
 
     /** Maps triggers on the operator controller to commands */
     private void configureOperatorBindings() {
+        SuperstructureCommandFactory superstructureCommands = m_superstructure.getCommandFactory();
+
+        m_operatorController.leftActive()
+            .whileTrue(
+                m_elevator.applyVoltageUnrestricted(
+                    m_operatorController.getLeftY()
+                     * ElevatorConstants.defaultMaxOperatorControlVolts)
+            )
+            .onFalse(m_elevator.applyVoltageUnrestricted(0));
+
+        m_operatorController.rightActive()
+            .whileTrue( 
+                m_wrist.applyVoltageUnrestricted(
+                    m_operatorController.getRightY() 
+                        * WristConstants.maxOperatorControlVolts)
+            )
+            .onFalse(m_elevator.applyVoltageUnrestricted(0));
+
+        m_operatorController.povUp()
+            .whileTrue(m_grabber.applyVoltage(GrabberConstants.kOperatorControlVolts))
+            .onFalse(m_grabber.applyVoltage(0));
+
+        m_operatorController.povDown()
+            .whileTrue(m_grabber.applyVoltage(-GrabberConstants.kOperatorControlVolts))
+            .onFalse(m_grabber.applyVoltage(0));
+
+        m_operatorController.povRight()
+            .whileTrue(superstructureCommands.manualBallsForward());
+
+        m_operatorController.povLeft()
+            .whileTrue(superstructureCommands.manualBallsBackward());
+
         if (OIConstants.kOperatorControllerState == OperatorControllerStates.OPERATOR) {
             // Operate I guess
         } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.DRIVETRAIN_SYSID_TRANS) {

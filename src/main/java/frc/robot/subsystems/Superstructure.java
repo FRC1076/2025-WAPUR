@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SuperstructureConstants.BallStates;
 import frc.robot.Constants.SuperstructureConstants.CrateStates;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -175,6 +177,36 @@ public class Superstructure {
 
         public Command shootBallsWristUp(){
             return setBallStateWristFirst(BallStates.SHOOT_WRIST_UP);
+        }
+
+        public Command manualBallsForward() {
+            return Commands.startEnd(
+                    () -> Commands.parallel(
+                        m_intake.applyVoltage(IntakeConstants.kManualIntakeVolts),
+                        m_shooter.applyVoltage(ShooterConstants.kManualShootVolts)
+                    ).schedule(),
+                    () -> Commands.parallel(
+                        m_intake.applyVoltage(0),
+                        m_shooter.startPID(m_superState.getBallState().shooterRadPerSec)
+                    ).schedule(),
+                    m_intake,
+                    m_shooter
+            );
+        }
+
+        public Command manualBallsBackward() {
+            return Commands.startEnd(
+                    () -> Commands.parallel(
+                        m_intake.applyVoltage(IntakeConstants.kManualEjectVolts),
+                        m_shooter.applyVoltage(ShooterConstants.kManualReverseVolts)
+                    ).schedule(),
+                    () -> Commands.parallel(
+                        m_intake.applyVoltage(0),
+                        m_shooter.startPID(m_superState.getBallState().shooterRadPerSec)
+                    ).schedule(),
+                    m_intake,
+                    m_shooter
+            );
         }
     }
 }

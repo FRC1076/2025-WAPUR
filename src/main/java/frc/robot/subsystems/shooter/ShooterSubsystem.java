@@ -59,6 +59,14 @@ public class ShooterSubsystem extends SubsystemBase {
         Logger.processInputs("Shooter", inputs);
     }
 
+    public Command applyVoltage(double volts)
+    {
+        return Commands.sequence(
+            disablePID(),
+            Commands.runOnce(() -> setVoltage(volts))
+        );
+    }
+
     public Command startPID(double targetRadPerSec) {
         return Commands.sequence(
             Commands.runOnce(() -> setPidTarget(targetRadPerSec)),
@@ -66,7 +74,7 @@ public class ShooterSubsystem extends SubsystemBase {
         );
     }
 
-    public Command stopPID() {
+    public Command disablePID() {
         return Commands.runOnce(() -> setPidRunning(false));
     }
 }

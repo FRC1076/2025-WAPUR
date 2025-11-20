@@ -2,15 +2,11 @@ package frc.robot.subsystems.wrist;
 
 import frc.robot.Constants.WristConstants;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static edu.wpi.first.units.Units.Volts;
@@ -69,11 +65,8 @@ public class WristSubsystem extends SubsystemBase {
         io.setVoltage(volts + m_feedforwardController.calculate(inputs.angleRadians, 0));
     }
 
-    public void setAngle(Rotation2d position) {
-        io.setVoltage(
-            m_profiledPIDController.calculate(inputs.angleRadians, MathUtil.clamp(position.getRadians(), WristConstants.kMinWristAngleRadians, WristConstants.kMaxWristAngleRadians))
-            + m_feedforwardController.calculate(inputs.angleRadians, m_profiledPIDController.getSetpoint().velocity)
-        );
+    public void setVoltageUnrestricted(double volts) {
+        io.setVoltage(volts + m_feedforwardController.calculate(inputs.angleRadians, 0));
     }
 
     public double getAngleRadians() {
@@ -91,38 +84,9 @@ public class WristSubsystem extends SubsystemBase {
     public void setKg(double kg) {
         m_feedforwardController.setKg(kg);
     }
-
-    public Command applyAngle(Rotation2d angle) {
-        return new FunctionalCommand(
-            () -> {m_profiledPIDController.reset(getAngleRadians(),inputs.velocityRadiansPerSecond);},
-            () -> setAngle(angle), 
-            (interrupted) -> {},
-            () -> Math.abs(angle.minus(getAngle()).getRadians()) < WristConstants.wristAngleToleranceRadians,
-            this
-        );
-    }
+    
     public boolean withinTolerance(double tolerance){
         return Math.abs(m_profiledPIDController.getGoal().position - getAngleRadians()) < tolerance;
-    }
-
-    
-    public Command applyAnglePersistent(Rotation2d angle) {
-        return new FunctionalCommand(
-            () -> {m_profiledPIDController.reset(getAngleRadians(),inputs.velocityRadiansPerSecond);
-                    m_profiledPIDController.setGoal(angle.getRadians());},
-            () -> setAngle(angle), 
-            (interrupted) -> {},
-            () -> false,
-            this
-        );
-    }
-
-    public Command holdAngle(Rotation2d angle) {
-        return run(() -> setAngle(angle));
-    }
-
-    public Command applyManualControl(DoubleSupplier controlSupplier) {
-        return run(() -> setVoltage(controlSupplier.getAsDouble() * WristConstants.maxOperatorControlVolts));
     }
 
     @Override
@@ -155,6 +119,13 @@ public class WristSubsystem extends SubsystemBase {
     public Command disablePID() {
         return Commands.runOnce(() -> setPIDEnabled(false));
     }
+
+    public Command applyVoltageUnrestricted(double volts) {
+        return Commands.sequence(
+            disablePID(),
+            Commands.runOnce(() -> setVoltageUnrestricted(volts))
+        );
+    } 
 
     public Command wristSysIdQuasistatic(SysIdRoutine.Direction direction) {
         return sysid.quasistatic(direction);

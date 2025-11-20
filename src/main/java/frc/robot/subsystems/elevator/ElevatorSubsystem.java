@@ -2,7 +2,6 @@ package frc.robot.subsystems.elevator;
 
 import frc.robot.Constants.ElevatorConstants;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
@@ -119,21 +118,21 @@ public class ElevatorSubsystem extends SubsystemBase  {
         this.PIDEnabled = enabled;
     }
 
-    public Command diablePID() {
+    public Command disablePID() {
         return Commands.runOnce(() -> setPIDEnabled(false));
+    }
+
+    public Command applyVoltageUnrestricted(double volts) {
+        return Commands.sequence(
+            disablePID(),
+            Commands.runOnce(() -> setVoltageUnrestricted(volts))
+        );
     }
 
     public Command startPID(double targetMeters) {
         return Commands.sequence(
             Commands.runOnce(() -> m_profiledPIDController.setGoal(targetMeters)),
             Commands.runOnce(() -> setPIDEnabled(true))
-        );
-    }
-    
-    public Command applyManualControl(DoubleSupplier controlSupplier, BooleanSupplier higherMaxSpeedSupplier) {
-        return run(higherMaxSpeedSupplier.getAsBoolean()
-            ? () -> setVoltageUnrestricted(controlSupplier.getAsDouble() * ElevatorConstants.fasterMaxOperatorControlVolts)
-            : () -> setVoltageUnrestricted(controlSupplier.getAsDouble() * ElevatorConstants.defaultMaxOperatorControlVolts)
         );
     }
 

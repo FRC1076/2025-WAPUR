@@ -163,11 +163,16 @@ public final class Constants {
 
         public static final boolean kLeftMotorInverted = true;
         public static final boolean kRightMotorInverted = false;
+
+        public static final double kOperatorControlVolts = 6;
     }
 
     public static class ShooterConstants {
         public static final int kMotorPort = 51;
         public static final int kServoPort = 0;
+
+        public static final double kManualShootVolts = 12;
+        public static final double kManualReverseVolts = 4;
 
         public static class Control {
             public static final double kP = 0;
@@ -247,6 +252,9 @@ public final class Constants {
 
     public static class IntakeConstants {
         public static final int kMotorPort = 0;
+
+        public static final double kManualIntakeVolts = 10;
+        public static final double kManualEjectVolts = 4;
     }
 
     public static class YoinkerConstants {
@@ -308,7 +316,7 @@ public final class Constants {
         public static enum BallStates {
             HOME(Math.PI/2, 1.0, 0.0),
             INTAKE_DOWN(-Math.PI/4, 1.0, 0.0),
-            INTAKING(-Math.PI/4, 1.0, 6.0),
+            INTAKING(-Math.PI/4, 1.0, 9.0),
             SHOOT(-Math.PI/4, 200.0, 0.0),
             SHOOT_WRIST_UP(Math.PI/2, 200.0, 0.0);
 
