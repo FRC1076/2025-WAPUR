@@ -3,6 +3,7 @@ package frc.robot.subsystems.shooter;
 import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.sim.SparkRelativeEncoderSim;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -10,9 +11,6 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.ShooterConstants.ControlSim;;
 
 public class ShooterIOSim implements ShooterIO {
-    private static final ShooterControlConstants simControlConstants = new ShooterControlConstants(
-        ControlSim.kP, ControlSim.kI, ControlSim.kD,
-        ControlSim.kS, ControlSim.kV, ControlSim.kA);
 
     private final DCMotor m_gearbox = DCMotor.getNEO(1);
 
@@ -29,6 +27,15 @@ public class ShooterIOSim implements ShooterIO {
     }
     
     @Override
+    public void setVelocityRadPerSec(double velocity) {
+        if (velocity != 0) {
+            setVoltage(12);
+        } else {
+            setVoltage(0);
+        }
+    }
+
+    @Override
     public void setVoltage(double Volts) {
         m_motor.setVoltage(Volts);
     }
@@ -36,11 +43,6 @@ public class ShooterIOSim implements ShooterIO {
     @Override
     public void setServoAngleDeg(double radians) {
         indexPosition = radians / 2*Math.PI;
-    }
-
-    @Override
-    public ShooterControlConstants getShooterControlConstants() {
-        return simControlConstants;
     }
 
     @Override

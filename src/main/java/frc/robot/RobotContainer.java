@@ -36,7 +36,7 @@ import frc.robot.subsystems.intake.IntakeIOHardware;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterIODisabled;
-import frc.robot.subsystems.shooter.ShooterIOHardware;
+import frc.robot.subsystems.shooter.ShooterIOSpark;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.wrist.WristIODisabled;
@@ -103,7 +103,7 @@ public class RobotContainer {
             m_elevator = new ElevatorSubsystem(new ElevatorIOHardware());
             m_grabber = new GrabberSubsystem(new GrabberIOHardware());
             m_intake = new IntakeSubsystem(new IntakeIOHardware());
-            m_shooter = new ShooterSubsystem(new ShooterIOHardware());
+            m_shooter = new ShooterSubsystem(new ShooterIOSpark());
             m_wrist = new WristSubsystem(new WristIOHardware());
             m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
         } else if (SystemConstants.currentMode == RobotMode.REAL_NO_MECHANISMS) {
@@ -131,7 +131,7 @@ public class RobotContainer {
             m_elevator = new ElevatorSubsystem(new ElevatorIOHardware());
             m_grabber = new GrabberSubsystem(new GrabberIOHardware());
             m_intake = new IntakeSubsystem(new IntakeIOHardware());
-            m_shooter = new ShooterSubsystem(new ShooterIOHardware());
+            m_shooter = new ShooterSubsystem(new ShooterIOSpark());
             m_wrist = new WristSubsystem(new WristIOHardware());
             m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
         } else if (SystemConstants.currentMode == RobotMode.SIM) {
