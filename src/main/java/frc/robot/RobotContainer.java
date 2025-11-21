@@ -43,10 +43,6 @@ import frc.robot.subsystems.wrist.WristIODisabled;
 import frc.robot.subsystems.wrist.WristIOHardware;
 import frc.robot.subsystems.wrist.WristIOSim;
 import frc.robot.subsystems.wrist.WristSubsystem;
-import frc.robot.subsystems.yoinker.YoinkerIODisabled;
-import frc.robot.subsystems.yoinker.YoinkerIOHardware;
-import frc.robot.subsystems.yoinker.YoinkerIOSim;
-import frc.robot.subsystems.yoinker.YoinkerSubsystem;
 import lib.hardware.hid.SamuraiXboxController;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -72,7 +68,7 @@ public class RobotContainer {
     private final IntakeSubsystem m_intake;
     private final ShooterSubsystem m_shooter;
     private final WristSubsystem m_wrist;
-    private final YoinkerSubsystem m_yoinker;
+    // private final YoinkerSubsystem m_yoinker;
 
     private final Superstructure m_superstructure;
     private final SuperstructureVisualizer m_superVis;
@@ -105,7 +101,7 @@ public class RobotContainer {
             m_intake = new IntakeSubsystem(new IntakeIOHardware());
             m_shooter = new ShooterSubsystem(new ShooterIOSpark());
             m_wrist = new WristSubsystem(new WristIOHardware());
-            m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
+            // m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
         } else if (SystemConstants.currentMode == RobotMode.REAL_NO_MECHANISMS) {
             m_drive = new DriveSubsystem(
                 new GyroIOPigeon(), 
@@ -119,7 +115,7 @@ public class RobotContainer {
             m_intake = new IntakeSubsystem(new IntakeIODisabled());
             m_shooter = new ShooterSubsystem(new ShooterIODisabled());
             m_wrist = new WristSubsystem(new WristIODisabled());
-            m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
+            // m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
         } else if (SystemConstants.currentMode == RobotMode.REAL_NO_DRIVETRAIN) {
             m_drive = new DriveSubsystem(
                 new GyroIODisabled(), 
@@ -133,7 +129,7 @@ public class RobotContainer {
             m_intake = new IntakeSubsystem(new IntakeIOHardware());
             m_shooter = new ShooterSubsystem(new ShooterIOSpark());
             m_wrist = new WristSubsystem(new WristIOHardware());
-            m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
+            // m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
         } else if (SystemConstants.currentMode == RobotMode.SIM) {
             m_drive = new DriveSubsystem(
                 new GyroIODisabled(), 
@@ -147,7 +143,7 @@ public class RobotContainer {
             m_intake = new IntakeSubsystem(new IntakeIOSim());
             m_shooter = new ShooterSubsystem(new ShooterIOSim());
             m_wrist = new WristSubsystem(new WristIOSim());
-            m_yoinker = new YoinkerSubsystem(new YoinkerIOSim());
+            // m_yoinker = new YoinkerSubsystem(new YoinkerIOSim());
         } else {
             // All disabled
             m_drive = new DriveSubsystem(
@@ -162,7 +158,7 @@ public class RobotContainer {
             m_intake = new IntakeSubsystem(new IntakeIODisabled());
             m_shooter = new ShooterSubsystem(new ShooterIODisabled());
             m_wrist = new WristSubsystem(new WristIODisabled());
-            m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
+            // m_yoinker = new YoinkerSubsystem(new YoinkerIODisabled());
         }
 
         m_superstructure = new Superstructure(
@@ -170,8 +166,8 @@ public class RobotContainer {
             m_grabber,
             m_shooter,
             m_wrist,
-            m_intake,
-            m_yoinker
+            m_intake
+            // m_yoinker
         );
          
         m_superVis = new SuperstructureVisualizer(m_superstructure);

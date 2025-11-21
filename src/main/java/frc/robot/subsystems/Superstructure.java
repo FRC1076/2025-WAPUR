@@ -13,7 +13,6 @@ import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
-import frc.robot.subsystems.yoinker.YoinkerSubsystem;
 
 public class Superstructure {
     
@@ -45,7 +44,7 @@ public class Superstructure {
     private ShooterSubsystem m_shooter;
     private WristSubsystem m_wrist;
     private IntakeSubsystem m_intake;
-    private YoinkerSubsystem m_yoinker;
+    // private YoinkerSubsystem m_yoinker;
 
     private MutableSuperState m_superState;
     private SuperstructureCommandFactory m_commandFactory;
@@ -55,15 +54,15 @@ public class Superstructure {
         GrabberSubsystem grabberSubsystem,
         ShooterSubsystem shooterSubsystem,
         WristSubsystem wristSubsystem,
-        IntakeSubsystem intakeSubsystem,
-        YoinkerSubsystem yoinkerSubsystem
+        IntakeSubsystem intakeSubsystem
+        // YoinkerSubsystem yoinkerSubsystem
         ) {
             m_elevator = elevatorSubsystem;
             m_grabber = grabberSubsystem;
             m_shooter = shooterSubsystem;
             m_wrist = wristSubsystem;
             m_intake = intakeSubsystem;
-            m_yoinker = yoinkerSubsystem;
+            // m_yoinker = yoinkerSubsystem;
             m_superState = new MutableSuperState();
             m_commandFactory = new SuperstructureCommandFactory();
     }
