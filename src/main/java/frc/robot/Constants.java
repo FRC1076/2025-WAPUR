@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public final class Constants {  
     public static class GameConstants {
@@ -44,6 +45,9 @@ public final class Constants {
 
         public static final double kControllerDeadband = 0.15;
         public static final double kControllerTriggerThreshold = 0.7;
+
+        public static final RumbleType kRumbleType = RumbleType.kBothRumble;
+        public static final double kRumbleIntensity = 0.5;
 
         public static final OperatorControllerStates kOperatorControllerState = OperatorControllerStates.DRIVETRAIN_SYSID_TRANS;
 
@@ -168,6 +172,11 @@ public final class Constants {
         public static final boolean kRightMotorInverted = false;
 
         public static final double kOperatorControlVolts = 6;
+
+        public static final double kIntakeCurrentSpike = 35;
+        public static final double kIntakeCurrentSpikeDebounceSecs = 0.2;
+        public static final double kEjectCurrentDrop = 1;
+        public static final double kEjectCurrentDropDebounceSecs = 0.2;
     }
 
     public static class ShooterConstants {

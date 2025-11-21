@@ -232,8 +232,18 @@ public class RobotContainer {
 
         m_driverController.rightBumper()
             .onTrue(superstructureCommands.shootBalls());
-    
         
+        // Rumble when done intaking
+        m_grabber.aboveCurrentDebounced(GrabberConstants.kIntakeCurrentSpike, GrabberConstants.kIntakeCurrentSpikeDebounceSecs)
+            .and(m_driverController.leftTrigger())
+                .onTrue(Commands.runOnce(() -> m_driverController.setRumble(OIConstants.kRumbleType, OIConstants.kRumbleIntensity)))
+                .onFalse(Commands.runOnce(() -> m_driverController.setRumble(OIConstants.kRumbleType, 0)));
+                
+        // Rumble when done ejecting
+        m_grabber.belowCurrentDebounced(GrabberConstants.kEjectCurrentDrop, GrabberConstants.kEjectCurrentDropDebounceSecs)
+            .and(m_driverController.rightTrigger())
+                .onTrue(Commands.runOnce(() -> m_driverController.setRumble(OIConstants.kRumbleType, OIConstants.kRumbleIntensity)))
+                .onFalse(Commands.runOnce(() -> m_driverController.setRumble(OIConstants.kRumbleType, 0)));
     }
 
     /** Maps triggers on the operator controller to commands */
