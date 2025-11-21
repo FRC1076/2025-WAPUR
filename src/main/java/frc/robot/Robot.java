@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.SystemConstants;
@@ -62,6 +64,8 @@ public class Robot extends LoggedRobot {
         if (SystemConstants.increaseThreadPriority) {
             RobotContainer.threadCommand().schedule();
         }
+
+        CameraServer.addServer(new MjpegServer("Driver Camera", "10.10.76.11", 5801));
     }
 
     /**

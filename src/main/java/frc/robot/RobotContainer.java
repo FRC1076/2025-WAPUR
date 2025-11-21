@@ -282,8 +282,9 @@ public class RobotContainer {
         m_operatorController.rightBumper()
             .onTrue(m_shooter.applyServoAngle(0));
 
-        if (OIConstants.kOperatorControllerState == OperatorControllerStates.OPERATOR) {
-            // Operate I guess
+        // ABXY are reserved for sound effects or SysID
+        if (OIConstants.kOperatorControllerState == OperatorControllerStates.SOUNDS) {
+            // Use Kraken orchestra
         } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.DRIVETRAIN_SYSID_TRANS) {
             m_operatorController.a()
                 .and(m_operatorController.x())

@@ -49,10 +49,13 @@ public final class Constants {
         public static final RumbleType kRumbleType = RumbleType.kBothRumble;
         public static final double kRumbleIntensity = 0.5;
 
-        public static final OperatorControllerStates kOperatorControllerState = OperatorControllerStates.DRIVETRAIN_SYSID_TRANS;
+        public static final String kDriverCameraIP = "10.10.76.11";
+        public static final int kDriverCameraPort = 5801;
+
+        public static final OperatorControllerStates kOperatorControllerState = OperatorControllerStates.SOUNDS;
 
         public static enum OperatorControllerStates {
-            OPERATOR,
+            SOUNDS,
             DRIVETRAIN_SYSID_TRANS,
             DRIVETRAIN_SYSID_SPIN;
         }
