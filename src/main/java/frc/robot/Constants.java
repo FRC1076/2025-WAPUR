@@ -182,6 +182,9 @@ public final class Constants {
         public static final InvertedValue kInverted = InvertedValue.CounterClockwise_Positive;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
 
+        public static final double kServoAngleUpRad = Math.PI;
+        public static final double kServoAngleDownRad = 0;
+
         public static class Control {
             public static final double kP = 0 * (2*Math.PI);
             public static final double kI = 0 * (2*Math.PI);
@@ -325,20 +328,22 @@ public final class Constants {
 
     public static class SuperstructureConstants {
         public static enum BallStates {
-            HOME(Math.PI/2, 1.0, 0.0),
-            INTAKE_DOWN(-Math.PI/4, 1.0, 0.0),
-            INTAKING(-Math.PI/4, 1.0, 9.0),
-            SHOOT(-Math.PI/4, 200.0, 0.0),
-            SHOOT_WRIST_UP(Math.PI/2, 200.0, 0.0);
+            HOME(Math.PI/2, 1.0, 0.0, ShooterConstants.kServoAngleUpRad),
+            INTAKE_DOWN(-Math.PI/4, 1.0, 0.0,ShooterConstants.kServoAngleDownRad),
+            INTAKING(-Math.PI/4, 1.0, 9.0, ShooterConstants.kServoAngleDownRad),
+            SHOOT(-Math.PI/4, 200.0, 0.0, ShooterConstants.kServoAngleUpRad),
+            SHOOT_WRIST_UP(Math.PI/2, 200.0, 0.0, ShooterConstants.kServoAngleUpRad);
 
             public final double wristAngleRadians;
             public final double shooterRadPerSec;
             public final double intakeSpeed;
+            public final double servoAngleRad;
 
-            private BallStates (double wristAngleRadians, double shooterRadPerSec, double intakeSpeed) {
+            private BallStates (double wristAngleRadians, double shooterRadPerSec, double intakeSpeed, double servoAngleRad) {
                 this.wristAngleRadians = wristAngleRadians;
                 this.shooterRadPerSec = shooterRadPerSec;
                 this.intakeSpeed = intakeSpeed;
+                this.servoAngleRad = servoAngleRad;
             }
         }
 
@@ -358,8 +363,7 @@ public final class Constants {
             public final double elevatorHeight; 
             public final double grabberVoltage;
 
-            private CrateStates (double elevatorHeight, double grabberVoltage)
-            {
+            private CrateStates(double elevatorHeight, double grabberVoltage) {
                 this.elevatorHeight = elevatorHeight;
                 this.grabberVoltage = grabberVoltage;
             }

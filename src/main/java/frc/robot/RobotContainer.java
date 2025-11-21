@@ -270,6 +270,12 @@ public class RobotContainer {
         m_operatorController.povLeft()
             .whileTrue(superstructureCommands.manualBallsBackward());
 
+        m_operatorController.leftBumper()
+            .onTrue(m_shooter.applyServoAngle(Math.PI));
+
+        m_operatorController.rightBumper()
+            .onTrue(m_shooter.applyServoAngle(0));
+
         if (OIConstants.kOperatorControllerState == OperatorControllerStates.OPERATOR) {
             // Operate I guess
         } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.DRIVETRAIN_SYSID_TRANS) {

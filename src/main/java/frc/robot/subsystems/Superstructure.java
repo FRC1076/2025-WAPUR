@@ -106,6 +106,7 @@ public class Superstructure {
         return Commands.parallel(
             m_wrist.startPID(ballState.wristAngleRadians),
             m_shooter.applyVelocityRadPerSec(ballState.shooterRadPerSec),
+            m_shooter.applyServoAngle(ballState.servoAngleRad),
             m_intake.applyVoltage(ballState.intakeSpeed)
         );
     }
@@ -116,6 +117,7 @@ public class Superstructure {
             m_wrist.startPID(ballState.wristAngleRadians),
             Commands.parallel(
                 m_shooter.applyVelocityRadPerSec(ballState.shooterRadPerSec),
+                m_shooter.applyServoAngle(ballState.servoAngleRad),
                 m_intake.applyVoltage(ballState.intakeSpeed)
             )
         );
