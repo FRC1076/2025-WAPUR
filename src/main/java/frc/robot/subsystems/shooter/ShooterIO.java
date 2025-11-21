@@ -19,5 +19,5 @@ public interface ShooterIO {
 
     public abstract void setVelocityRadPerSec(double velocity);
 
-    public default void setServoAngleDeg(double degrees) {}
+    public default void setServoAngleRad(double radians) {}
 }

@@ -1,5 +1,8 @@
 package frc.robot;
 
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
@@ -171,17 +174,25 @@ public final class Constants {
         public static final int kMotorPort = 51;
         public static final int kServoPort = 0;
 
+        public static final int kCurrentLimit = 40;
+
         public static final double kManualShootVolts = 12;
         public static final double kManualReverseVolts = 4;
 
+        public static final InvertedValue kInverted = InvertedValue.CounterClockwise_Positive;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
+
         public static class Control {
-            public static final double kP = 0;
-            public static final double kI = 0;
-            public static final double kD = 0;
+            public static final double kP = 0 * (2*Math.PI);
+            public static final double kI = 0 * (2*Math.PI);
+            public static final double kD = 0 * (2*Math.PI);
 
             public static final double kS = 0;
-            public static final double kV = 0;
-            public static final double kA = 0;
+            public static final double kV = 0 * (2*Math.PI);
+            public static final double kA = 0 * (2*Math.PI);
+
+            public static final double kMaxAcceleration = Units.radiansToRotations(400); // Both are in s/s
+            public static final double kMaxJerk = Units.radiansToRotations(8000); // Both are in s/s/s
         }
 
         public static class ControlSim {

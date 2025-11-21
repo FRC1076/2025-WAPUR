@@ -101,21 +101,21 @@ public class Superstructure {
         );
     }
 
-    public Command setBallStateAllParallel (BallStates ballState) {
+    public Command setBallStateAllParallel(BallStates ballState) {
         m_superState.setBallState(ballState);
         return Commands.parallel(
             m_wrist.startPID(ballState.wristAngleRadians),
-            m_shooter.startPID(ballState.shooterRadPerSec),
+            m_shooter.applyVelocityRadPerSec(ballState.shooterRadPerSec),
             m_intake.applyVoltage(ballState.intakeSpeed)
         );
     }
 
-    public Command setBallStateWristFirst (BallStates ballState) {
+    public Command setBallStateWristFirst(BallStates ballState) {
         m_superState.setBallState(ballState);
         return Commands.sequence(
             m_wrist.startPID(ballState.wristAngleRadians),
             Commands.parallel(
-                m_shooter.startPID(ballState.shooterRadPerSec),
+                m_shooter.applyVelocityRadPerSec(ballState.shooterRadPerSec),
                 m_intake.applyVoltage(ballState.intakeSpeed)
             )
         );
@@ -187,7 +187,7 @@ public class Superstructure {
                     ).schedule(),
                     () -> Commands.parallel(
                         m_intake.applyVoltage(0),
-                        m_shooter.startPID(m_superState.getBallState().shooterRadPerSec)
+                        m_shooter.applyVelocityRadPerSec(m_superState.getBallState().shooterRadPerSec)
                     ).schedule(),
                     m_intake,
                     m_shooter
@@ -202,7 +202,7 @@ public class Superstructure {
                     ).schedule(),
                     () -> Commands.parallel(
                         m_intake.applyVoltage(0),
-                        m_shooter.startPID(m_superState.getBallState().shooterRadPerSec)
+                        m_shooter.applyVelocityRadPerSec(m_superState.getBallState().shooterRadPerSec)
                     ).schedule(),
                     m_intake,
                     m_shooter

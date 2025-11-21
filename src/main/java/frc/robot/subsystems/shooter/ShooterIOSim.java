@@ -41,8 +41,8 @@ public class ShooterIOSim implements ShooterIO {
     }
 
     @Override
-    public void setServoAngleDeg(double radians) {
-        indexPosition = radians / 2*Math.PI;
+    public void setServoAngleRad(double radians) {
+        indexPosition = radians;
     }
 
     @Override

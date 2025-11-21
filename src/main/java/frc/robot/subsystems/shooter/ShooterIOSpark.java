@@ -59,7 +59,7 @@ public class ShooterIOSpark implements ShooterIO {
     }
 
     @Override
-    public void setServoAngleDeg(double radians) {
+    public void setServoAngleRad(double radians) {
         m_indexer.set(radians / 2*Math.PI);
     }
     @Override
