@@ -4,21 +4,18 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Servo;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.ShooterConstants.Control;
+import lib.units.TalonFXUnitConverter;
 
 public class ShooterIOTalon implements ShooterIO {
     private final TalonFX m_motor;
     private final TalonFXConfiguration m_motorConfig;
+    private final TalonFXUnitConverter m_unitConverter;
 
     // Velocity control
     private final MotionMagicVelocityVoltage m_velocityRequest = new MotionMagicVelocityVoltage(0);
@@ -35,6 +32,7 @@ public class ShooterIOTalon implements ShooterIO {
         m_servo = new Servo(ShooterConstants.kServoPort);
 
         m_motorConfig = new TalonFXConfiguration();
+        m_unitConverter = new TalonFXUnitConverter();
 
         // Voltage and current configs
         m_motorConfig.Voltage.PeakForwardVoltage = 12;
@@ -48,15 +46,15 @@ public class ShooterIOTalon implements ShooterIO {
         m_motorConfig.MotorOutput.NeutralMode = ShooterConstants.kNeutralMode;
 
         // Closed loop
-        m_motorConfig.Slot0.kP = Control.kP;
-        m_motorConfig.Slot0.kI = Control.kI;
-        m_motorConfig.Slot0.kD = Control.kD;
-        m_motorConfig.Slot0.kS = Control.kS;  
-        m_motorConfig.Slot0.kV = Control.kV;
-        m_motorConfig.Slot0.kA = Control.kA;
+        m_motorConfig.Slot0.kP = m_unitConverter.fromSIkP(Control.kP);
+        m_motorConfig.Slot0.kI = m_unitConverter.fromSIkI(Control.kI);
+        m_motorConfig.Slot0.kD = m_unitConverter.fromSIkD(Control.kD);
+        m_motorConfig.Slot0.kS = m_unitConverter.fromSIkS(Control.kS);  
+        m_motorConfig.Slot0.kV = m_unitConverter.fromSIkV(Control.kV);
+        m_motorConfig.Slot0.kA = m_unitConverter.fromSIkA(Control.kA);
 
-        m_motorConfig.MotionMagic.MotionMagicAcceleration = Control.kMaxAcceleration;
-        m_motorConfig.MotionMagic.MotionMagicJerk = Control.kMaxJerk; 
+        m_motorConfig.MotionMagic.MotionMagicAcceleration = m_unitConverter.fromSIAccel(Control.kMaxAcceleration);
+        m_motorConfig.MotionMagic.MotionMagicJerk = m_unitConverter.fromSIJerk(Control.kMaxJerk); 
 
         // Just for fun
         m_motorConfig.Audio.AllowMusicDurDisable = true; 
@@ -77,7 +75,7 @@ public class ShooterIOTalon implements ShooterIO {
 
     @Override
     public void setVelocityRadPerSec(double velocity) {
-        m_velocityRequest.Velocity = velocity / (2*Math.PI);
+        m_velocityRequest.Velocity = m_unitConverter.fromSIVel(velocity);
         m_motor.setControl(m_velocityRequest);
     }
 
@@ -93,7 +91,7 @@ public class ShooterIOTalon implements ShooterIO {
         m_currentSignal.refresh();
 
         inputs.motorAppliedVoltage = m_voltageSignal.getValueAsDouble();
-        inputs.motorVelocityRadiansPerSecond = m_velocitySignal.getValueAsDouble() * (2*Math.PI);
+        inputs.motorVelocityRadiansPerSecond = m_unitConverter.toSIVel(m_velocitySignal.getValueAsDouble());
         inputs.motorCurrent = m_currentSignal.getValueAsDouble();
 
         inputs.servoAngle = m_servo.getAngle() * 2 * Math.PI;

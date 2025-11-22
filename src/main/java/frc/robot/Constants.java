@@ -198,16 +198,16 @@ public final class Constants {
         public static final double kServoAngleDownRad = 0;
 
         public static class Control {
-            public static final double kP = 0 * (2*Math.PI);
-            public static final double kI = 0 * (2*Math.PI);
-            public static final double kD = 0 * (2*Math.PI);
+            public static final double kP = 0;
+            public static final double kI = 0;
+            public static final double kD = 0;
 
             public static final double kS = 0;
-            public static final double kV = 0 * (2*Math.PI);
-            public static final double kA = 0 * (2*Math.PI);
+            public static final double kV = 0;
+            public static final double kA = 0;
 
-            public static final double kMaxAcceleration = Units.radiansToRotations(400); // Both are in s/s
-            public static final double kMaxJerk = Units.radiansToRotations(8000); // Both are in s/s/s
+            public static final double kMaxAcceleration = 1000;
+            public static final double kMaxJerk = 8000;
         }
 
         public static class ControlSim {

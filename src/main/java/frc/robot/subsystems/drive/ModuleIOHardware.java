@@ -195,7 +195,7 @@ public class ModuleIOHardware implements ModuleIO {
     }
 
     @Override
-    public void setDriveVelocity(double velocityMetersPerSec, double FFVolts){
+    public void setDriveVelocity(double velocityMetersPerSec, double FFVolts) {
         DrivePID.setReference(
             velocityMetersPerSec,
             ControlType.kVelocity,
@@ -205,7 +205,7 @@ public class ModuleIOHardware implements ModuleIO {
     }
 
     @Override
-    public void setTurnPosition(double positionRadians, double FFVolts){
+    public void setTurnPosition(double positionRadians, double FFVolts) {
         TurnPID.setReference(
             MathUtil.angleModulus(positionRadians),
             ControlType.kPosition,
