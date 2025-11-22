@@ -8,7 +8,7 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.ShooterConstants.ControlSim;;
+import frc.robot.Constants.ShooterConstants.ControlSim;
 
 public class ShooterIOSim implements ShooterIO {
 
