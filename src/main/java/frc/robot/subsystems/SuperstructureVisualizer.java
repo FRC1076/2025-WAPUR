@@ -56,7 +56,7 @@ public class SuperstructureVisualizer {
             new MechanismLigament2d("Fix for Wrist", 0.408, 90, 10, new Color8Bit("#f2f2f2"))
         );
         // The wrist itself
-        wrist = wristRoot.append(
+        wrist = wristRootFix.append(
             new MechanismLigament2d("Wrist", 0.3, 90, 10, new Color8Bit("#770085"))
         );
         SmartDashboard.putData("Superstructure Visualization", superstructureVis);

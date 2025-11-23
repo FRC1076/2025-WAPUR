@@ -187,6 +187,7 @@ public class RobotContainer {
         configureDriverBindings();
 
         configureOperatorBindings();
+
     }
 
     /** Maps triggers on driver controller to commands */
