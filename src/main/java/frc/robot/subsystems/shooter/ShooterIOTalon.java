@@ -10,6 +10,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Servo;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.ShooterConstants.Control;
+import frc.robot.utils.MusicUtil;
 import lib.units.TalonFXUnitConverter;
 
 public class ShooterIOTalon implements ShooterIO {
@@ -58,6 +59,7 @@ public class ShooterIOTalon implements ShooterIO {
 
         // Just for fun
         m_motorConfig.Audio.AllowMusicDurDisable = true; 
+        MusicUtil.addInstrument(m_motor);
 
         // Actually configure the motor
         m_motor.getConfigurator().apply(m_motorConfig);

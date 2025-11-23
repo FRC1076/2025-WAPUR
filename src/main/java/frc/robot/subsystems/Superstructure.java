@@ -67,6 +67,10 @@ public class Superstructure {
             m_commandFactory = new SuperstructureCommandFactory();
     }
 
+    public MutableSuperState getSuperState() {
+        return m_superState;
+    }
+
     public SuperstructureCommandFactory getCommandFactory() {
         return m_commandFactory;
     }

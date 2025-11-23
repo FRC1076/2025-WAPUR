@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.GrabberConstants;
+import frc.robot.Constants.MusicConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SystemConstants;
 import frc.robot.Constants.WristConstants;
@@ -43,15 +44,18 @@ import frc.robot.subsystems.wrist.WristIODisabled;
 import frc.robot.subsystems.wrist.WristIOHardware;
 import frc.robot.subsystems.wrist.WristIOSim;
 import frc.robot.subsystems.wrist.WristSubsystem;
+import frc.robot.utils.MusicUtil;
 import lib.hardware.hid.SamuraiXboxController;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 /**
@@ -286,6 +290,31 @@ public class RobotContainer {
         // ABXY are reserved for sound effects or SysID
         if (OIConstants.kOperatorControllerState == OperatorControllerStates.SOUNDS) {
             // Use Kraken orchestra
+            final Trigger isEnabled = new Trigger(() -> DriverStation.isEnabled());
+
+            if (MusicConstants.kMusicPathXButton.length() > 0) {
+                m_operatorController.y().and(isEnabled.negate())
+                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathXButton)));
+            }
+            
+            if (MusicConstants.kMusicPathYButton.length() > 0) {
+                m_operatorController.y().and(isEnabled.negate())
+                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathYButton)));
+            }
+            
+            if (MusicConstants.kMusicPathBButton.length() > 0) {
+                m_operatorController.y().and(isEnabled.negate())
+                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathBButton)));
+            }
+
+            // Start the track when pressed and stop when released, and restart PID for shooter
+            m_operatorController.a()
+                .onTrue(Commands.runOnce(() -> MusicUtil.playMusic()))
+                .onFalse(Commands.sequence(
+                    Commands.runOnce(() -> MusicUtil.pauseMusic()),
+                    m_shooter.applyVelocityRadPerSec(m_superstructure.getSuperState().getBallState().shooterRadPerSec)
+                ));
+            
         } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.DRIVETRAIN_SYSID_TRANS) {
             m_operatorController.a()
                 .and(m_operatorController.x())
@@ -318,6 +347,38 @@ public class RobotContainer {
             m_operatorController.b()
                 .and(m_operatorController.y())
                 .whileTrue(m_drive.CommandBuilder.sysIdDyanmicSpin(Direction.kReverse));
+        } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.ELEVATOR_SYSID) {
+            m_operatorController.a()
+                .and(m_operatorController.x())
+                .whileTrue(m_elevator.elevatorSysIdQuasistatic(Direction.kForward));
+
+            m_operatorController.a()
+                .and(m_operatorController.y())
+                .whileTrue(m_elevator.elevatorSysIdQuasistatic(Direction.kReverse));
+
+            m_operatorController.b()
+                .and(m_operatorController.x())
+                .whileTrue(m_elevator.elevatorSysIdDynamic(Direction.kForward));
+
+            m_operatorController.b()
+                .and(m_operatorController.y())
+                .whileTrue(m_elevator.elevatorSysIdDynamic(Direction.kReverse));
+        } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.WRIST_SYSID) {
+            m_operatorController.a()
+                .and(m_operatorController.x())
+                .whileTrue(m_wrist.wristSysIdQuasistatic(Direction.kForward));
+
+            m_operatorController.a()
+                .and(m_operatorController.y())
+                .whileTrue(m_wrist.wristSysIdQuasistatic(Direction.kReverse));
+
+            m_operatorController.b()
+                .and(m_operatorController.x())
+                .whileTrue(m_wrist.wristSysIdDynamic(Direction.kForward));
+
+            m_operatorController.b()
+                .and(m_operatorController.y())
+                .whileTrue(m_wrist.wristSysIdDynamic(Direction.kReverse));
         }
     }
 

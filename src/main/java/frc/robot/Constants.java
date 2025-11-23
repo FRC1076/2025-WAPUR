@@ -56,8 +56,12 @@ public final class Constants {
 
         public static enum OperatorControllerStates {
             SOUNDS,
+            NOTHING,
             DRIVETRAIN_SYSID_TRANS,
-            DRIVETRAIN_SYSID_SPIN;
+            DRIVETRAIN_SYSID_SPIN,
+            ELEVATOR_SYSID,
+            WRIST_SYSID,
+            SHOOTER_SYSID;
         }
     }
 
@@ -382,6 +386,12 @@ public final class Constants {
 
         }
 
+    }
+
+    public static class MusicConstants {
+        public static final String kMusicPathXButton = "";
+        public static final String kMusicPathYButton = "";
+        public static final String kMusicPathBButton = "";
     }
 
     // TODO: check all the constants in this class
