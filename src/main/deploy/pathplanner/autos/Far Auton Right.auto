@@ -7,25 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Forward Left"
+            "pathName": "Drive Forward Right"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Back Left"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Drive Forward Left"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Point to Shoot Left"
+            "pathName": "Drive to Shoot Right"
           }
         },
         {

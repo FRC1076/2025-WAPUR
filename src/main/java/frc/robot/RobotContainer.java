@@ -195,6 +195,25 @@ public class RobotContainer {
 
     }
 
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // Left side: drive forward then drive farther to shoot balls
+        return AutoBuilder.buildAuto("Far Auton Left");
+
+        // Right side: drive forward then drive farther to shoot balls
+        // return AutoBuilder.buildAuto("Far Auton Right");
+
+        // Left side: drive forward and shoot balls without driving out
+        // return AutoBuilder.buildAuto("Close Auton Left");
+
+        // Right side: drive forward and shoot balls without driving out
+        // return AutoBuilder.buildAuto("Close Auton Right");
+    }
+
     /** Maps triggers on driver controller to commands */
     private void configureDriverBindings() {
         final SuperstructureCommandFactory superstructureCommands = m_superstructure.getCommandFactory();
@@ -402,16 +421,6 @@ public class RobotContainer {
     public void configureNamedCommands() {
         SuperstructureCommandFactory superstructureCommands = m_superstructure.getCommandFactory();
         NamedCommands.registerCommand("Shoot Balls", superstructureCommands.shootBallsWristUp());
-    }
-
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
-        return AutoBuilder.buildAuto("Standard Auton Left");
     }
 
     /** Raise thread priority to reduce loop times */
