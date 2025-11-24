@@ -21,6 +21,7 @@ public class SuperstructureVisualizer {
     private final MechanismRoot2d elevatorRoot;
     private final MechanismLigament2d elevator;
     private final MechanismLigament2d fixOnElevator;
+    @SuppressWarnings("unused") // Needs to exist for visualization but isn't actually used anywhere
     private final MechanismLigament2d grabber;
 
     private final MechanismRoot2d wristRoot;

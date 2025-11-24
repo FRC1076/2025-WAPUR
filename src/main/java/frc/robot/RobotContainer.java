@@ -75,6 +75,7 @@ public class RobotContainer {
     // private final YoinkerSubsystem m_yoinker;
 
     private final Superstructure m_superstructure;
+    @SuppressWarnings("unused") // Just needs to be instantiated
     private final SuperstructureVisualizer m_superVis;
 
     // Drive command
@@ -379,6 +380,22 @@ public class RobotContainer {
             m_operatorController.b()
                 .and(m_operatorController.y())
                 .whileTrue(m_wrist.wristSysIdDynamic(Direction.kReverse));
+        } else if (OIConstants.kOperatorControllerState == OperatorControllerStates.SHOOTER_SYSID) {
+            m_operatorController.a()
+                .and(m_operatorController.x())
+                .whileTrue(m_shooter.shooterSysIdQuasistatic(Direction.kForward));
+
+            m_operatorController.a()
+                .and(m_operatorController.y())
+                .whileTrue(m_shooter.shooterSysIdQuasistatic(Direction.kReverse));
+
+            m_operatorController.b()
+                .and(m_operatorController.x())
+                .whileTrue(m_shooter.shooterSysIdDynamic(Direction.kForward));
+
+            m_operatorController.b()
+                .and(m_operatorController.y())
+                .whileTrue(m_shooter.shooterSysIdDynamic(Direction.kReverse));
         }
     }
 

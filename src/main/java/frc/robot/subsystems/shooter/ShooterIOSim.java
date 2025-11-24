@@ -3,12 +3,10 @@ package frc.robot.subsystems.shooter;
 import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.sim.SparkRelativeEncoderSim;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.ShooterConstants.ControlSim;
 
 public class ShooterIOSim implements ShooterIO {
 
