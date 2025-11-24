@@ -237,10 +237,9 @@ public final class Constants {
 
         public static final boolean kLeadMotorInverted = true;
 
-        public static final int kCountsPerRevolution = 8192;
         public static final double kPositionConversionFactor = 2 * Math.PI;
         public static final double kVelocityConversionFactor = 2 * Math.PI / 60;
-        public static final double kZeroOffsetRadians = 0;
+        public static final double kInitialPosition = Math.PI / 2;
 
         public static final class Control {
             public static final double kP = 0.0;

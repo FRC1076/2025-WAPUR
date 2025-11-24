@@ -7,7 +7,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkAbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -20,7 +20,7 @@ public class WristIOHardware implements WristIO {
     private final SparkMax m_leadMotor;
 
     private final SparkMaxConfig m_leadMotorConfig;
-    private final SparkAbsoluteEncoder m_absoluteEncoder;
+    private final RelativeEncoder m_encoder;
 
     public WristIOHardware() {
         m_leadMotor = new SparkMax(WristConstants.kLeadMotorPort, MotorType.kBrushless);
@@ -31,13 +31,6 @@ public class WristIOHardware implements WristIO {
             .inverted(WristConstants.kLeadMotorInverted)
             .idleMode(IdleMode.kBrake)
             .smartCurrentLimit((int) WristConstants.kSmartCurrentLimit);
- 
-
-        m_leadMotorConfig.absoluteEncoder
-            .setSparkMaxDataPortConfig()
-            .inverted(true)
-            .positionConversionFactor(WristConstants.kPositionConversionFactor)
-            .velocityConversionFactor(WristConstants.kVelocityConversionFactor);
             
         m_leadMotorConfig.encoder
             .positionConversionFactor(WristConstants.kPositionConversionFactor)
@@ -45,8 +38,9 @@ public class WristIOHardware implements WristIO {
 
         m_leadMotor.configure(m_leadMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        m_absoluteEncoder = m_leadMotor.getAbsoluteEncoder();
+        m_encoder = m_leadMotor.getEncoder();
 
+        m_encoder.setPosition(WristConstants.kInitialPosition);
     }
 
     @Override
@@ -63,8 +57,8 @@ public class WristIOHardware implements WristIO {
     public void updateInputs(WristIOInputs inputs) {
         inputs.appliedVolts = m_leadMotor.getAppliedOutput() * m_leadMotor.getBusVoltage();
         inputs.leadCurrentAmps = m_leadMotor.getOutputCurrent();
-        inputs.angleRadians = ((m_absoluteEncoder.getPosition()  - WristConstants.kZeroOffsetRadians + Math.PI) % (2 * Math.PI) - Math.PI);
-        inputs.velocityRadiansPerSecond = m_absoluteEncoder.getVelocity();
+        inputs.angleRadians = m_encoder.getPosition();
+        inputs.velocityRadiansPerSecond = m_encoder.getVelocity();
     }
 
 }
