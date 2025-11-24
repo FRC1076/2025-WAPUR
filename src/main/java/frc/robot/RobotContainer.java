@@ -231,7 +231,7 @@ public class RobotContainer {
             .onTrue(Commands.runOnce(() -> m_drive.rezeroGyro()));
 
         m_driverController.leftTrigger()
-            .onTrue(superstructureCommands.intakeCrate());
+            .whileTrue(superstructureCommands.intakeCrate());
         
         m_driverController.x()
             .onTrue(superstructureCommands.preL1());
@@ -246,13 +246,13 @@ public class RobotContainer {
             .onTrue(superstructureCommands.preL4());
 
         m_driverController.rightTrigger()
-            .onTrue(superstructureCommands.shootCrate());
+            .whileTrue(superstructureCommands.shootCrate());
 
         m_driverController.leftBumper()
-            .onTrue(superstructureCommands.intakeBalls());
+            .whileTrue(superstructureCommands.intakeBalls());
 
         m_driverController.rightBumper()
-            .onTrue(superstructureCommands.shootBalls());
+            .whileTrue(superstructureCommands.shootBallsWristUp());
         
         // Rumble when done intaking
         m_grabber.aboveCurrentDebounced(GrabberConstants.kIntakeCurrentSpike, GrabberConstants.kIntakeCurrentSpikeDebounceSecs)
@@ -314,24 +314,24 @@ public class RobotContainer {
 
             if (MusicConstants.kMusicPathXButton.length() > 0) {
                 m_operatorController.y().and(isEnabled.negate())
-                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathXButton)));
+                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathXButton)).ignoringDisable(true));
             }
             
             if (MusicConstants.kMusicPathYButton.length() > 0) {
                 m_operatorController.y().and(isEnabled.negate())
-                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathYButton)));
+                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathYButton)).ignoringDisable(true));
             }
             
             if (MusicConstants.kMusicPathBButton.length() > 0) {
                 m_operatorController.y().and(isEnabled.negate())
-                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathBButton)));
+                    .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathBButton)).ignoringDisable(true));
             }
 
             // Start the track when pressed and stop when released, and restart PID for shooter
             m_operatorController.a()
-                .onTrue(Commands.runOnce(() -> MusicUtil.playMusic()))
+                .onTrue(Commands.runOnce(() -> MusicUtil.playMusic()).ignoringDisable(true))
                 .onFalse(Commands.sequence(
-                    Commands.runOnce(() -> MusicUtil.pauseMusic()),
+                    Commands.runOnce(() -> MusicUtil.pauseMusic()).ignoringDisable(true),
                     m_shooter.applyVelocityRadPerSec(m_superstructure.getSuperState().getBallState().shooterRadPerSec)
                 ));
             

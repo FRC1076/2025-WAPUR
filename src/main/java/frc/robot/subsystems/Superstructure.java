@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants.GrabberConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SuperstructureConstants.BallStates;
@@ -141,7 +142,14 @@ public class Superstructure {
         }
 
         public Command intakeCrate() {
-            return setCrateStateElevatorFirst(CrateStates.INTAKE_CRATES);
+            return Commands.sequence(
+                setCrateStateElevatorFirst(CrateStates.INTAKE_CRATES),
+                Commands.waitUntil(m_grabber.aboveCurrentDebounced(GrabberConstants.kIntakeCurrentSpike, GrabberConstants.kIntakeCurrentSpikeDebounceSecs)),
+                Commands.runOnce(() -> {m_superState.setCrateState(CrateStates.PRE_L1);})
+            ).finallyDo(() -> Commands.either(
+                preL1(),
+                homeCrates(),
+                () -> m_superState.getCrateState() == CrateStates.PRE_L1).schedule());
         }
 
         public Command preL1(){
@@ -161,7 +169,10 @@ public class Superstructure {
         }
 
         public Command shootCrate(){
-            return setCrateStateNoElevator(preToScoringStates.getOrDefault(m_superState.getCrateState(),CrateStates.SHOOT_L1));
+            CrateStates previousState = m_superState.getCrateState();
+
+            return setCrateStateNoElevator(preToScoringStates.getOrDefault(m_superState.getCrateState(),CrateStates.SHOOT_L1))
+                .finallyDo(() -> setCrateStateAllParallel(previousState).schedule());
         }
 
         public Command homeBalls(){
@@ -173,15 +184,18 @@ public class Superstructure {
         }
 
         public Command intakeBalls(){
-            return setBallStateWristFirst(BallStates.INTAKING);
+            return setBallStateWristFirst(BallStates.INTAKING)
+                .finallyDo(() -> homeBalls().schedule());
         }
 
         public Command shootBalls(){
-            return setBallStateAllParallel(BallStates.SHOOT);
+            return setBallStateAllParallel(BallStates.SHOOT)
+                .finallyDo(() -> homeBalls().schedule());
         }
 
         public Command shootBallsWristUp(){
-            return setBallStateWristFirst(BallStates.SHOOT_WRIST_UP);
+            return setBallStateWristFirst(BallStates.SHOOT_WRIST_UP)
+                .finallyDo(() -> homeBalls().schedule());
         }
 
         public Command manualBallsForward() {
