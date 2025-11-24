@@ -181,9 +181,9 @@ public final class Constants {
         public static final double kOperatorControlVolts = 6;
 
         public static final double kIntakeCurrentSpike = 35;
-        public static final double kIntakeCurrentSpikeDebounceSecs = 0.2;
+        public static final double kIntakeCurrentSpikeDebounceSecs = 0.1;
         public static final double kEjectCurrentDrop = 5;
-        public static final double kEjectCurrentDropDebounceSecs = 0.2;
+        public static final double kEjectCurrentDropDebounceSecs = 0.1;
     }
 
     public static class ShooterConstants {

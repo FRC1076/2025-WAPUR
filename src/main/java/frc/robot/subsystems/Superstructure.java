@@ -4,9 +4,11 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.GrabberConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.Constants.SuperstructureConstants.BallStates;
 import frc.robot.Constants.SuperstructureConstants.CrateStates;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -101,6 +103,7 @@ public class Superstructure {
         m_superState.setCrateState(crateState);
         return Commands.sequence(
             m_elevator.startPID(crateState.elevatorHeight),
+            Commands.waitUntil(() -> m_elevator.withinTolerance(ElevatorConstants.elevatorPositionToleranceMeters)),
             m_grabber.applyVoltage(crateState.grabberVoltage)
         );
     }
@@ -119,6 +122,7 @@ public class Superstructure {
         m_superState.setBallState(ballState);
         return Commands.sequence(
             m_wrist.startPID(ballState.wristAngleRadians),
+            Commands.waitUntil(() -> m_wrist.withinTolerance(WristConstants.wristAngleToleranceRadians)),
             Commands.parallel(
                 m_shooter.applyVelocityRadPerSec(ballState.shooterRadPerSec),
                 m_shooter.applyServoAngle(ballState.servoAngleRad),
