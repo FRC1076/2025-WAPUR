@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Home Balls"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 0.3

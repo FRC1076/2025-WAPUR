@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Home Balls"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Drive Forward Left"
@@ -27,6 +33,18 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Home Balls"
           }
         }
       ]

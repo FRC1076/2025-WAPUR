@@ -343,11 +343,11 @@ public final class Constants {
 
     public static class SuperstructureConstants {
         public static enum BallStates {
-            HOME(Math.PI/2, 1.0, 0.0, ShooterConstants.kServoAngleUpRad),
-            INTAKE_DOWN(-Math.PI/4, 1.0, 0.0,ShooterConstants.kServoAngleDownRad),
-            INTAKING(-Math.PI/4, 1.0, 9.0, ShooterConstants.kServoAngleDownRad),
-            SHOOT(-Math.PI/4, 200.0, 0.0, ShooterConstants.kServoAngleUpRad),
-            SHOOT_WRIST_UP(Math.PI/2, 200.0, 0.0, ShooterConstants.kServoAngleUpRad);
+            HOME(Math.PI/2,200.0, 0.0, ShooterConstants.kServoAngleUpRad),
+            INTAKE_DOWN(-Math.PI/4,200.0, 0.0,ShooterConstants.kServoAngleDownRad),
+            INTAKING(-Math.PI/4,200.0, 9.0, ShooterConstants.kServoAngleDownRad),
+            SHOOT(-Math.PI/4, 450.0, 0.0, ShooterConstants.kServoAngleUpRad),
+            SHOOT_WRIST_UP(Math.PI/2, 450.0, 0.0, ShooterConstants.kServoAngleUpRad);
 
             public final double wristAngleRadians;
             public final double shooterRadPerSec;

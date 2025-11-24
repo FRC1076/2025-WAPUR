@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Home Balls"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Drive Forward Right"
