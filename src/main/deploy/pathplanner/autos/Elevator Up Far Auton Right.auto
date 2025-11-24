@@ -5,9 +5,33 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Pre L2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Drive Forward Right"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pre L1"
           }
         },
         {

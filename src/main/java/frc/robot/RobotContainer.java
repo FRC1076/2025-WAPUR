@@ -207,6 +207,12 @@ public class RobotContainer {
         // Right side: drive forward then drive farther to shoot balls
         // return AutoBuilder.buildAuto("Far Auton Right");
 
+        // Left side: drive forward then drive farther to shoot balls; elevator up to push more crates
+        // return AutoBuilder.buildAuto("Elevator Up Far Auton Left");
+
+        // Right side: drive forward then drive farther to shoot balls; elevator up to push more crates
+        // return AutoBuilder.buildAuto("Elevator Up Far Auton Right");
+
         // Left side: drive forward and shoot balls without driving out
         // return AutoBuilder.buildAuto("Close Auton Left");
 
@@ -420,7 +426,10 @@ public class RobotContainer {
 
     public void configureNamedCommands() {
         SuperstructureCommandFactory superstructureCommands = m_superstructure.getCommandFactory();
+        NamedCommands.registerCommand("Pre L1", superstructureCommands.preL1());
+        NamedCommands.registerCommand("Pre L2", superstructureCommands.preL2());
         NamedCommands.registerCommand("Shoot Balls", superstructureCommands.shootBallsWristUp());
+        NamedCommands.registerCommand("Home Balls", superstructureCommands.homeBalls());
     }
 
     /** Raise thread priority to reduce loop times */
