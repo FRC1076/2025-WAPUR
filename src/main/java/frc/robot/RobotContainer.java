@@ -323,6 +323,12 @@ public class RobotContainer {
         m_operatorController.rightBumper()
             .onTrue(m_shooter.applyServoAngle(0));
 
+        m_operatorController.start()
+            .onTrue(m_elevator.autoHome());
+
+        m_operatorController.back()
+            .onTrue(m_shooter.applyVoltage(0));
+
         // ABXY are reserved for sound effects or SysID
         if (OIConstants.kOperatorControllerState == OperatorControllerStates.SOUNDS) {
             // Use Kraken orchestra
