@@ -175,7 +175,7 @@ public final class Constants {
         public static final double kPositionConversionFactor = Math.PI * 2 * (1/kGearRatio);
         public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
 
-        public static final boolean kLeftMotorInverted = true; // TODO: check inversions based on other code
+        public static final boolean kLeftMotorInverted = true; // TODO: check inversions based on unpushed code
         public static final boolean kRightMotorInverted = false;
 
         public static final double kOperatorControlVolts = 6;
@@ -208,7 +208,7 @@ public final class Constants {
             public static final double kD = 0;
 
             public static final double kS = 0;
-            public static final double kV = 0.2;
+            public static final double kV = 0.02;
             public static final double kA = 0;
 
             public static final double kMaxAcceleration = 1000;
@@ -344,9 +344,9 @@ public final class Constants {
 
     public static class SuperstructureConstants {
         public static enum BallStates {
-            HOME(Math.PI/2,200.0, 0.0, ShooterConstants.kServoAngleDownRad),
-            INTAKE_DOWN(-Math.PI/4,200.0, 0.0,ShooterConstants.kServoAngleDownRad),
-            INTAKING(-Math.PI/4,200.0, 9.0, ShooterConstants.kServoAngleDownRad),
+            HOME(Math.PI/2,250.0, 0.0, ShooterConstants.kServoAngleDownRad),
+            INTAKE_DOWN(-Math.PI/4,250.0, 0.0,ShooterConstants.kServoAngleDownRad),
+            INTAKING(-Math.PI/4,250.0, 9.0, ShooterConstants.kServoAngleDownRad),
             SHOOT(-Math.PI/4, 450.0, 0.0, ShooterConstants.kServoAngleUpRad),
             SHOOT_WRIST_UP(Math.PI/2, 450.0, 0.0, ShooterConstants.kServoAngleUpRad);
 
