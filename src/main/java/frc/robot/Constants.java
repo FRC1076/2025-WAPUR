@@ -198,8 +198,8 @@ public final class Constants {
         public static final InvertedValue kInverted = InvertedValue.Clockwise_Positive;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
 
-        public static final double kServoAngleUpRad = Math.PI;
-        public static final double kServoAngleDownRad = 0;
+        public static final double kServoAngleUpRad = (2*Math.PI) / 3; 
+        public static final double kServoAngleDownRad = Math.PI / 2; // TODO: check these angles, they are estimates
 
         public static class Control {
             // TODO: make these more aggressive, maybe?
@@ -208,11 +208,11 @@ public final class Constants {
             public static final double kD = 0;
 
             public static final double kS = 0;
-            public static final double kV = 0.02;
+            public static final double kV = 0.025;
             public static final double kA = 0;
 
-            public static final double kMaxAcceleration = 1000;
-            public static final double kMaxJerk = 8000;
+            public static final double kMaxAcceleration = 2000;
+            public static final double kMaxJerk = 16000;
         }
 
         public static class ControlSim {
@@ -344,9 +344,9 @@ public final class Constants {
 
     public static class SuperstructureConstants {
         public static enum BallStates {
-            HOME(Math.PI/2,250.0, 0.0, ShooterConstants.kServoAngleDownRad),
-            INTAKE_DOWN(-Math.PI/4,250.0, 0.0,ShooterConstants.kServoAngleDownRad),
-            INTAKING(-Math.PI/4,250.0, 9.0, ShooterConstants.kServoAngleDownRad),
+            HOME(Math.PI/2,300.0, 0.0, ShooterConstants.kServoAngleDownRad),
+            INTAKE_DOWN(-Math.PI/4,300.0, 0.0,ShooterConstants.kServoAngleDownRad),
+            INTAKING(-Math.PI/4,300.0, 9.0, ShooterConstants.kServoAngleDownRad),
             SHOOT(-Math.PI/4, 450.0, 0.0, ShooterConstants.kServoAngleUpRad),
             SHOOT_WRIST_UP(Math.PI/2, 450.0, 0.0, ShooterConstants.kServoAngleUpRad);
 
