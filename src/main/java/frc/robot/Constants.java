@@ -41,13 +41,13 @@ public final class Constants {
 
     public static class OIConstants {
         public static final int kDriverControllerPort = 0;
-        public static final int kOperatorControllerPort = 0;
+        public static final int kOperatorControllerPort = 1;
 
         public static final double kControllerDeadband = 0.15;
         public static final double kControllerTriggerThreshold = 0.7;
 
         public static final RumbleType kRumbleType = RumbleType.kBothRumble;
-        public static final double kRumbleIntensity = 0.5;
+        public static final double kRumbleIntensity = 1;
 
         public static final String kDriverCameraIP = "10.10.76.11";
         public static final int kDriverCameraPort = 5801;
@@ -66,7 +66,7 @@ public final class Constants {
     }
 
     public static class SystemConstants {
-        public static final RobotMode currentMode = RobotMode.SIM;
+        public static final RobotMode currentMode = RobotMode.REAL;
         
         public static final boolean signalLoggerEnabled = false;
         public static final boolean increaseThreadPriority = true;
@@ -103,7 +103,7 @@ public final class Constants {
         public static final double kGearRatio = 10.909; // TODO: Confirm is this is double the 60:11 ratio because of the two chains
         public static final double kElevatorStages = 3;
         public static final double kSprocketToothCount = 22;
-        public static final double kSprocketPitch = Units.inchesToMeters(1/4); // Pitch is the distance between two adjacent teeth
+        public static final double kSprocketPitch = Units.inchesToMeters(1.0/4); // Pitch is the distance between two adjacent teeth
         public static final double kPositionConversionFactor = ((kSprocketToothCount * kSprocketPitch) / kGearRatio) * kElevatorStages; // TODO: Confirm conversion factors
         public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0; // 60 converts from minutes to seconds
         
@@ -134,7 +134,7 @@ public final class Constants {
             public static final double kV = 3.0126;
             public static final double kA = 0.73282;
 
-            public static final Constraints kProfileConstraints = new Constraints(3, 5.25);
+            public static final Constraints kProfileConstraints = new Constraints(3, 3);
         }
     }
 
@@ -167,47 +167,48 @@ public final class Constants {
     }
 
     public static final class GrabberConstants {
-        public static final int kLeftMotorPort = 41;
-        public static final int kRightMotorPort = 42;
+        public static final int kLeftMotorPort = 38;
+        public static final int kRightMotorPort = 39;
         
         public static final double kCurrentLimit = 40; 
         public static final double kGearRatio = 12;
         public static final double kPositionConversionFactor = Math.PI * 2 * (1/kGearRatio);
         public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
 
-        public static final boolean kLeftMotorInverted = true;
+        public static final boolean kLeftMotorInverted = true; // TODO: check inversions based on other code
         public static final boolean kRightMotorInverted = false;
 
         public static final double kOperatorControlVolts = 6;
 
-        public static final double kIntakeCurrentSpike = 35;
+        public static final double kIntakeCurrentSpike = 30;
         public static final double kIntakeCurrentSpikeDebounceSecs = 0.1;
-        public static final double kEjectCurrentDrop = 5;
+        public static final double kEjectCurrentDrop = 6;
         public static final double kEjectCurrentDropDebounceSecs = 0.1;
     }
 
     public static class ShooterConstants {
-        public static final int kMotorPort = 51;
-        public static final int kServoPort = 0;
+        public static final int kMotorPort = 43; // TODO: check this based on unpushed code
+        public static final int kServoPort = 9;
 
         public static final int kCurrentLimit = 40;
 
         public static final double kManualShootVolts = 12;
         public static final double kManualReverseVolts = 4;
 
-        public static final InvertedValue kInverted = InvertedValue.CounterClockwise_Positive;
+        public static final InvertedValue kInverted = InvertedValue.Clockwise_Positive;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
 
         public static final double kServoAngleUpRad = Math.PI;
         public static final double kServoAngleDownRad = 0;
 
         public static class Control {
-            public static final double kP = 0;
+            // TODO: make these more aggressive, maybe?
+            public static final double kP = 1;
             public static final double kI = 0;
             public static final double kD = 0;
 
             public static final double kS = 0;
-            public static final double kV = 0;
+            public static final double kV = 0.2;
             public static final double kA = 0;
 
             public static final double kMaxAcceleration = 1000;
@@ -215,18 +216,18 @@ public final class Constants {
         }
 
         public static class ControlSim {
-            public static final double kP = 0;
+            public static final double kP = 1;
             public static final double kI = 0;
             public static final double kD = 0;
 
             public static final double kS = 0;
-            public static final double kV = 0;
+            public static final double kV = 0.02;
             public static final double kA = 0;
         }
     }
 
     public static class WristConstants {
-        public static final int kLeadMotorPort = 61;
+        public static final int kLeadMotorPort = 42; // TODO: check based on unpushed code
 
         public static final double wristAngleToleranceRadians = 0.1;
         public static final double kMinWristAngleRadians = -Math.PI / 4;
@@ -235,7 +236,7 @@ public final class Constants {
         public static final double maxOperatorControlVolts = 1;
         public static final double kSmartCurrentLimit = 40.0;
 
-        public static final boolean kLeadMotorInverted = true;
+        public static final boolean kLeadMotorInverted = false;
 
         public static final double kPositionConversionFactor = 2 * Math.PI;
         public static final double kVelocityConversionFactor = 2 * Math.PI / 60;
@@ -280,10 +281,10 @@ public final class Constants {
     }
 
     public static class IntakeConstants {
-        public static final int kMotorPort = 0;
+        public static final int kMotorPort = 41;
 
-        public static final double kManualIntakeVolts = 10;
-        public static final double kManualEjectVolts = 4;
+        public static final double kManualIntakeVolts = 6;
+        public static final double kManualEjectVolts = 3;
     }
 
     public static class YoinkerConstants {
@@ -343,7 +344,7 @@ public final class Constants {
 
     public static class SuperstructureConstants {
         public static enum BallStates {
-            HOME(Math.PI/2,200.0, 0.0, ShooterConstants.kServoAngleUpRad),
+            HOME(Math.PI/2,200.0, 0.0, ShooterConstants.kServoAngleDownRad),
             INTAKE_DOWN(-Math.PI/4,200.0, 0.0,ShooterConstants.kServoAngleDownRad),
             INTAKING(-Math.PI/4,200.0, 9.0, ShooterConstants.kServoAngleDownRad),
             SHOOT(-Math.PI/4, 450.0, 0.0, ShooterConstants.kServoAngleUpRad),
@@ -365,15 +366,15 @@ public final class Constants {
         public static enum CrateStates {
             HOME(0.0,0.0),
             INTAKE_CRATES(0.0,-6.0),
-            TRAVEL(0.2,0.0),
-            PRE_L1(0.2,0.0),
-            PRE_L2(0.6,0.0),
-            PRE_L3(1.0,0.0),
-            PRE_L4(1.4,0.0),
-            SHOOT_L1(0.2,6.0),
-            SHOOT_L2(0.6,6.0),
-            SHOOT_L3(1.0,6.0),
-            SHOOT_L4(1.4,6.0);
+            TRAVEL(0.025,0.0),
+            PRE_L1(0.025,0.0),
+            PRE_L2(0.4,0.0),
+            PRE_L3(0.8,0.0),
+            PRE_L4(1.1,0.0),
+            SHOOT_L1(0.025,6.0),
+            SHOOT_L2(0.4,6.0),
+            SHOOT_L3(0.8,6.0),
+            SHOOT_L4(1.2,6.0);
 
             public final double elevatorHeight; 
             public final double grabberVoltage;

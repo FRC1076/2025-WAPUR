@@ -47,7 +47,7 @@ public class GyroIOPigeon implements GyroIO {
 
     @Override
     public void reset() {
-        m_gyro.reset();
+        m_gyro.setYaw(180);
     }
 
     @Override
