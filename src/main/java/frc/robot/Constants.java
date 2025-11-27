@@ -420,6 +420,7 @@ public final class Constants {
 
         public static class GyroConstants {
             public static final int kGyroPort = 9; // ONLY used if Gyro is a Pigeon
+            public static final double kGyroZero = Units.radiansToDegrees(Math.PI);
         }
 
         public static class ModuleConstants {

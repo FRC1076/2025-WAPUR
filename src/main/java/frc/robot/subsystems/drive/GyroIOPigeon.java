@@ -8,21 +8,25 @@
 // in the root directory of this file
 
 package frc.robot.subsystems.drive;
-import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
-import com.ctre.phoenix6.hardware.Pigeon2;
+
 import static frc.robot.Constants.DriveConstants.GyroConstants.kGyroPort;
-import static edu.wpi.first.units.Units.Radians;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static frc.robot.Constants.DriveConstants.GyroConstants.kGyroZero;
 import static frc.robot.Constants.DriveConstants.odometryFrequencyHz;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.*;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
+
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 /* Designed to work with CTRE Pigeon 2 */
 public class GyroIOPigeon implements GyroIO {
@@ -37,7 +41,7 @@ public class GyroIOPigeon implements GyroIO {
     
     public GyroIOPigeon() {
         m_gyro.getConfigurator().apply(new Pigeon2Configuration());
-        m_gyro.getConfigurator().setYaw(0.0);
+        m_gyro.getConfigurator().setYaw(kGyroZero);
         yaw.setUpdateFrequency(odometryFrequencyHz);
         yawVelocity.setUpdateFrequency(50);
         //m_gyro.optimizeBusUtilization();
@@ -47,7 +51,7 @@ public class GyroIOPigeon implements GyroIO {
 
     @Override
     public void reset() {
-        m_gyro.setYaw(180);
+        m_gyro.setYaw(kGyroZero);
     }
 
     @Override
