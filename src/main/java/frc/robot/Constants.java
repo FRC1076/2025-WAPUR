@@ -175,7 +175,7 @@ public final class Constants {
         public static final double kPositionConversionFactor = Math.PI * 2 * (1/kGearRatio);
         public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
 
-        public static final boolean kLeftMotorInverted = true; // TODO: check inversions based on unpushed code
+        public static final boolean kLeftMotorInverted = true;
         public static final boolean kRightMotorInverted = false;
 
         public static final double kOperatorControlVolts = 6;
@@ -187,7 +187,7 @@ public final class Constants {
     }
 
     public static class ShooterConstants {
-        public static final int kMotorPort = 43; // TODO: check this based on unpushed code
+        public static final int kMotorPort = 43;
         public static final int kServoPort = 9;
 
         public static final int kCurrentLimit = 40;
@@ -227,7 +227,7 @@ public final class Constants {
     }
 
     public static class WristConstants {
-        public static final int kLeadMotorPort = 41; // TODO: check based on unpushed code
+        public static final int kLeadMotorPort = 41;
 
         public static final double wristAngleToleranceRadians = 0.1;
         public static final double kMinWristAngleRadians = -Math.PI / 4;
