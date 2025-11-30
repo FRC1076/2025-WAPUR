@@ -180,9 +180,9 @@ public final class Constants {
 
         public static final double kOperatorControlVolts = 6;
 
-        public static final double kIntakeCurrentSpike = 30;
+        public static final double kIntakeCurrentSpike = 20;
         public static final double kIntakeCurrentSpikeDebounceSecs = 0.1;
-        public static final double kEjectCurrentDrop = 6;
+        public static final double kEjectCurrentDrop = 8;
         public static final double kEjectCurrentDropDebounceSecs = 0.1;
     }
 
@@ -198,7 +198,7 @@ public final class Constants {
         public static final InvertedValue kInverted = InvertedValue.Clockwise_Positive;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
 
-        public static final double kServoAngleUpRad = (2*Math.PI) / 3; 
+        public static final double kServoAngleUpRad = Math.PI; 
         public static final double kServoAngleDownRad = Math.PI / 2; // TODO: check these angles, they are estimates
 
         public static class Control {
@@ -211,8 +211,8 @@ public final class Constants {
             public static final double kV = 0.025;
             public static final double kA = 0;
 
-            public static final double kMaxAcceleration = 2000;
-            public static final double kMaxJerk = 16000;
+            public static final double kMaxAcceleration = 20000;
+            public static final double kMaxJerk = 160000;
         }
 
         public static class ControlSim {
@@ -347,8 +347,8 @@ public final class Constants {
             HOME(Math.PI/2,300.0, 0.0, ShooterConstants.kServoAngleDownRad),
             INTAKE_DOWN(-Math.PI/4,300.0, 0.0,ShooterConstants.kServoAngleDownRad),
             INTAKING(-Math.PI/4,300.0, 4.0, ShooterConstants.kServoAngleDownRad),
-            SHOOT(-Math.PI/4, 450.0, 0.0, ShooterConstants.kServoAngleUpRad),
-            SHOOT_WRIST_UP(Math.PI/2, 450.0, 0.0, ShooterConstants.kServoAngleUpRad);
+            SHOOT(-Math.PI/4, 700.0, 0.0, ShooterConstants.kServoAngleUpRad),
+            SHOOT_WRIST_UP(Math.PI/2, 700.0, 0.0, ShooterConstants.kServoAngleUpRad);
 
             public final double wristAngleRadians;
             public final double shooterRadPerSec;
@@ -368,9 +368,9 @@ public final class Constants {
             INTAKE_CRATES(0.0,-6.0),
             TRAVEL(0.025,0.0),
             PRE_L1(0.025,0.0),
-            PRE_L2(0.4,0.0),
-            PRE_L3(0.8,0.0),
-            PRE_L4(1.1,0.0),
+            PRE_L2(0.486,0.0),
+            PRE_L3(0.823,0.0),
+            PRE_L4(1.21,0.0),
             SHOOT_L1(0.025,6.0),
             SHOOT_L2(0.4,6.0),
             SHOOT_L3(0.8,6.0),
@@ -397,7 +397,7 @@ public final class Constants {
     // TODO: check all the constants in this class
     public static class DriveConstants {
         public static final double maxTranslationSpeedMPS = Units.feetToMeters(5);
-        public static final double maxRotationSpeedRadPerSec = 4; // originally set to 2 // Maximum acceptable value appears to be 12
+        public static final double maxRotationSpeedRadPerSec = 3; // originally set to 2 // Maximum acceptable value appears to be 12
 
         public static final boolean useSpeedScaling = true;
 

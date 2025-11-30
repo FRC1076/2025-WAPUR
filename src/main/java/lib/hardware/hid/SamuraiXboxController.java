@@ -75,11 +75,11 @@ public class SamuraiXboxController extends CommandXboxController {
     }
 
     public Trigger leftActive() {
-        return new Trigger(() -> getLeftX() != 0 || getLeftY() != 0);
+        return new Trigger(() -> (getLeftX() != 0 || getLeftY() != 0));
     }
 
     public Trigger rightActive() {
-        return new Trigger(() -> getRightX() != 0 || getRightY() != 0);
+        return new Trigger(() -> (getRightX() != 0 || getRightY() != 0));
     }
 
     @Override

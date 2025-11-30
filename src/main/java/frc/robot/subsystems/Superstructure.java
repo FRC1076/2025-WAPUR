@@ -201,7 +201,7 @@ public class Superstructure {
         }
 
         public Command intakeBalls(){
-            return setBallStateWristFirst(BallStates.INTAKING);
+            return setBallStateAllParallel(BallStates.INTAKING);
         }
 
         public Command shootBalls(){
@@ -209,7 +209,7 @@ public class Superstructure {
         }
 
         public Command shootBallsWristUp(){
-            return setBallStateWristFirst(BallStates.SHOOT_WRIST_UP);
+            return setBallStateAllParallel(BallStates.SHOOT_WRIST_UP);
         }
 
         public Command manualBallsForward() {

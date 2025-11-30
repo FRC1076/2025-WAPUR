@@ -289,7 +289,7 @@ public class RobotContainer {
         m_operatorController.leftActive()
             .whileTrue(
                 m_elevator.runVoltageUnrestricted(
-                    () -> m_operatorController.getLeftY() * ElevatorConstants.defaultMaxOperatorControlVolts
+                    () -> -m_operatorController.getLeftY() * ElevatorConstants.defaultMaxOperatorControlVolts
                 )
             )
             .onFalse(m_elevator.applyVoltageUnrestricted(0));
@@ -297,7 +297,7 @@ public class RobotContainer {
         m_operatorController.rightActive()
             .whileTrue( 
                 m_wrist.runVoltageUnrestricted(
-                    () -> m_operatorController.getRightY() * WristConstants.maxOperatorControlVolts
+                    () -> -m_operatorController.getRightY() * WristConstants.maxOperatorControlVolts
                 )
             )
             .onFalse(m_elevator.applyVoltageUnrestricted(0));
