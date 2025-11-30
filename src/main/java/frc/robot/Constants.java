@@ -227,7 +227,7 @@ public final class Constants {
     }
 
     public static class WristConstants {
-        public static final int kLeadMotorPort = 42; // TODO: check based on unpushed code
+        public static final int kLeadMotorPort = 41; // TODO: check based on unpushed code
 
         public static final double wristAngleToleranceRadians = 0.1;
         public static final double kMinWristAngleRadians = -Math.PI / 4;
@@ -281,10 +281,10 @@ public final class Constants {
     }
 
     public static class IntakeConstants {
-        public static final int kMotorPort = 41;
+        public static final int kMotorPort = 42;
 
-        public static final double kManualIntakeVolts = 6;
-        public static final double kManualEjectVolts = 3;
+        public static final double kManualIntakeVolts = 4;
+        public static final double kManualEjectVolts = 2;
     }
 
     public static class YoinkerConstants {
@@ -346,7 +346,7 @@ public final class Constants {
         public static enum BallStates {
             HOME(Math.PI/2,300.0, 0.0, ShooterConstants.kServoAngleDownRad),
             INTAKE_DOWN(-Math.PI/4,300.0, 0.0,ShooterConstants.kServoAngleDownRad),
-            INTAKING(-Math.PI/4,300.0, 9.0, ShooterConstants.kServoAngleDownRad),
+            INTAKING(-Math.PI/4,300.0, 4.0, ShooterConstants.kServoAngleDownRad),
             SHOOT(-Math.PI/4, 450.0, 0.0, ShooterConstants.kServoAngleUpRad),
             SHOOT_WRIST_UP(Math.PI/2, 450.0, 0.0, ShooterConstants.kServoAngleUpRad);
 
