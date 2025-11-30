@@ -9,6 +9,7 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.GrabberConstants;
 import frc.robot.Constants.MusicConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SystemConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.Constants.DriveConstants.ModuleConstants.ModuleConfig;
@@ -318,10 +319,10 @@ public class RobotContainer {
             .onFalse(superstructureCommands.endManualBallControl());
 
         m_operatorController.leftBumper()
-            .onTrue(m_shooter.applyServoAngle(Math.PI));
+            .onTrue(m_shooter.applyServoAngle(ShooterConstants.kServoAngleUpRad));
 
         m_operatorController.rightBumper()
-            .onTrue(m_shooter.applyServoAngle(0));
+            .onTrue(m_shooter.applyServoAngle(ShooterConstants.kServoAngleDownRad));
 
         m_operatorController.start()
             .onTrue(m_elevator.autoHome());
@@ -335,7 +336,7 @@ public class RobotContainer {
             final Trigger isEnabled = new Trigger(() -> DriverStation.isEnabled());
 
             if (MusicConstants.kMusicPathXButton.length() > 0) {
-                m_operatorController.y().and(isEnabled.negate())
+                m_operatorController.x().and(isEnabled.negate())
                     .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathXButton)).ignoringDisable(true));
             }
             
@@ -345,7 +346,7 @@ public class RobotContainer {
             }
             
             if (MusicConstants.kMusicPathBButton.length() > 0) {
-                m_operatorController.y().and(isEnabled.negate())
+                m_operatorController.b().and(isEnabled.negate())
                     .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathBButton)).ignoringDisable(true));
             }
 
