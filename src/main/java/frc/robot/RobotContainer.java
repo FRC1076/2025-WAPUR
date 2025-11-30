@@ -9,6 +9,7 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.GrabberConstants;
 import frc.robot.Constants.MusicConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SystemConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.Constants.DriveConstants.ModuleConstants.ModuleConfig;
@@ -37,7 +38,7 @@ import frc.robot.subsystems.intake.IntakeIOHardware;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterIODisabled;
-import frc.robot.subsystems.shooter.ShooterIOSpark;
+import frc.robot.subsystems.shooter.ShooterIOTalon;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.wrist.WristIODisabled;
@@ -104,7 +105,7 @@ public class RobotContainer {
             m_elevator = new ElevatorSubsystem(new ElevatorIOHardware());
             m_grabber = new GrabberSubsystem(new GrabberIOHardware());
             m_intake = new IntakeSubsystem(new IntakeIOHardware());
-            m_shooter = new ShooterSubsystem(new ShooterIOSpark());
+            m_shooter = new ShooterSubsystem(new ShooterIOTalon());
             m_wrist = new WristSubsystem(new WristIOHardware());
             // m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
         } else if (SystemConstants.currentMode == RobotMode.REAL_NO_MECHANISMS) {
@@ -132,7 +133,7 @@ public class RobotContainer {
             m_elevator = new ElevatorSubsystem(new ElevatorIOHardware());
             m_grabber = new GrabberSubsystem(new GrabberIOHardware());
             m_intake = new IntakeSubsystem(new IntakeIOHardware());
-            m_shooter = new ShooterSubsystem(new ShooterIOSpark());
+            m_shooter = new ShooterSubsystem(new ShooterIOTalon());
             m_wrist = new WristSubsystem(new WristIOHardware());
             // m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
         } else if (SystemConstants.currentMode == RobotMode.SIM) {
@@ -188,6 +189,8 @@ public class RobotContainer {
 
         m_drive.setDefaultCommand(driveCommand);
 
+        m_shooter.applyVelocityRadPerSec(m_superstructure.getSuperState().getBallState().shooterRadPerSec); // Start with the shooter running
+
         // Configure controller bindings
         configureDriverBindings();
 
@@ -224,6 +227,7 @@ public class RobotContainer {
     private void configureDriverBindings() {
         final SuperstructureCommandFactory superstructureCommands = m_superstructure.getCommandFactory();
 
+        /* No clutches
         // Apply single clutch
         m_driverController.leftBumper()
             .whileTrue(driveCommand.applySingleClutch());
@@ -231,13 +235,15 @@ public class RobotContainer {
         // Apply double clutch
         m_driverController.rightBumper()
             .whileTrue(driveCommand.applyDoubleClutch());
+        */
 
         // Re-zero gyro
         m_driverController.start()
             .onTrue(Commands.runOnce(() -> m_drive.rezeroGyro()));
 
         m_driverController.leftTrigger()
-            .whileTrue(superstructureCommands.intakeCrate());
+            .whileTrue(superstructureCommands.intakeCrate())
+            .onFalse(superstructureCommands.endIntakeCrate());
         
         m_driverController.x()
             .onTrue(superstructureCommands.preL1());
@@ -252,13 +258,16 @@ public class RobotContainer {
             .onTrue(superstructureCommands.preL4());
 
         m_driverController.rightTrigger()
-            .whileTrue(superstructureCommands.shootCrate());
+            .whileTrue(superstructureCommands.shootCrate())
+            .onFalse(superstructureCommands.endShootCrate());
 
         m_driverController.leftBumper()
-            .whileTrue(superstructureCommands.intakeBalls());
+            .whileTrue(superstructureCommands.intakeBalls())
+            .onFalse(superstructureCommands.homeBalls());
 
         m_driverController.rightBumper()
-            .whileTrue(superstructureCommands.shootBallsWristUp());
+            .whileTrue(superstructureCommands.shootBallsWristUp())
+            .onFalse(superstructureCommands.homeBalls());
         
         // Rumble when done intaking
         m_grabber.aboveCurrentDebounced(GrabberConstants.kIntakeCurrentSpike, GrabberConstants.kIntakeCurrentSpikeDebounceSecs)
@@ -279,17 +288,17 @@ public class RobotContainer {
 
         m_operatorController.leftActive()
             .whileTrue(
-                m_elevator.applyVoltageUnrestricted(
-                    m_operatorController.getLeftY()
-                     * ElevatorConstants.defaultMaxOperatorControlVolts)
+                m_elevator.runVoltageUnrestricted(
+                    () -> -m_operatorController.getLeftY() * ElevatorConstants.defaultMaxOperatorControlVolts
+                )
             )
             .onFalse(m_elevator.applyVoltageUnrestricted(0));
 
         m_operatorController.rightActive()
             .whileTrue( 
-                m_wrist.applyVoltageUnrestricted(
-                    m_operatorController.getRightY() 
-                        * WristConstants.maxOperatorControlVolts)
+                m_wrist.runVoltageUnrestricted(
+                    () -> -m_operatorController.getRightY() * WristConstants.maxOperatorControlVolts
+                )
             )
             .onFalse(m_elevator.applyVoltageUnrestricted(0));
 
@@ -302,16 +311,24 @@ public class RobotContainer {
             .onFalse(m_grabber.applyVoltage(0));
 
         m_operatorController.povRight()
-            .whileTrue(superstructureCommands.manualBallsForward());
+            .whileTrue(superstructureCommands.manualBallsForward())
+            .onFalse(superstructureCommands.endManualBallControl());
 
         m_operatorController.povLeft()
-            .whileTrue(superstructureCommands.manualBallsBackward());
+            .whileTrue(superstructureCommands.manualBallsBackward())
+            .onFalse(superstructureCommands.endManualBallControl());
 
         m_operatorController.leftBumper()
-            .onTrue(m_shooter.applyServoAngle(Math.PI));
+            .onTrue(m_shooter.applyServoAngle(ShooterConstants.kServoAngleUpRad));
 
         m_operatorController.rightBumper()
-            .onTrue(m_shooter.applyServoAngle(0));
+            .onTrue(m_shooter.applyServoAngle(ShooterConstants.kServoAngleDownRad));
+
+        m_operatorController.start()
+            .onTrue(m_elevator.autoHome());
+
+        m_operatorController.back()
+            .onTrue(m_shooter.applyVoltage(0));
 
         // ABXY are reserved for sound effects or SysID
         if (OIConstants.kOperatorControllerState == OperatorControllerStates.SOUNDS) {
@@ -319,7 +336,7 @@ public class RobotContainer {
             final Trigger isEnabled = new Trigger(() -> DriverStation.isEnabled());
 
             if (MusicConstants.kMusicPathXButton.length() > 0) {
-                m_operatorController.y().and(isEnabled.negate())
+                m_operatorController.x().and(isEnabled.negate())
                     .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathXButton)).ignoringDisable(true));
             }
             
@@ -329,7 +346,7 @@ public class RobotContainer {
             }
             
             if (MusicConstants.kMusicPathBButton.length() > 0) {
-                m_operatorController.y().and(isEnabled.negate())
+                m_operatorController.b().and(isEnabled.negate())
                     .onTrue(Commands.runOnce(() -> MusicUtil.loadMusic(MusicConstants.kMusicPathBButton)).ignoringDisable(true));
             }
 

@@ -129,6 +129,13 @@ public class ElevatorSubsystem extends SubsystemBase  {
         );
     }
 
+    public Command runVoltageUnrestricted(DoubleSupplier volts) {
+        return Commands.sequence(
+            disablePID(),
+            Commands.runOnce(() -> setVoltageUnrestricted(volts.getAsDouble()))
+        );
+    }
+
     public Command startPID(double targetMeters) {
         return Commands.sequence(
             Commands.runOnce(() -> m_profiledPIDController.setGoal(targetMeters)),

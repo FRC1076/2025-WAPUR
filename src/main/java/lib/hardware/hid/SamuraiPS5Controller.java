@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class SamuraiPS5Controller extends CommandPS5Controller {
     public static double kDefaultStickDeadband = 0.02;
@@ -57,6 +58,14 @@ public class SamuraiPS5Controller extends CommandPS5Controller {
     @Override
     public double getRightX() {
         return rightStickX_DB.getAsDouble();
+    }
+
+    public Trigger leftActive() {
+        return new Trigger(() -> getLeftX() != 0 || getLeftY() != 0);
+    }
+
+    public Trigger rightActive() {
+        return new Trigger(() -> getRightX() != 0 || getRightY() != 0);
     }
 
     @Override

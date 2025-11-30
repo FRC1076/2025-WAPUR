@@ -28,7 +28,7 @@ public class ShooterIOTalon implements ShooterIO {
 
     private final Servo m_servo;
 
-    public ShooterIOTalon(ShooterIO io) {
+    public ShooterIOTalon() {
         m_motor = new TalonFX(ShooterConstants.kMotorPort);
         m_servo = new Servo(ShooterConstants.kServoPort);
 

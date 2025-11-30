@@ -15,7 +15,6 @@ import static frc.robot.Constants.DriveConstants.ModuleConstants.Common.Drive.Ma
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,19 +23,21 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.GameConstants;
-import frc.robot.Constants.GameConstants.TeamColors;
 import frc.robot.commands.drive.TeleopDriveCommandV2;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -84,7 +85,11 @@ public class DriveSubsystem extends SubsystemBase {
         } catch (Exception e) {
             e.printStackTrace();
             Logger.recordOutput("PathPlanner RobotConfig Error", e.getLocalizedMessage());
-            config = new RobotConfig(0, 0, null, null);
+            config = new RobotConfig(
+                150, 10,
+                new ModuleConfig(2 * 0.0254, 4.6, 1.2, DCMotor.getNEO(1), 60, 1),
+                DriveConstants.moduleTranslations
+            );
         }
 
         AutoBuilder.configure(

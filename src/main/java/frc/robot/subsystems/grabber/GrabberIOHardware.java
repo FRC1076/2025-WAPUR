@@ -35,9 +35,8 @@ public class GrabberIOHardware implements GrabberIO {
             .velocityConversionFactor(GrabberConstants.kVelocityConversionFactor);
             
         m_followMotorConfig
-            .follow(m_leadMotor)
-            .smartCurrentLimit((int) GrabberConstants.kCurrentLimit)
-            .inverted(GrabberConstants.kRightMotorInverted != GrabberConstants.kLeftMotorInverted);
+            .follow(m_leadMotor, GrabberConstants.kRightMotorInverted != GrabberConstants.kLeftMotorInverted)
+            .smartCurrentLimit((int) GrabberConstants.kCurrentLimit);
 
         m_leadMotor.configure(m_leadMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_followMotor.configure(m_followMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);

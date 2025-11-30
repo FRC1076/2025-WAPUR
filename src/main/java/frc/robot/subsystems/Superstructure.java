@@ -22,6 +22,7 @@ public class Superstructure {
     public class MutableSuperState {
         BallStates ballState = BallStates.HOME;
         CrateStates crateState = CrateStates.HOME;
+        CrateStates previousCrateState = CrateStates.HOME;
 
 
         public BallStates getBallState() {
@@ -36,7 +37,13 @@ public class Superstructure {
             return this.crateState;
         }
 
+        public CrateStates getPreviousCrateState() {
+            return this.previousCrateState;
+        }
+
+
         public void setCrateState(CrateStates crateState) {
+            this.previousCrateState = this.crateState;
             this.crateState = crateState;
         }
 
@@ -150,10 +157,15 @@ public class Superstructure {
                 setCrateStateElevatorFirst(CrateStates.INTAKE_CRATES),
                 Commands.waitUntil(m_grabber.aboveCurrentDebounced(GrabberConstants.kIntakeCurrentSpike, GrabberConstants.kIntakeCurrentSpikeDebounceSecs)),
                 Commands.runOnce(() -> {m_superState.setCrateState(CrateStates.PRE_L1);})
-            ).finallyDo(() -> Commands.either(
+            );
+        }
+
+        public Command endIntakeCrate() {
+            return Commands.either(
                 preL1(),
                 homeCrates(),
-                () -> m_superState.getCrateState() == CrateStates.PRE_L1).schedule());
+                () -> m_superState.getCrateState() == CrateStates.PRE_L1
+            );
         }
 
         public Command preL1(){
@@ -173,10 +185,11 @@ public class Superstructure {
         }
 
         public Command shootCrate(){
-            CrateStates previousState = m_superState.getCrateState();
+            return setCrateStateNoElevator(preToScoringStates.getOrDefault(m_superState.getCrateState(),CrateStates.SHOOT_L1));
+        }
 
-            return setCrateStateNoElevator(preToScoringStates.getOrDefault(m_superState.getCrateState(),CrateStates.SHOOT_L1))
-                .finallyDo(() -> setCrateStateAllParallel(previousState).schedule());
+        public Command endShootCrate() {
+            return setCrateStateNoElevator(m_superState.getPreviousCrateState());
         }
 
         public Command homeBalls(){
@@ -188,47 +201,35 @@ public class Superstructure {
         }
 
         public Command intakeBalls(){
-            return setBallStateWristFirst(BallStates.INTAKING)
-                .finallyDo(() -> homeBalls().schedule());
+            return setBallStateAllParallel(BallStates.INTAKING);
         }
 
         public Command shootBalls(){
-            return setBallStateAllParallel(BallStates.SHOOT)
-                .finallyDo(() -> homeBalls().schedule());
+            return setBallStateAllParallel(BallStates.SHOOT);
         }
 
         public Command shootBallsWristUp(){
-            return setBallStateWristFirst(BallStates.SHOOT_WRIST_UP)
-                .finallyDo(() -> homeBalls().schedule());
+            return setBallStateAllParallel(BallStates.SHOOT_WRIST_UP);
         }
 
         public Command manualBallsForward() {
-            return Commands.startEnd(
-                    () -> Commands.parallel(
-                        m_intake.applyVoltage(IntakeConstants.kManualIntakeVolts),
-                        m_shooter.applyVoltage(ShooterConstants.kManualShootVolts)
-                    ).schedule(),
-                    () -> Commands.parallel(
-                        m_intake.applyVoltage(0),
-                        m_shooter.applyVelocityRadPerSec(m_superState.getBallState().shooterRadPerSec)
-                    ).schedule(),
-                    m_intake,
-                    m_shooter
+            return Commands.parallel(
+                m_intake.applyVoltage(IntakeConstants.kManualIntakeVolts),
+                m_shooter.applyVoltage(ShooterConstants.kManualShootVolts)
             );
         }
 
         public Command manualBallsBackward() {
-            return Commands.startEnd(
-                    () -> Commands.parallel(
-                        m_intake.applyVoltage(IntakeConstants.kManualEjectVolts),
-                        m_shooter.applyVoltage(ShooterConstants.kManualReverseVolts)
-                    ).schedule(),
-                    () -> Commands.parallel(
-                        m_intake.applyVoltage(0),
-                        m_shooter.applyVelocityRadPerSec(m_superState.getBallState().shooterRadPerSec)
-                    ).schedule(),
-                    m_intake,
-                    m_shooter
+            return Commands.parallel(
+                m_intake.applyVoltage(IntakeConstants.kManualEjectVolts),
+                m_shooter.applyVoltage(ShooterConstants.kManualReverseVolts)
+            );
+        }
+
+        public Command endManualBallControl() {
+            return Commands.parallel(
+                m_intake.applyVoltage(0),
+                m_shooter.applyVelocityRadPerSec(m_superState.getBallState().shooterRadPerSec)
             );
         }
     }

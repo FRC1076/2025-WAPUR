@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 public class WristSubsystem extends SubsystemBase {
@@ -126,6 +128,13 @@ public class WristSubsystem extends SubsystemBase {
             Commands.runOnce(() -> setVoltageUnrestricted(volts))
         );
     } 
+
+    public Command runVoltageUnrestricted(DoubleSupplier volts) {
+        return Commands.sequence(
+            disablePID(),
+            Commands.run(() -> setVoltageUnrestricted(volts.getAsDouble()))
+        );
+    }
 
     public Command wristSysIdQuasistatic(SysIdRoutine.Direction direction) {
         return sysid.quasistatic(direction);
