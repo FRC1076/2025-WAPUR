@@ -6,7 +6,37 @@
       "name": "Teleop",
       "grid_layout": {
         "layouts": [],
-        "containers": []
+        "containers": [
+          {
+            "title": "limelight",
+            "x": 280.0,
+            "y": 0.0,
+            "width": 640.0,
+            "height": 440.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "MatchTime",
+            "x": 920.0,
+            "y": 0.0,
+            "width": 360.0,
+            "height": 200.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/AdvantageKit/DriverStation/MatchTime",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 15,
+              "yellow_start_time": 30
+            }
+          }
+        ]
       }
     },
     {
