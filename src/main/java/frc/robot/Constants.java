@@ -175,19 +175,19 @@ public final class Constants {
         public static final double kPositionConversionFactor = Math.PI * 2 * (1/kGearRatio);
         public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
 
-        public static final boolean kLeftMotorInverted = true;
+        public static final boolean kLeftMotorInverted = true; // TODO: check inversions based on unpushed code
         public static final boolean kRightMotorInverted = false;
 
         public static final double kOperatorControlVolts = 6;
 
-        public static final double kIntakeCurrentSpike = 20;
+        public static final double kIntakeCurrentSpike = 30;
         public static final double kIntakeCurrentSpikeDebounceSecs = 0.1;
-        public static final double kEjectCurrentDrop = 8;
+        public static final double kEjectCurrentDrop = 6;
         public static final double kEjectCurrentDropDebounceSecs = 0.1;
     }
 
     public static class ShooterConstants {
-        public static final int kMotorPort = 43;
+        public static final int kMotorPort = 43; // TODO: check this based on unpushed code
         public static final int kServoPort = 9;
 
         public static final int kCurrentLimit = 40;
@@ -227,7 +227,7 @@ public final class Constants {
     }
 
     public static class WristConstants {
-        public static final int kLeadMotorPort = 41;
+        public static final int kLeadMotorPort = 41; // TODO: check based on unpushed code
 
         public static final double wristAngleToleranceRadians = 0.1;
         public static final double kMinWristAngleRadians = -Math.PI / 4;
@@ -369,12 +369,12 @@ public final class Constants {
             TRAVEL(0.025,0.0),
             PRE_L1(0.025,0.0),
             PRE_L2(0.486,0.0),
-            PRE_L3(0.823,0.0),
-            PRE_L4(1.21,0.0),
+            PRE_L3(0.825,0.0),
+            PRE_L4(1.22,0.0),
             SHOOT_L1(0.025,6.0),
-            SHOOT_L2(0.4,6.0),
-            SHOOT_L3(0.8,6.0),
-            SHOOT_L4(1.2,6.0);
+            SHOOT_L2(0.486,6.0),
+            SHOOT_L3(0.825,6.0),
+            SHOOT_L4(1.22,6.0);
 
             public final double elevatorHeight; 
             public final double grabberVoltage;
@@ -397,7 +397,7 @@ public final class Constants {
     // TODO: check all the constants in this class
     public static class DriveConstants {
         public static final double maxTranslationSpeedMPS = Units.feetToMeters(5);
-        public static final double maxRotationSpeedRadPerSec = 3; // originally set to 2 // Maximum acceptable value appears to be 12
+        public static final double maxRotationSpeedRadPerSec = 4; // originally set to 2 // Maximum acceptable value appears to be 12
 
         public static final boolean useSpeedScaling = true;
 
