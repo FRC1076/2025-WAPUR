@@ -199,8 +199,8 @@ public final class Constants {
         public static final InvertedValue kInverted = InvertedValue.Clockwise_Positive;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
 
-        public static final double kServoAngleUpRad = Math.PI; 
-        public static final double kServoAngleDownRad = Math.PI / 8; // TODO: check these angles, they are estimates
+        public static final double kServoAngleUpRad = (4*Math.PI) / 3; 
+        public static final double kServoAngleDownRad = (2*Math.PI) / 3; // TODO: check these angles, they are estimates
 
         public static class Control {
             // TODO: make these more aggressive, maybe?
