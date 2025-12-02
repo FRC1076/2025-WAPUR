@@ -200,7 +200,7 @@ public final class Constants {
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
 
         public static final double kServoAngleUpRad = Math.PI; 
-        public static final double kServoAngleDownRad = Math.PI / 2; // TODO: check these angles, they are estimates
+        public static final double kServoAngleDownRad = Math.PI / 8; // TODO: check these angles, they are estimates
 
         public static class Control {
             // TODO: make these more aggressive, maybe?
@@ -370,12 +370,12 @@ public final class Constants {
             TRAVEL(0.025,0.0),
             PRE_L1(0.025,0.0),
             PRE_L2(0.486,0.0),
-            PRE_L3(0.825,0.0),
-            PRE_L4(1.22,0.0),
+            PRE_L3(0.82,0.0),
+            PRE_L4(1.21,0.0),
             SHOOT_L1(0.025,6.0),
             SHOOT_L2(0.486,6.0),
-            SHOOT_L3(0.825,6.0),
-            SHOOT_L4(1.22,6.0);
+            SHOOT_L3(0.82,6.0),
+            SHOOT_L4(1.21,6.0);
 
             public final double elevatorHeight; 
             public final double grabberVoltage;
