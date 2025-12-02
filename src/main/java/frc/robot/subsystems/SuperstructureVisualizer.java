@@ -5,9 +5,12 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
+import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
+import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
+
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import lib.extendedcommands.CommandUtils;
 
@@ -16,59 +19,60 @@ import lib.extendedcommands.CommandUtils;
  */
 public class SuperstructureVisualizer {
     
-    private final Mechanism2d superstructureVis;
+    private final LoggedMechanism2d superstructureVis;
 
-    private final MechanismRoot2d elevatorRoot;
-    private final MechanismLigament2d elevator;
-    private final MechanismLigament2d fixOnElevator;
+    private final LoggedMechanismRoot2d elevatorRoot;
+    private final LoggedMechanismLigament2d elevator;
+    private final LoggedMechanismLigament2d fixOnElevator;
     @SuppressWarnings("unused") // Needs to exist for visualization but isn't actually used anywhere
-    private final MechanismLigament2d grabber;
+    private final LoggedMechanismLigament2d grabber;
 
-    private final MechanismRoot2d wristRoot;
-    private final MechanismLigament2d wristRootFix;
-    private final MechanismLigament2d wrist;
+    private final LoggedMechanismRoot2d wristRoot;
+    private final LoggedMechanismLigament2d wristRootFix;
+    private final LoggedMechanismLigament2d wrist;
     private final Superstructure superstructure;
 
     public SuperstructureVisualizer(Superstructure superstructure){
         this.superstructure = superstructure;
         // Create the canvas for mechanisms
         // Width is side frame perimeter (30 inches = 0.762 m) plus some buffer for the grabber, height is max elevator height + some buffer
-        superstructureVis = new Mechanism2d(1.35, 3);
+        superstructureVis = new LoggedMechanism2d(1.35, 3);
 
         // Root for the elevator; 0.381 is center of frame
         elevatorRoot = superstructureVis.getRoot("Elevator Root", 0.381 + 0.191, 0.23114);
         //The elevator
         elevator = elevatorRoot.append(
-            new MechanismLigament2d("Elevator", 0, 90, 10, new Color8Bit("#770085"))
+            new LoggedMechanismLigament2d("Elevator", 0, 90, 10, new Color8Bit("#770085"))
         );
         // The fixed part on the elevator that goes down for the grabber
         fixOnElevator = elevator.append(
-            new MechanismLigament2d("Fix On Elevator", 0.271, -120, 10, new Color8Bit("#f2f2f2"))
+            new LoggedMechanismLigament2d("Fix On Elevator", 0.271, -120, 10, new Color8Bit("#f2f2f2"))
         );
         // The grabber
         grabber = fixOnElevator.append(
-            new MechanismLigament2d("Grabber", 0.4, 30, 10, new Color8Bit("#f2f2f2"))
+            new LoggedMechanismLigament2d("Grabber", 0.4, 30, 10, new Color8Bit("#f2f2f2"))
         );
 
         // The root for the wrist; 0.381 is center of frame
         wristRoot = superstructureVis.getRoot("Wrist Root",  0.381 - 0.127, 0.23114);
         // The part that raises the wrist off the ground
         wristRootFix = wristRoot.append(
-            new MechanismLigament2d("Fix for Wrist", 0.408, 90, 10, new Color8Bit("#f2f2f2"))
+            new LoggedMechanismLigament2d("Fix for Wrist", 0.408, 90, 10, new Color8Bit("#f2f2f2"))
         );
         // The wrist itself
         wrist = wristRootFix.append(
-            new MechanismLigament2d("Wrist", 0.3, 90, 10, new Color8Bit("#770085"))
+            new LoggedMechanismLigament2d("Wrist", 0.3, 90, 10, new Color8Bit("#770085"))
         );
         SmartDashboard.putData("Superstructure Visualization", superstructureVis);
+        Logger.recordOutput("Superstructure Visualization", superstructureVis);
         CommandUtils.makePeriodic(this::updateVisualization, true);
     }
 
-    public MechanismLigament2d getElevatorLigament(){
+    public LoggedMechanismLigament2d getElevatorLigament(){
         return elevator;
     }
 
-    public MechanismLigament2d getWristLigament(){
+    public LoggedMechanismLigament2d getWristLigament(){
         return wrist;
     }
 
