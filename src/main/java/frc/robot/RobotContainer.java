@@ -46,6 +46,7 @@ import frc.robot.subsystems.wrist.WristIOHardware;
 import frc.robot.subsystems.wrist.WristIOSim;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.utils.MusicUtil;
+import lib.control.DynamicSlewRateLimiter2d;
 import lib.hardware.hid.SamuraiXboxController;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -81,6 +82,8 @@ public class RobotContainer {
 
     // Drive command
     private final TeleopDriveCommandV2 driveCommand;
+
+    private final DynamicSlewRateLimiter2d m_slewRateLimiter;
 
     // Controllers
     private final SamuraiXboxController m_driverController =
@@ -178,9 +181,14 @@ public class RobotContainer {
          
         m_superVis = new SuperstructureVisualizer(m_superstructure);
 
+        m_slewRateLimiter = new DynamicSlewRateLimiter2d(
+            () -> DriveConstants.elevatorAccelerationTable.get(m_elevator.getPositionMeters()),
+            0
+        );
+
         driveCommand = m_drive.CommandBuilder.driveTeleop(
-            () -> -m_driverController.getLeftY(), 
-            () -> -m_driverController.getLeftX(), 
+            () -> m_slewRateLimiter.calculateY(-m_driverController.getLeftX(), -m_driverController.getLeftY()), 
+            () -> m_slewRateLimiter.calculateX(-m_driverController.getLeftX(), -m_driverController.getLeftY()), 
             () -> -m_driverController.getRightX(), 
             1, 
             1, 

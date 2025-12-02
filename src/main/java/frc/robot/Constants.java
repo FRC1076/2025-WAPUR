@@ -4,6 +4,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -417,6 +418,22 @@ public final class Constants {
             new Translation2d(-trackWidth / 2.0, wheelBase / 2.0),
             new Translation2d(-trackWidth / 2.0, -wheelBase / 2.0)
         };
+
+        public static final InterpolatingDoubleTreeMap elevatorAccelerationTable = new InterpolatingDoubleTreeMap(); // A table that maps elevator heights to slew rate limits
+        static {
+            elevatorAccelerationTable.put(0.0,100000.0);
+            elevatorAccelerationTable.put(1.0,100000.0); // Deadzone with no acceleration limiting between 0.0 and 1.348 (THE END OF THIS DEADZONE *MUST* BE SLIGHTLY LOWER THAN THE POINT WHERE WE ACTUALLY WANT ELEVATOR ACCELERATION LIMITING TO BEGIN)
+            // elevatorAccelerationTable.put(0.0, 12.66793578);
+            // elevatorAccelerationTable.put(0.253, 100000.0);
+            // elevatorAccelerationTable.put(0.254, 10.15773958 / 5);
+            // elevatorAccelerationTable.put(0.508, 8.477828029 / 5);
+            // elevatorAccelerationTable.put(0.762, 7.274717623 / 5);
+            elevatorAccelerationTable.put(1.016, 6.370643237 / 5);
+            elevatorAccelerationTable.put(1.27, 5.666439564 / 6);
+            elevatorAccelerationTable.put(1.524, 5.102204373 / 7);
+            elevatorAccelerationTable.put(1.778, 4.640342002 / 8);
+            elevatorAccelerationTable.put(1.8288, 4.557930098 / 8);
+        }
 
         public static class GyroConstants {
             public static final int kGyroPort = 9; // ONLY used if Gyro is a Pigeon
