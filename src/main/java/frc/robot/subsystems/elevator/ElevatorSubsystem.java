@@ -132,7 +132,7 @@ public class ElevatorSubsystem extends SubsystemBase  {
     public Command runVoltageUnrestricted(DoubleSupplier volts) {
         return Commands.sequence(
             disablePID(),
-            Commands.runOnce(() -> setVoltageUnrestricted(volts.getAsDouble()))
+            Commands.run(() -> setVoltageUnrestricted(volts.getAsDouble()))
         );
     }
 
