@@ -335,6 +335,10 @@ public class RobotContainer {
         m_operatorController.start()
             .onTrue(m_elevator.autoHome());
 
+        m_operatorController.start().and(new Trigger (() -> m_elevator.isZeroed()))
+            .onTrue(Commands.runOnce(() -> m_operatorController.setRumble(OIConstants.kRumbleType, OIConstants.kRumbleIntensity)))
+            .onFalse(Commands.runOnce(() -> m_operatorController.setRumble(OIConstants.kRumbleType, 0)));
+
         m_operatorController.back()
             .onTrue(m_shooter.applyVoltage(0));
 
