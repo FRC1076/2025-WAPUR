@@ -183,9 +183,9 @@ public final class Constants {
 
         public static final int kCurrentFilterTaps = 8;
         public static final double kIntakeCurrentSpike = 30;
-        public static final double kIntakeCurrentSpikeDebounceSecs = 0.1;
+        public static final double kIntakeCurrentSpikeDebounceSecs = 0.04;
         public static final double kEjectCurrentDrop = 6;
-        public static final double kEjectCurrentDropDebounceSecs = 0.1;
+        public static final double kEjectCurrentDropDebounceSecs = 0.04;
     }
 
     public static class ShooterConstants {
