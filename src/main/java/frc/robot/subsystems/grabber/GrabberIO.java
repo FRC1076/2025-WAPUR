@@ -6,9 +6,10 @@ public interface GrabberIO {
     @AutoLog
     public static class GrabberIOInputs {
         public double appliedVolts = 0;
-        public double leadMotorCurrentAmps = 0;
 
+        public double leadMotorCurrentAmps = 0;
         public double followMotorCurrentAmps = 0;
+        public double filteredCurrent = 0;
 
         public double motorPositionRadians = 0;
         public double velocityRadPerSec = 0;
