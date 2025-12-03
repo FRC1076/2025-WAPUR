@@ -197,7 +197,7 @@ public class RobotContainer {
 
         m_drive.setDefaultCommand(driveCommand);
 
-        m_shooter.applyVelocityRadPerSec(m_superstructure.getSuperState().getBallState().shooterRadPerSec); // Start with the shooter running
+        // m_shooter.applyVelocityRadPerSec(m_superstructure.getSuperState().getBallState().shooterRadPerSec); // Start with the shooter running
 
         // Configure controller bindings
         configureDriverBindings();
@@ -213,13 +213,13 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // Left side: drive forward then drive farther to shoot balls
-        return AutoBuilder.buildAuto("Far Auton Left");
+        //return AutoBuilder.buildAuto("Far Auton Left");
 
         // Right side: drive forward then drive farther to shoot balls
         // return AutoBuilder.buildAuto("Far Auton Right");
 
         // Left side: drive forward then drive farther to shoot balls; elevator up to push more crates
-        // return AutoBuilder.buildAuto("Elevator Up Far Auton Left");
+        return AutoBuilder.buildAuto("Elevator Up Far Auton Left");
 
         // Right side: drive forward then drive farther to shoot balls; elevator up to push more crates
         // return AutoBuilder.buildAuto("Elevator Up Far Auton Right");
