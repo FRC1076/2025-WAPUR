@@ -2,6 +2,7 @@ package frc.robot.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.Volts;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,6 +34,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void setVoltage(double volts) {
         io.setVoltage(volts);
+    }
+
+    @AutoLogOutput(key = "Shooter/FlywheelActive")
+    public boolean getFlywheelActive() {
+        return inputs.motorVelocityRadiansPerSecond > 1;
     }
 
     @Override
