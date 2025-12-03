@@ -300,7 +300,7 @@ public class RobotContainer {
                     () -> (-m_operatorController.getLeftY() * ElevatorConstants.defaultMaxOperatorControlVolts)
                 )
             )
-            .onFalse(m_elevator.applyVoltageUnrestricted(0));
+            .onFalse(m_elevator.endManualControl());
 
         m_operatorController.rightActive()
             .whileTrue( 

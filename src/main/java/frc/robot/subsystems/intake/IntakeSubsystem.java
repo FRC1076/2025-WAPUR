@@ -22,6 +22,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command applyVoltage(double volts) {
-        return Commands.runOnce(() -> setVoltage(volts));
+        return Commands.runOnce(() -> setVoltage(volts), this);
     }
 }

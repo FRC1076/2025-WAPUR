@@ -125,14 +125,14 @@ public class WristSubsystem extends SubsystemBase {
     public Command applyVoltageUnrestricted(double volts) {
         return Commands.sequence(
             disablePID(),
-            Commands.runOnce(() -> setVoltageUnrestricted(volts))
+            Commands.runOnce(() -> setVoltageUnrestricted(volts), this)
         );
     } 
 
     public Command runVoltageUnrestricted(DoubleSupplier volts) {
         return Commands.sequence(
             disablePID(),
-            Commands.run(() -> setVoltageUnrestricted(volts.getAsDouble()))
+            Commands.run(() -> setVoltageUnrestricted(volts.getAsDouble()), this)
         );
     }
 

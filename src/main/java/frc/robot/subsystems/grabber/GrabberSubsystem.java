@@ -2,6 +2,7 @@ package frc.robot.subsystems.grabber;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.GrabberConstants;
@@ -44,7 +45,7 @@ public class GrabberSubsystem extends SubsystemBase {
     }
 
     public Command applyVoltage(double volts) {
-        return runOnce(() -> setVoltage(volts));
+        return Commands.runOnce(() -> setVoltage(volts), this);
     }
 
     /** Returns whether or not the current is at or above the desired amperage for a specified number of seconds
