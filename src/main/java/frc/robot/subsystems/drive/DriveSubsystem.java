@@ -61,6 +61,13 @@ public class DriveSubsystem extends SubsystemBase {
 
     public final DriveCommandFactory CommandBuilder;
 
+    /** Create a new DriveSubsystem using the specified IO layers.
+     *  
+     * @param FLModuleIO Module labeled front left, actually the rear right
+     * @param FRModuleIO Module labeled front right, actually rear left
+     * @param RLModuleIO Module labeled rear left, actually front right
+     * @param RRModuleIO Module labeled rear right, actually front left
+     */
     public DriveSubsystem(
         GyroIO gyroIO,
         ModuleIO FLModuleIO,
@@ -69,10 +76,18 @@ public class DriveSubsystem extends SubsystemBase {
         ModuleIO RRModuleIO
     ){
         this.gyroIO = gyroIO;
+        /* // If the elevator is by the modules labeled front
         modules[0] = new Module(FLModuleIO,"FrontLeft");
         modules[1] = new Module(FRModuleIO,"FrontRight");
         modules[2] = new Module(RLModuleIO, "RearLeft");
         modules[3] = new Module(RRModuleIO, "RearRight");
+        */
+
+        //If the elevator is by the modules labeled rear
+        modules[0] = new Module(RRModuleIO,"RearRight");
+        modules[1] = new Module(RLModuleIO,"RearLeft");
+        modules[2] = new Module(FRModuleIO, "FronRight");
+        modules[3] = new Module(FLModuleIO, "FrontLeft");
         
 
         OdometryThread.getInstance().start();
