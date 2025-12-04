@@ -91,7 +91,7 @@ public final class Constants {
         public static final int kMotorPort0 = 31;
         public static final int kMotorPort1 = 32;
         
-        public static final double elevatorPositionToleranceMeters = Units.inchesToMeters(0.5);
+        public static final double elevatorPositionToleranceMeters = Units.inchesToMeters(1);
         public static final double kMinElevatorHeightMeters = Units.inchesToMeters(0);
         public static final double kMaxElevatorHeightMeters = Units.inchesToMeters(69.95);
         
@@ -370,12 +370,12 @@ public final class Constants {
             INTAKE_CRATES(0.0,-6.0),
             TRAVEL(0.025,0.0),
             PRE_L1(0.025,0.0),
-            PRE_L2(0.486,0.0),
-            PRE_L3(0.82,0.0),
+            PRE_L2(0.415,0.0),
+            PRE_L3(0.83,0.0),
             PRE_L4(1.21,0.0),
             SHOOT_L1(0.025,6.0),
-            SHOOT_L2(0.486,6.0),
-            SHOOT_L3(0.82,6.0),
+            SHOOT_L2(0.415,6.0),
+            SHOOT_L3(0.83,6.0),
             SHOOT_L4(1.21,6.0);
 
             public final double elevatorHeight; 
@@ -438,7 +438,7 @@ public final class Constants {
 
         public static class GyroConstants {
             public static final int kGyroPort = 9; // ONLY used if Gyro is a Pigeon
-            public static final double kGyroZero = Units.radiansToDegrees(Math.PI);
+            public static final double kGyroZero = 0; // Gyro zero in degrees
         }
 
         public static class ModuleConstants {

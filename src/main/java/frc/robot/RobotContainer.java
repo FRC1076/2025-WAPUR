@@ -204,6 +204,8 @@ public class RobotContainer {
 
         configureOperatorBindings();
 
+        configureNamedCommands();
+
     }
 
     /**
