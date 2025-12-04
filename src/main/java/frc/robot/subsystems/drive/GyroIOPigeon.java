@@ -26,7 +26,6 @@ import frc.robot.Constants.DriveConstants.GyroConstants;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.MountPoseConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
@@ -34,10 +33,10 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 public class GyroIOPigeon implements GyroIO {
     private final Pigeon2 m_gyro = new Pigeon2(kGyroPort);
     private final Pigeon2Configuration m_gyroConfig;
-    private final StatusSignal<Angle> yaw = m_gyro.getYaw();
+    private final StatusSignal<Angle> yaw;
     private final ConcurrentLinkedQueue<Double> yawPositionQueue;
     private final ConcurrentLinkedQueue<Long> yawTimestampQueue;
-    private final StatusSignal<AngularVelocity> yawVelocity = m_gyro.getAngularVelocityZWorld();
+    private final StatusSignal<AngularVelocity> yawVelocity;
 
     private final ArrayList<Double> yawPositionBuffer = new ArrayList<>(20);
     private final ArrayList<Long> yawTimestampBuffer = new ArrayList<>(20);
@@ -47,7 +46,10 @@ public class GyroIOPigeon implements GyroIO {
         m_gyroConfig.MountPose.MountPoseYaw = GyroConstants.kGyroMountYawOffset;
         m_gyro.getConfigurator().apply(m_gyroConfig);
 
+        yaw = m_gyro.getYaw();
         yaw.setUpdateFrequency(odometryFrequencyHz);
+
+        yawVelocity = m_gyro.getAngularVelocityZWorld();
         yawVelocity.setUpdateFrequency(50);
 
         //m_gyro.optimizeBusUtilization();
