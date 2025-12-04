@@ -21,6 +21,7 @@ import static edu.wpi.first.units.Units.RadiansPerSecond;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import frc.robot.Constants.DriveConstants.GyroConstants;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
@@ -31,6 +32,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 /* Designed to work with CTRE Pigeon 2 */
 public class GyroIOPigeon implements GyroIO {
     private final Pigeon2 m_gyro = new Pigeon2(kGyroPort);
+    private final Pigeon2Configuration m_gyroConfig = new Pigeon2Configuration();
     private final StatusSignal<Angle> yaw = m_gyro.getYaw();
     private final ConcurrentLinkedQueue<Double> yawPositionQueue;
     private final ConcurrentLinkedQueue<Long> yawTimestampQueue;
@@ -40,11 +42,16 @@ public class GyroIOPigeon implements GyroIO {
     private final ArrayList<Long> yawTimestampBuffer = new ArrayList<>(20);
     
     public GyroIOPigeon() {
-        m_gyro.getConfigurator().apply(new Pigeon2Configuration());
+        m_gyroConfig.MountPose.MountPoseYaw = GyroConstants.kGyroMountYawOffset;
+        m_gyro.getConfigurator().apply(m_gyroConfig);
+
         m_gyro.getConfigurator().setYaw(kGyroZero);
+
         yaw.setUpdateFrequency(odometryFrequencyHz);
         yawVelocity.setUpdateFrequency(50);
+
         //m_gyro.optimizeBusUtilization();
+        
         yawPositionQueue = OdometryThread.getInstance().registerSignal(() -> yaw.getValue().in(Radians));
         yawTimestampQueue = OdometryThread.getInstance().makeTimestampQueue();
     }

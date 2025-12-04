@@ -438,7 +438,8 @@ public final class Constants {
 
         public static class GyroConstants {
             public static final int kGyroPort = 9; // ONLY used if Gyro is a Pigeon
-            public static final double kGyroZero = 0; // Gyro zero in degrees
+            public static final double kGyroZero = 0; // Angle to zero the gyro at in degrees
+            public static final double kGyroMountYawOffset = 180; // Angle to configure the offset of the gyro yaw to in degrees (mountYaw)
         }
 
         public static class ModuleConstants {
