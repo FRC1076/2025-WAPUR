@@ -8,7 +8,7 @@
         "layouts": [],
         "containers": [
           {
-            "title": "MatchTime",
+            "title": "Match Time",
             "x": 920.0,
             "y": 0.0,
             "width": 360.0,
@@ -24,10 +24,10 @@
             }
           },
           {
-            "title": "limelight",
-            "x": 320.0,
+            "title": "Limelight",
+            "x": 0.0,
             "y": 0.0,
-            "width": 600.0,
+            "width": 920.0,
             "height": 440.0,
             "type": "Camera Stream",
             "properties": {
@@ -37,11 +37,11 @@
             }
           },
           {
-            "title": "FlywheelActive",
+            "title": "Flywheel Active",
             "x": 1120.0,
             "y": 200.0,
             "width": 160.0,
-            "height": 160.0,
+            "height": 120.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "/AdvantageKit/RealOutputs/Shooter/FlywheelActive",
@@ -51,6 +51,42 @@
               "false_color": 4294198070,
               "true_icon": "None",
               "false_icon": "None"
+            }
+          },
+          {
+            "title": "Grabber Volts",
+            "x": 1120.0,
+            "y": 320.0,
+            "width": 160.0,
+            "height": 160.0,
+            "type": "Number Bar",
+            "properties": {
+              "topic": "/AdvantageKit/Grabber/AppliedVolts",
+              "period": 0.06,
+              "data_type": "double",
+              "min_value": -6.0,
+              "max_value": 6.0,
+              "divisions": 5,
+              "inverted": false,
+              "orientation": "horizontal"
+            }
+          },
+          {
+            "title": "Elevator Height Meters",
+            "x": 920.0,
+            "y": 200.0,
+            "width": 200.0,
+            "height": 240.0,
+            "type": "Number Bar",
+            "properties": {
+              "topic": "/AdvantageKit/Elevator/ElevatorHeightMeters",
+              "period": 0.06,
+              "data_type": "double",
+              "min_value": 0.0,
+              "max_value": 1.5,
+              "divisions": 5,
+              "inverted": false,
+              "orientation": "vertical"
             }
           }
         ]
