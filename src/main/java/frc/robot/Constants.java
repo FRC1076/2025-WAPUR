@@ -53,7 +53,7 @@ public final class Constants {
         public static final String kDriverCameraIP = "10.10.76.11";
         public static final int kDriverCameraPort = 5801;
 
-        public static final OperatorControllerStates kOperatorControllerState = OperatorControllerStates.SOUNDS;
+        public static final OperatorControllerStates kOperatorControllerState = OperatorControllerStates.NOTHING;
 
         public static enum OperatorControllerStates {
             SOUNDS,
