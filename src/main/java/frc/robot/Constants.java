@@ -346,11 +346,11 @@ public final class Constants {
 
     public static class SuperstructureConstants {
         public static enum BallStates {
-            HOME(Math.PI/2,300.0, 0.0, ShooterConstants.kServoAngleDownRad),
-            INTAKE_DOWN(-Math.PI/4,300.0, 0.0,ShooterConstants.kServoAngleDownRad),
+            HOME(Math.PI/2,300.0, 1, ShooterConstants.kServoAngleDownRad),
+            INTAKE_DOWN(-Math.PI/4,300.0, 1,ShooterConstants.kServoAngleDownRad),
             INTAKING(-Math.PI/4,300.0, 4.0, ShooterConstants.kServoAngleDownRad),
-            SHOOT(-Math.PI/4, 700.0, 0.0, ShooterConstants.kServoAngleUpRad),
-            SHOOT_WRIST_UP(Math.PI/2, 700.0, 0.0, ShooterConstants.kServoAngleUpRad);
+            SHOOT(-Math.PI/4, 700.0, 2, ShooterConstants.kServoAngleUpRad),
+            SHOOT_WRIST_UP(Math.PI/2, 700.0, 2, ShooterConstants.kServoAngleUpRad);
 
             public final double wristAngleRadians;
             public final double shooterRadPerSec;
@@ -370,12 +370,12 @@ public final class Constants {
             INTAKE_CRATES(0.0,-6.0),
             TRAVEL(0.025,0.0),
             PRE_L1(0.025,0.0),
-            PRE_L2(0.415,0.0),
-            PRE_L3(0.83,0.0),
+            PRE_L2(0.47,0.0),
+            PRE_L3(0.86,0.0),
             PRE_L4(1.21,0.0),
             SHOOT_L1(0.025,6.0),
-            SHOOT_L2(0.415,6.0),
-            SHOOT_L3(0.83,6.0),
+            SHOOT_L2(0.47,6.0),
+            SHOOT_L3(0.86,6.0),
             SHOOT_L4(1.21,6.0);
 
             public final double elevatorHeight; 
@@ -484,10 +484,10 @@ public final class Constants {
                 }
             }
             public static enum ModuleConfig {
-                FrontLeft(1,11,21,0.47314453125),
-                FrontRight(2,12,22,-0.925048828125),
-                RearRight(3,13,23,-0.439208984375),
-                RearLeft(4,14,24,-0.41259765625);
+                FrontLeft(1,11,21, -0.026123046875),
+                FrontRight(2,12,22,-0.426513671875),
+                RearRight(3,13,23,0.0712890625),
+                RearLeft(4,14,24,0.0927734375);
     
                 public final int DrivePort;
                 public final int TurnPort;

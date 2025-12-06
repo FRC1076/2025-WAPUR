@@ -7,19 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Home Balls"
+            "name": "Pre L2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Pre L2"
+            "name": "Home Balls"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
+            "waitTime": 0.2
           }
         },
         {
@@ -35,12 +35,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Pre L1"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Drive to Shoot Right"
@@ -49,19 +43,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Balls"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.0
+            "name": "Pre L1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Home Balls"
+            "name": "Shoot Balls"
           }
         }
       ]

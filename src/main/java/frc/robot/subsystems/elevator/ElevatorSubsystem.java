@@ -35,6 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase  {
 
     public ElevatorSubsystem(ElevatorIO io) {
         this.io = io;
+        PIDEnabled = false;
         var controlConstants = io.getControlConstants();
 
         m_profiledPIDController = new ProfiledPIDController(

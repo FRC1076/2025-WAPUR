@@ -199,7 +199,9 @@ public class RobotContainer {
 
         // m_shooter.applyVelocityRadPerSec(m_superstructure.getSuperState().getBallState().shooterRadPerSec); // Start with the shooter running
 
-        // Configure controller bindings
+        // Configure command bindings
+        configureBindings();
+
         configureDriverBindings();
 
         configureOperatorBindings();
@@ -227,10 +229,10 @@ public class RobotContainer {
         // return AutoBuilder.buildAuto("Elevator Up Far Auton Right");
 
         // Left side: drive forward and shoot balls without driving out
-        // return AutoBuilder.buildAuto("Close Auton Left");
+        // return AutoBuilder.buildAuto("Elevator Up Drive Forward Left");
 
         // Right side: drive forward and shoot balls without driving out
-        // return AutoBuilder.buildAuto("Close Auton Right");
+        // return AutoBuilder.buildAuto("Elevator Up Drive Forward Right");
     }
 
     /** Maps triggers on driver controller to commands */
@@ -453,6 +455,14 @@ public class RobotContainer {
                 .and(m_operatorController.y())
                 .whileTrue(m_shooter.shooterSysIdDynamic(Direction.kReverse));
         }
+    }
+
+    public void configureBindings() {
+        new Trigger(() -> DriverStation.isTeleopEnabled())
+            .onTrue(m_superstructure.getCommandFactory().homeBalls());
+
+        new Trigger(() -> DriverStation.isAutonomousEnabled())
+            .onTrue(Commands.runOnce(() -> m_drive.rezeroGyro()));
     }
 
     public void configureNamedCommands() {

@@ -29,18 +29,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Pre L1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Drive to Shoot Left"
@@ -49,19 +37,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Balls"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.0
+            "name": "Pre L1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Home Balls"
+            "name": "Shoot Balls"
           }
         }
       ]
