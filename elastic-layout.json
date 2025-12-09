@@ -38,8 +38,8 @@
           },
           {
             "title": "Flywheel Active",
-            "x": 1120.0,
-            "y": 200.0,
+            "x": 960.0,
+            "y": 440.0,
             "width": 160.0,
             "height": 120.0,
             "type": "Boolean Box",
@@ -87,6 +87,58 @@
               "divisions": 5,
               "inverted": false,
               "orientation": "vertical"
+            }
+          },
+          {
+            "title": "FlywheelStall",
+            "x": 1120.0,
+            "y": 200.0,
+            "width": 160.0,
+            "height": 120.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Shooter/FlywheelStall",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "BrownedOut",
+            "x": 160.0,
+            "y": 440.0,
+            "width": 160.0,
+            "height": 120.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/SystemStats/BrownedOut",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "BatteryVoltage",
+            "x": 0.0,
+            "y": 440.0,
+            "width": 160.0,
+            "height": 120.0,
+            "type": "Number Bar",
+            "properties": {
+              "topic": "/AdvantageKit/SystemStats/BatteryVoltage",
+              "period": 0.06,
+              "data_type": "double",
+              "min_value": 8.0,
+              "max_value": 12.0,
+              "divisions": 5,
+              "inverted": false,
+              "orientation": "horizontal"
             }
           }
         ]
