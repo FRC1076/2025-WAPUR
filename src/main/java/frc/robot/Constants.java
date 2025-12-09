@@ -16,8 +16,7 @@ public final class Constants {
         public static AutonSides autonSide = AutonSides.Left;
         public static boolean rearRightCameraEnabledAuton = false;
         
-        public enum TeamColors 
-        {
+        public enum TeamColors {
             kTeamColorBlue("BLUE"),
             kTeamColorRed("RED");
 
@@ -190,7 +189,7 @@ public final class Constants {
 
     public static class ShooterConstants {
         public static final int kMotorPort = 43;
-        public static final int kServoPort = 9;
+        public static final int kServoPort = 8;
 
         public static final int kCurrentLimit = 40;
 
@@ -346,9 +345,9 @@ public final class Constants {
 
     public static class SuperstructureConstants {
         public static enum BallStates {
-            HOME(Math.PI/2,300.0, 1, ShooterConstants.kServoAngleDownRad),
-            INTAKE_DOWN(-Math.PI/4,300.0, 1,ShooterConstants.kServoAngleDownRad),
-            INTAKING(-Math.PI/4,300.0, 4.0, ShooterConstants.kServoAngleDownRad),
+            HOME(Math.PI/2,0.0, 1, ShooterConstants.kServoAngleDownRad),
+            INTAKE_DOWN(-Math.PI/4,0.0, 1,ShooterConstants.kServoAngleDownRad),
+            INTAKING(-Math.PI/4,0.0, 4.0, ShooterConstants.kServoAngleDownRad),
             SHOOT(-Math.PI/4, 700.0, 2, ShooterConstants.kServoAngleUpRad),
             SHOOT_WRIST_UP(Math.PI/2, 700.0, 2, ShooterConstants.kServoAngleUpRad);
 
@@ -368,6 +367,7 @@ public final class Constants {
         public static enum CrateStates {
             HOME(0.0,0.0),
             INTAKE_CRATES(0.0,-6.0),
+            INTAKE_CRATES_STACK(0.31,-6.0),
             TRAVEL(0.025,0.0),
             PRE_L1(0.025,0.0),
             PRE_L2(0.47,0.0),

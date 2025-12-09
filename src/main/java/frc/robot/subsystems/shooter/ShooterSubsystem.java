@@ -41,6 +41,11 @@ public class ShooterSubsystem extends SubsystemBase {
         return inputs.motorVelocityRadiansPerSecond > 1;
     }
 
+    @AutoLogOutput(key = "Shooter/FlywheelStall")
+    public boolean getFlywheelStalled() {
+        return inputs.motorCurrent > 30;
+    }
+
     @Override
     public void periodic() {
         io.updateInputs(inputs);

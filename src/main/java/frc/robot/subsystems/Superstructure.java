@@ -154,17 +154,25 @@ public class Superstructure {
 
         public Command intakeCrate() {
             return Commands.sequence(
-                setCrateStateElevatorFirst(CrateStates.INTAKE_CRATES),
+                setCrateStateAllParallel(CrateStates.INTAKE_CRATES),
                 Commands.waitUntil(m_grabber.aboveCurrentDebounced(GrabberConstants.kIntakeCurrentSpike, GrabberConstants.kIntakeCurrentSpikeDebounceSecs)),
                 Commands.runOnce(() -> {m_superState.setCrateState(CrateStates.PRE_L1);})
             );
         }
 
+        public Command intakeCrateStacked() {
+            return Commands.sequence(
+                setCrateStateAllParallel(CrateStates.INTAKE_CRATES_STACK),
+                Commands.waitUntil(m_grabber.aboveCurrentDebounced(GrabberConstants.kIntakeCurrentSpike, GrabberConstants.kIntakeCurrentSpikeDebounceSecs)),
+                Commands.runOnce(() -> {m_superState.setCrateState(CrateStates.PRE_L2);})
+            );
+        }
+
         public Command endIntakeCrate() {
             return Commands.either(
-                preL1(),
+                setCrateStateAllParallel(m_superState.getCrateState()),
                 homeCrates(),
-                () -> m_superState.getCrateState() == CrateStates.PRE_L1
+                () -> m_superState.getCrateState() == CrateStates.PRE_L1 || m_superState.getCrateState() == CrateStates.PRE_L2
             );
         }
 

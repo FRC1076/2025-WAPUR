@@ -109,7 +109,7 @@ public class RobotContainer {
             m_grabber = new GrabberSubsystem(new GrabberIOHardware());
             m_intake = new IntakeSubsystem(new IntakeIOHardware());
             m_shooter = new ShooterSubsystem(new ShooterIOTalon());
-            m_wrist = new WristSubsystem(new WristIOHardware());
+            m_wrist = new WristSubsystem(new WristIODisabled());
             // m_yoinker = new YoinkerSubsystem(new YoinkerIOHardware());
         } else if (SystemConstants.currentMode == RobotMode.REAL_NO_MECHANISMS) {
             m_drive = new DriveSubsystem(
@@ -255,7 +255,7 @@ public class RobotContainer {
 
         m_driverController.leftTrigger()
             .whileTrue(superstructureCommands.intakeCrate())
-            .onFalse(superstructureCommands.endIntakeCrate());
+            .onFalse(superstructureCommands.homeCrates());
         
         m_driverController.x()
             .onTrue(superstructureCommands.preL1());
@@ -313,6 +313,10 @@ public class RobotContainer {
                 )
             )
             .onFalse(m_elevator.applyVoltageUnrestricted(0));
+
+        m_operatorController.leftTrigger()
+            .whileTrue(superstructureCommands.intakeCrateStacked())
+            .onFalse(superstructureCommands.homeCrates());
 
         m_operatorController.povUp()
             .whileTrue(m_grabber.applyVoltage(GrabberConstants.kOperatorControlVolts))

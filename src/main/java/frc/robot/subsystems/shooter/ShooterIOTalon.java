@@ -77,8 +77,12 @@ public class ShooterIOTalon implements ShooterIO {
 
     @Override
     public void setVelocityRadPerSec(double velocity) {
-        m_velocityRequest.Velocity = m_unitConverter.fromSIVel(velocity);
-        m_motor.setControl(m_velocityRequest);
+        if (velocity != 0) {
+            m_velocityRequest.Velocity = m_unitConverter.fromSIVel(velocity);
+            m_motor.setControl(m_velocityRequest);
+        } else { 
+            m_motor.setVoltage(0);
+        }
     }
 
     @Override
