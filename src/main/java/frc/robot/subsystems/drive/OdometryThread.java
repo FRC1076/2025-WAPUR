@@ -113,7 +113,7 @@ public class OdometryThread {
 
     /** This method should be called ONCE per main-cycle thread */
     public void poll() {
-        sampleCount = samplesSinceLastPoll.getAndSet(0);
+        sampleCount = 1;// samplesSinceLastPoll.getAndSet(0);
     }
 
     /** Safely reads N elements of type T from a queue into a collection. Will not block if queue is empty*/

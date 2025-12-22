@@ -209,7 +209,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         // Update odometry
         double[] sampleTimestamps = modules[0].getOdometryTimestamps();
-        int sampleCount = sampleTimestamps.length;
+        int sampleCount = 1; // sampleTimestamps.length;
         for (int i = 0; i < sampleCount; i++){
             SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
             SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[4];

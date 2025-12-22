@@ -42,7 +42,7 @@ public class SuperstructureVisualizer {
         elevatorRoot = superstructureVis.getRoot("Elevator Root", 0.381 + 0.191, 0.23114);
         //The elevator
         elevator = elevatorRoot.append(
-            new LoggedMechanismLigament2d("Elevator", 0, 90, 10, new Color8Bit("#770085"))
+            new LoggedMechanismLigament2d("Elevator", 0.01, -90, 10, new Color8Bit("#770085"))
         );
         // The fixed part on the elevator that goes down for the grabber
         fixOnElevator = elevator.append(
@@ -79,6 +79,7 @@ public class SuperstructureVisualizer {
     private void updateVisualization() {
         elevator.setLength(superstructure.getElevator().getPositionMeters() + 0.01); //can't set to min value or else advantage scope visualization disappears
         wrist.setAngle(superstructure.getWrist().getAngle());
+        Logger.recordOutput("Superstructure Visualization", superstructureVis);
     }
 
 }
